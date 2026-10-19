@@ -1,5 +1,6 @@
 from typing import List, Optional, Tuple, Dict
 from spacy.language import Language
+
 from app.services.spacy_engine.loader import get_nlp
 from app.services.spacy_engine.models import (
     TokenAnalysis,
@@ -15,9 +16,21 @@ from app.services.spacy_engine.matchers.pronoms_cod_coi import PronomsCodCoiMatc
 from app.services.spacy_engine.matchers.conditionnel import ConditionnelMatcher
 from app.services.spacy_engine.matchers.subjonctif import SubjonctifMatcher
 
+from app.services.language_engine.base import BaseLanguageEngine
+from app.services.language_engine.registry import get_language_registry
+from app.services.grammar_catalog.catalog import (
+    GrammarRuleMetadata,
+    get_rule_by_id,
+    list_all_rules,
+)
 
-class FrenchGrammarEngine:
-    """Orchestrator for French NLP tokenization, dependency parsing, and grammar matching."""
+
+class FrenchGrammarEngine(BaseLanguageEngine):
+    """French implementation of BaseLanguageEngine.
+    
+    Orchestrates French NLP tokenization, dependency parsing, and grammar matching
+    via spaCy 'fr_core_news_md' and rule matcher plugins.
+    """
 
     def __init__(self, nlp: Optional[Language] = None) -> None:
         self.nlp = nlp or get_nlp()
@@ -33,6 +46,18 @@ class FrenchGrammarEngine:
         self._matchers_by_id: Dict[str, BaseRuleMatcher] = {
             m.rule_id: m for m in self.matchers
         }
+
+    @property
+    def language_code(self) -> str:
+        return "fr"
+
+    @property
+    def language_name(self) -> str:
+        return "French (Français)"
+
+    @property
+    def spacy_model_name(self) -> str:
+        return "fr_core_news_md"
 
     def analyze_sentence(self, sentence_text: str) -> SentenceAnalysis:
         """Run full linguistic token analysis and check all grammar rules."""
@@ -92,13 +117,20 @@ class FrenchGrammarEngine:
         doc = self.nlp(full_text)
         return [sent.text.strip() for sent in doc.sents if sent.text.strip()]
 
+    def get_rule_metadata(self, rule_id: str) -> Optional[GrammarRuleMetadata]:
+        return get_rule_by_id(rule_id)
+
+    def list_all_rules(self) -> List[GrammarRuleMetadata]:
+        return list_all_rules()
+
 
 _engine_instance: Optional[FrenchGrammarEngine] = None
 
 
 def get_grammar_engine() -> FrenchGrammarEngine:
-    """Return singleton instance of FrenchGrammarEngine."""
+    """Return singleton instance of FrenchGrammarEngine and register in LanguageRegistry."""
     global _engine_instance
     if _engine_instance is None:
         _engine_instance = FrenchGrammarEngine()
+        get_language_registry().register(_engine_instance)
     return _engine_instance

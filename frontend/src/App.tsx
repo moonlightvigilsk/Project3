@@ -6,6 +6,7 @@ import { DocumentUploadModal } from './components/reader/DocumentUploadModal'
 import { GrammarCatalogView } from './components/grammar/GrammarCatalogView'
 import { GrammarDetailModal } from './components/grammar/GrammarDetailModal'
 import { PracticeModal } from './components/practice/PracticeModal'
+import { NotebookView } from './components/stats/NotebookView'
 import { api } from './services/api'
 import type { Document, DocumentSentence, GrammarRuleMetadata } from './types'
 
@@ -203,14 +204,9 @@ export const App: React.FC = () => {
           />
         )}
 
-        {/* View 3: Stats Placeholder (to be filled in Task 7) */}
+        {/* View 3: Stats & Notebook */}
         {currentTab === 'stats' && (
-          <div className="p-8 text-center text-xs text-ink-500 bg-white border border-stone-border rounded-lg max-w-md mx-auto">
-            <h3 className="font-serif font-bold text-sm text-ink-900 mb-1">
-              Tiến độ & Sổ tay ngữ pháp
-            </h3>
-            <p>Module sổ tay học tập sẽ được hoàn thiện trong Task 7.</p>
-          </div>
+          <NotebookView onPracticeRule={(ruleId) => handlePracticeRule(ruleId)} />
         )}
       </main>
 
