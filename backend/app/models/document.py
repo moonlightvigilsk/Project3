@@ -18,7 +18,12 @@ class Document(Base):
     total_sentences = Column(Integer, default=0)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
-    sentences = relationship("DocumentSentence", back_populates="document", cascade="all, delete-orphan")
+    sentences = relationship(
+        "DocumentSentence",
+        back_populates="document",
+        cascade="all, delete-orphan",
+        order_by="DocumentSentence.sentence_index",
+    )
 
 
 class DocumentSentence(Base):
@@ -30,8 +35,9 @@ class DocumentSentence(Base):
     document_id = Column(Integer, ForeignKey("documents.id", ondelete="CASCADE"), nullable=False, index=True)
     chapter_index = Column(Integer, default=0)
     chapter_title = Column(String(255), nullable=True)
-    sentence_index = Column(Integer, nullable=False)
+    sentence_index = Column(Integer, nullable=False, index=True)
     text = Column(Text, nullable=False)
+    matched_rules = Column(String(512), nullable=True, index=True)  # e.g. "futur_proche,negation"
     spacy_analysis = Column(Text, nullable=True)  # JSON-encoded tokens, lemmas, POS tags
 
     document = relationship("Document", back_populates="sentences")
