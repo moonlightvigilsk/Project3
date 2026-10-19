@@ -14,6 +14,7 @@ from app.schemas.llm import (
     GrammarExplanationResult,
 )
 from app.services.llm.factory import get_llm_provider
+from app.services.spacy_engine.engine import get_grammar_engine
 
 router = APIRouter(prefix="/practice", tags=["Practice"])
 
@@ -24,7 +25,12 @@ async def evaluate_user_sentence(
     settings: Settings = Depends(get_settings),
     db: Session = Depends(get_db),
 ):
-    """Evaluate a user's generated sentence against target grammar rule."""
+    """Evaluate a user's generated sentence against target grammar rule using spaCy + LLM."""
+    spacy_engine = get_grammar_engine()
+    spacy_matched, match_info = spacy_engine.check_target_rule(
+        request.user_sentence, request.target_rule_id
+    )
+
     provider = get_llm_provider(settings)
     try:
         result = await provider.evaluate_sentence(request)
@@ -33,6 +39,11 @@ async def evaluate_user_sentence(
             status_code=502,
             detail=f"LLM Provider evaluation failed: {str(exc)}",
         )
+
+    # Reconcile with spaCy deterministic check if available
+    if not spacy_matched and result.is_correct and "futur_proche" in request.target_rule_id:
+        # If spaCy found no aller+inf pattern for futur_proche, ensure target_pattern_matched is accurate
+        result.target_pattern_matched = False
 
     # Persist session in database for learner's review
     try:

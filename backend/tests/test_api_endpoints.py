@@ -87,3 +87,30 @@ def test_practice_explain_endpoint():
     assert result["rule_id"] == "futur_proche"
     assert "aller" in result["formula"].lower()
     assert len(result["key_rules"]) > 0
+
+
+def test_grammar_catalog_endpoints():
+    response = client.get("/api/grammar/rules")
+    assert response.status_code == 200
+    rules = response.json()
+    assert len(rules) >= 7
+
+    single = client.get("/api/grammar/rules/futur_proche")
+    assert single.status_code == 200
+    data = single.json()
+    assert data["id"] == "futur_proche"
+
+    not_found = client.get("/api/grammar/rules/non_existent_rule")
+    assert not_found.status_code == 404
+
+
+def test_grammar_analyze_endpoint():
+    payload = {"sentence": "Je ne vais pas partir."}
+    response = client.post("/api/grammar/analyze", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "tokens" in data
+    assert "matched_rule_ids" in data
+    assert "futur_proche" in data["matched_rule_ids"]
+    assert "negation" in data["matched_rule_ids"]
+
