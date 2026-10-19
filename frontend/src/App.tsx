@@ -3,8 +3,11 @@ import { Header } from './components/common/Header'
 import { DocumentList } from './components/reader/DocumentList'
 import { ReaderView } from './components/reader/ReaderView'
 import { DocumentUploadModal } from './components/reader/DocumentUploadModal'
+import { GrammarCatalogView } from './components/grammar/GrammarCatalogView'
+import { GrammarDetailModal } from './components/grammar/GrammarDetailModal'
+import { PracticeModal } from './components/practice/PracticeModal'
 import { api } from './services/api'
-import type { Document, DocumentSentence } from './types'
+import type { Document, DocumentSentence, GrammarRuleMetadata } from './types'
 
 export const App: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<'reader' | 'catalog' | 'stats'>('reader')
@@ -16,9 +19,24 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Load documents on mount
+  // Grammar and Practice modals state
+  const [selectedRuleDetail, setSelectedRuleDetail] = useState<GrammarRuleMetadata | null>(null)
+  const [practiceConfig, setPracticeConfig] = useState<{
+    ruleId: string
+    ruleName: string
+    ruleFormula?: string
+    modelSentence?: string
+    documentId?: number
+    documentSentenceId?: number
+  } | null>(null)
+
+  // Cache of grammar rules for fast metadata lookup
+  const [grammarRules, setGrammarRules] = useState<Record<string, GrammarRuleMetadata>>({})
+
+  // Load documents and grammar catalog on mount
   useEffect(() => {
     loadDocuments()
+    loadGrammarRules()
   }, [])
 
   const loadDocuments = async () => {
@@ -31,6 +49,19 @@ export const App: React.FC = () => {
       setError(err.message || 'Không thể tải danh sách tài liệu.')
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const loadGrammarRules = async () => {
+    try {
+      const rules = await api.listGrammarRules()
+      const ruleMap: Record<string, GrammarRuleMetadata> = {}
+      rules.forEach((r) => {
+        ruleMap[r.id] = r
+      })
+      setGrammarRules(ruleMap)
+    } catch {
+      // Non-blocking, fallback will fetch on demand
     }
   }
 
@@ -68,14 +99,50 @@ export const App: React.FC = () => {
     handleSelectDocument(newDoc)
   }
 
-  const handleExplainSentence = (sentence: DocumentSentence) => {
-    // Will link to Task 6 Grammar Panel
-    console.log('Explain sentence:', sentence)
+  // Triggered when user requests grammar explanation for a sentence
+  const handleExplainSentence = async (sentence: DocumentSentence) => {
+    let targetRuleId = 'futur_proche'
+    if (sentence.matched_rules) {
+      const rules = sentence.matched_rules
+        .split(',')
+        .map((r) => r.trim())
+        .filter(Boolean)
+      if (rules.length > 0) {
+        targetRuleId = rules[0]
+      }
+    }
+
+    try {
+      let ruleMeta = grammarRules[targetRuleId]
+      if (!ruleMeta) {
+        ruleMeta = await api.getGrammarRule(targetRuleId)
+      }
+      setSelectedRuleDetail(ruleMeta)
+    } catch {
+      // If rule not found, fallback to first catalog rule
+      const firstRule = Object.values(grammarRules)[0]
+      if (firstRule) setSelectedRuleDetail(firstRule)
+    }
   }
 
-  const handlePracticeRule = (ruleId: string, contextSentence?: string) => {
-    // Will link to Task 6 Practice Panel
-    console.log('Practice rule:', ruleId, contextSentence)
+  // Triggered when user wants to practice a rule
+  const handlePracticeRule = async (ruleId: string, contextSentence?: string) => {
+    try {
+      let ruleMeta = grammarRules[ruleId]
+      if (!ruleMeta) {
+        ruleMeta = await api.getGrammarRule(ruleId)
+      }
+
+      setPracticeConfig({
+        ruleId,
+        ruleName: ruleMeta.name,
+        ruleFormula: ruleMeta.formula,
+        modelSentence: contextSentence,
+        documentId: selectedDoc?.id,
+      })
+    } catch (err: any) {
+      alert(`Không thể tải thông tin cấu trúc: ${err.message}`)
+    }
   }
 
   return (
@@ -128,14 +195,12 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* View 2: Grammar Catalog Placeholder (to be filled in Task 6) */}
+        {/* View 2: Grammar Catalog */}
         {currentTab === 'catalog' && (
-          <div className="p-8 text-center text-xs text-ink-500 bg-white border border-stone-border rounded-lg max-w-md mx-auto">
-            <h3 className="font-serif font-bold text-sm text-ink-900 mb-1">
-              Chủ điểm ngữ pháp (Grammar Catalog)
-            </h3>
-            <p>Module sẽ được hoàn thiện trong Task 6.</p>
-          </div>
+          <GrammarCatalogView
+            onSelectRule={(rule) => setSelectedRuleDetail(rule)}
+            onPracticeRule={(ruleId) => handlePracticeRule(ruleId)}
+          />
         )}
 
         {/* View 3: Stats Placeholder (to be filled in Task 7) */}
@@ -149,11 +214,35 @@ export const App: React.FC = () => {
         )}
       </main>
 
+      {/* Upload Modal */}
       <DocumentUploadModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
         onSuccess={handleUploadSuccess}
       />
+
+      {/* Explicit Grammar Rule Detail Modal */}
+      <GrammarDetailModal
+        rule={selectedRuleDetail}
+        isOpen={selectedRuleDetail !== null}
+        onClose={() => setSelectedRuleDetail(null)}
+        currentDocument={selectedDoc}
+        onPractice={(ruleId, modelSentence) => handlePracticeRule(ruleId, modelSentence)}
+      />
+
+      {/* Active Production Practice Modal */}
+      {practiceConfig && (
+        <PracticeModal
+          isOpen={practiceConfig !== null}
+          onClose={() => setPracticeConfig(null)}
+          ruleId={practiceConfig.ruleId}
+          ruleName={practiceConfig.ruleName}
+          ruleFormula={practiceConfig.ruleFormula}
+          modelSentence={practiceConfig.modelSentence}
+          documentId={practiceConfig.documentId}
+          documentSentenceId={practiceConfig.documentSentenceId}
+        />
+      )}
     </div>
   )
 }
