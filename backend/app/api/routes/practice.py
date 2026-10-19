@@ -1,5 +1,5 @@
 import json
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
@@ -15,6 +15,7 @@ from app.schemas.llm import (
 )
 from app.services.llm.factory import get_llm_provider
 from app.services.spacy_engine.engine import get_grammar_engine
+from app.services.spacy_engine.diff import compute_sentence_diff
 
 router = APIRouter(prefix="/practice", tags=["Practice"])
 
@@ -27,9 +28,8 @@ async def evaluate_user_sentence(
 ):
     """Evaluate a user's generated sentence against target grammar rule using spaCy + LLM."""
     spacy_engine = get_grammar_engine()
-    spacy_matched, match_info = spacy_engine.check_target_rule(
-        request.user_sentence, request.target_rule_id
-    )
+    analysis = spacy_engine.analyze_sentence(request.user_sentence)
+    spacy_matched = request.target_rule_id.lower().strip() in analysis.matched_rule_ids
 
     provider = get_llm_provider(settings)
     try:
@@ -42,13 +42,35 @@ async def evaluate_user_sentence(
 
     # Reconcile with spaCy deterministic check if available
     if not spacy_matched and result.is_correct and "futur_proche" in request.target_rule_id:
-        # If spaCy found no aller+inf pattern for futur_proche, ensure target_pattern_matched is accurate
         result.target_pattern_matched = False
+
+    # Attach computed diff tokens if not already provided by provider
+    if not result.diff_tokens:
+        result.diff_tokens = compute_sentence_diff(
+            request.user_sentence, result.corrected_sentence
+        )
+
+    # Attach linguistic token breakdown for frontend educational inspection
+    result.spacy_tokens = [
+        {
+            "index": t.index,
+            "text": t.text,
+            "lemma": t.lemma,
+            "pos": t.pos,
+            "dep": t.dep,
+            "morph": t.morph,
+        }
+        for t in analysis.tokens
+    ]
+    result.rule_id = request.target_rule_id
+    result.rule_name = request.target_rule_name
+    result.user_sentence = request.user_sentence
 
     # Persist session in database for learner's review
     try:
         session_record = PracticeSession(
             rule_id=request.target_rule_id,
+            document_id=request.document_id,
             user_sentence=request.user_sentence,
             is_correct=result.is_correct,
             target_pattern_matched=result.target_pattern_matched,
@@ -83,6 +105,7 @@ async def explain_grammar(
 @router.get("/history")
 async def get_practice_history(
     rule_id: Optional[str] = None,
+    document_id: Optional[int] = None,
     limit: int = 50,
     db: Session = Depends(get_db),
 ):
@@ -90,12 +113,16 @@ async def get_practice_history(
     query = db.query(PracticeSession)
     if rule_id:
         query = query.filter(PracticeSession.rule_id == rule_id)
+    if document_id is not None:
+        query = query.filter(PracticeSession.document_id == document_id)
+
     records = query.order_by(desc(PracticeSession.created_at)).limit(limit).all()
 
     return [
         {
             "id": r.id,
             "rule_id": r.rule_id,
+            "document_id": r.document_id,
             "user_sentence": r.user_sentence,
             "is_correct": r.is_correct,
             "target_pattern_matched": r.target_pattern_matched,
@@ -106,3 +133,54 @@ async def get_practice_history(
         }
         for r in records
     ]
+
+
+@router.get("/stats")
+async def get_practice_stats(
+    db: Session = Depends(get_db),
+):
+    """Calculate aggregate learning statistics and rule-level mastery."""
+    records = db.query(PracticeSession).all()
+
+    total_attempts = len(records)
+    if total_attempts == 0:
+        return {
+            "total_attempts": 0,
+            "correct_attempts": 0,
+            "accuracy_rate": 0.0,
+            "average_score": 0.0,
+            "rules_breakdown": {},
+        }
+
+    correct_attempts = sum(1 for r in records if r.is_correct)
+    total_score = sum(r.score for r in records)
+    accuracy_rate = round((correct_attempts / total_attempts) * 100, 1)
+    average_score = round(total_score / total_attempts, 1)
+
+    rules_map: Dict[str, Dict[str, Any]] = {}
+    for r in records:
+        rid = r.rule_id
+        if rid not in rules_map:
+            rules_map[rid] = {"attempts": 0, "correct": 0, "total_score": 0}
+        rules_map[rid]["attempts"] += 1
+        if r.is_correct:
+            rules_map[rid]["correct"] += 1
+        rules_map[rid]["total_score"] += r.score
+
+    breakdown = {}
+    for rid, data in rules_map.items():
+        att = data["attempts"]
+        breakdown[rid] = {
+            "attempts": att,
+            "correct": data["correct"],
+            "accuracy_rate": round((data["correct"] / att) * 100, 1),
+            "average_score": round(data["total_score"] / att, 1),
+        }
+
+    return {
+        "total_attempts": total_attempts,
+        "correct_attempts": correct_attempts,
+        "accuracy_rate": accuracy_rate,
+        "average_score": average_score,
+        "rules_breakdown": breakdown,
+    }

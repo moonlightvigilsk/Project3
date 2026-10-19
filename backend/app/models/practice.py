@@ -10,6 +10,7 @@ class PracticeSession(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     rule_id = Column(String(64), nullable=False, index=True)
+    document_id = Column(Integer, nullable=True, index=True)
     user_sentence = Column(Text, nullable=False)
     is_correct = Column(Boolean, nullable=False)
     target_pattern_matched = Column(Boolean, nullable=False)

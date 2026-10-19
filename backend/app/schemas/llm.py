@@ -1,5 +1,6 @@
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
+from app.services.spacy_engine.diff import DiffToken
 
 
 class GrammarEvaluationRequest(BaseModel):
@@ -13,6 +14,8 @@ class GrammarEvaluationRequest(BaseModel):
     example_sentences: List[str] = Field(default_factory=list)
     language: str = Field(default="fr")
     learner_native_lang: str = Field(default="vi")
+    document_id: Optional[int] = None
+    document_sentence_id: Optional[int] = None
 
 
 class GrammarEvaluationResult(BaseModel):
@@ -26,6 +29,11 @@ class GrammarEvaluationResult(BaseModel):
     error_explanation: Optional[str] = None
     positive_feedback: Optional[str] = None
     suggested_alternatives: List[str] = Field(default_factory=list)
+    diff_tokens: List[DiffToken] = Field(default_factory=list)
+    spacy_tokens: List[Dict[str, Any]] = Field(default_factory=list)
+    rule_id: Optional[str] = None
+    rule_name: Optional[str] = None
+    user_sentence: Optional[str] = None
 
 
 class GrammarExplanationRequest(BaseModel):
