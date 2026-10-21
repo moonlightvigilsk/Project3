@@ -89,38 +89,38 @@ export const GrammarDetailModal: React.FC<GrammarDetailModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-900/40 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white rounded-lg border border-stone-border shadow-xl max-w-3xl w-full my-8 flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto">
+      <div className="bg-white dark:bg-[#1E1D1B] rounded-lg border border-stone-border dark:border-[#3A3735] shadow-xl max-w-3xl w-full my-8 flex flex-col max-h-[90vh] transition-colors">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-stone-border flex items-start justify-between bg-parchment-50">
+        <div className="px-6 py-4 border-b border-stone-border dark:border-[#3A3735] flex items-start justify-between bg-parchment-50 dark:bg-[#242220]">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[11px] font-mono uppercase tracking-wider bg-stone-200 text-ink-800 px-2 py-0.5 rounded">
+              <span className="text-[11px] font-mono uppercase tracking-wider bg-stone-200 dark:bg-[#3A3735] text-ink-800 dark:text-[#E8E3DA] px-2 py-0.5 rounded">
                 {rule.category}
               </span>
-              <span className="text-[11px] font-mono bg-french-navy text-white px-2 py-0.5 rounded">
+              <span className="text-[11px] font-mono bg-french-navy dark:bg-slate-700 text-white px-2 py-0.5 rounded">
                 {rule.level}
               </span>
             </div>
-            <h2 className="font-serif font-bold text-xl text-ink-900">{rule.name}</h2>
+            <h2 className="font-serif font-bold text-xl text-ink-900 dark:text-[#E8E3DA]">{rule.name}</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-ink-500 hover:text-ink-900 hover:bg-stone-subtle rounded transition-colors"
+            className="p-1.5 text-ink-500 dark:text-[#A8A29E] hover:text-ink-900 dark:hover:text-[#E8E3DA] hover:bg-stone-subtle dark:hover:bg-[#2C2A27] rounded transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab navigation */}
-        <div className="px-6 border-b border-stone-border flex gap-4 text-xs font-mono bg-white">
+        <div className="px-6 border-b border-stone-border dark:border-[#3A3735] flex gap-4 text-xs font-mono bg-white dark:bg-[#1E1D1B]">
           <button
             type="button"
             onClick={() => setActiveTab('rules')}
             className={`py-2.5 border-b-2 font-medium transition-colors cursor-pointer ${
               activeTab === 'rules'
-                ? 'border-french-bordeaux text-french-bordeaux'
-                : 'border-transparent text-ink-500 hover:text-ink-900'
+                ? 'border-french-bordeaux text-french-bordeaux dark:border-amber-400 dark:text-amber-300'
+                : 'border-transparent text-ink-500 dark:text-[#A8A29E] hover:text-ink-900 dark:hover:text-[#E8E3DA]'
             }`}
           >
             Quy tắc & Bảng chia

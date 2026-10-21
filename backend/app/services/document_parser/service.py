@@ -5,8 +5,13 @@ from typing import List, Optional, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
-from app.models.document import Document, DocumentSentence
-from app.services.document_parser.base import ParsedDocument
+from app.models.document import Document, DocumentSection, DocumentSentence
+from app.services.document_parser.base import (
+    ParsedDocument,
+    DocumentParsingError,
+    ScannedPDFError,
+    EmptyDocumentError,
+)
 from app.services.document_parser.pdf_parser import parse_pdf
 from app.services.document_parser.epub_parser import parse_epub
 from app.services.document_parser.text_parser import parse_text
@@ -35,7 +40,6 @@ class DocumentService:
         elif suffix in (".txt", ".md", ".text"):
             return parse_text(file_bytes, filename=filename)
         else:
-            # Fallback to text parsing
             return parse_text(file_bytes, filename=filename)
 
     @classmethod
@@ -46,7 +50,10 @@ class DocumentService:
         filename: str,
         title: Optional[str] = None,
     ) -> Document:
-        """Process an uploaded document, index all sentences with spaCy, and persist to DB."""
+        """Process an uploaded document, index all sentences with spaCy, and persist to DB.
+
+        Hierarchy: Document -> DocumentSection -> DocumentSentence with position indices.
+        """
         upload_folder = ensure_upload_dir()
         file_path = upload_folder / filename
 
@@ -54,6 +61,7 @@ class DocumentService:
         with open(file_path, "wb") as f:
             f.write(file_bytes)
 
+        # Parse file (will raise ScannedPDFError or EmptyDocumentError if invalid)
         parsed_doc = cls.parse_file(file_bytes, filename)
         doc_title = title.strip() if title and title.strip() else parsed_doc.title
 
@@ -70,11 +78,24 @@ class DocumentService:
 
         grammar_engine = get_grammar_engine()
         global_sentence_idx = 0
-        sentence_records: List[DocumentSentence] = []
+        all_sentence_records: List[DocumentSentence] = []
 
-        for chapter in parsed_doc.chapters:
+        for ch_order, chapter in enumerate(parsed_doc.chapters, start=1):
+            ch_index = chapter.index if chapter.index is not None else ch_order
+            section_record = DocumentSection(
+                document_id=doc_record.id,
+                section_index=ch_index,
+                title=chapter.title or f"Section {ch_index}",
+                total_words=len(chapter.text.split()),
+                total_sentences=0,
+            )
+            db.add(section_record)
+            db.flush()  # Get section_record.id
+
             sents = grammar_engine.segment_into_sentences(chapter.text)
-            for sent_text in sents:
+            section_sentences: List[DocumentSentence] = []
+
+            for order_in_section, sent_text in enumerate(sents):
                 clean_sent = sent_text.strip()
                 if len(clean_sent) < 3:
                     continue
@@ -90,25 +111,31 @@ class DocumentService:
                     {
                         "matched_rule_ids": analysis.matched_rule_ids,
                         "matches": [m.model_dump() for m in analysis.matches],
-                        "tokens": [t.model_dump() for t in analysis.tokens[:30]],  # cap token details for compact storage
+                        "tokens": [t.model_dump() for t in analysis.tokens[:30]],
                     },
                     ensure_ascii=False,
                 )
 
                 sent_record = DocumentSentence(
                     document_id=doc_record.id,
-                    chapter_index=chapter.index,
+                    section_id=section_record.id,
+                    section_index=ch_index,
+                    chapter_index=ch_index,
                     chapter_title=chapter.title,
+                    order_index=order_in_section,
                     sentence_index=global_sentence_idx,
                     text=clean_sent,
                     matched_rules=rules_str,
                     spacy_analysis=analysis_json,
                 )
-                sentence_records.append(sent_record)
+                section_sentences.append(sent_record)
+                all_sentence_records.append(sent_record)
                 global_sentence_idx += 1
 
-        db.bulk_save_objects(sentence_records)
-        doc_record.total_sentences = len(sentence_records)
+            section_record.total_sentences = len(section_sentences)
+
+        db.bulk_save_objects(all_sentence_records)
+        doc_record.total_sentences = len(all_sentence_records)
         db.commit()
         db.refresh(doc_record)
 
@@ -123,6 +150,16 @@ class DocumentService:
     def get_document(db: Session, document_id: int) -> Optional[Document]:
         """Fetch a single document by ID."""
         return db.query(Document).filter(Document.id == document_id).first()
+
+    @staticmethod
+    def get_sections(db: Session, document_id: int) -> List[DocumentSection]:
+        """Retrieve all sections/chapters of a document."""
+        return (
+            db.query(DocumentSection)
+            .filter(DocumentSection.document_id == document_id)
+            .order_by(DocumentSection.section_index)
+            .all()
+        )
 
     @staticmethod
     def delete_document(db: Session, document_id: int) -> bool:
@@ -146,12 +183,15 @@ class DocumentService:
         db: Session,
         document_id: int,
         chapter_index: Optional[int] = None,
+        section_id: Optional[int] = None,
         skip: int = 0,
         limit: int = 100,
     ) -> List[DocumentSentence]:
         """Retrieve paginated sentences from a document."""
         query = db.query(DocumentSentence).filter(DocumentSentence.document_id == document_id)
-        if chapter_index is not None:
+        if section_id is not None:
+            query = query.filter(DocumentSentence.section_id == section_id)
+        elif chapter_index is not None:
             query = query.filter(DocumentSentence.chapter_index == chapter_index)
         return query.order_by(DocumentSentence.sentence_index).offset(skip).limit(limit).all()
 
@@ -178,7 +218,6 @@ class DocumentService:
         results: List[Dict[str, Any]] = []
         for sent in matches:
             analysis_data = json.loads(sent.spacy_analysis) if sent.spacy_analysis else {}
-            # Find specific match info for this rule
             rule_match = None
             for m in analysis_data.get("matches", []):
                 if m.get("rule_id") == rule_id.lower().strip():
@@ -189,6 +228,9 @@ class DocumentService:
                 {
                     "sentence_id": sent.id,
                     "sentence_index": sent.sentence_index,
+                    "order_index": sent.order_index,
+                    "section_id": sent.section_id,
+                    "section_index": sent.section_index,
                     "chapter_index": sent.chapter_index,
                     "chapter_title": sent.chapter_title,
                     "text": sent.text,

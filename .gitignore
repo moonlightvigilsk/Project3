@@ -36,6 +36,9 @@ htmlcov/
 *.sqlite3
 .env
 !.env.example
+backend/data/dict_cache/
+backend/data/nlp_cache/
+backend/data/uploads/
 
 # Node / Frontend
 node_modules/
@@ -53,3 +56,8 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Extension
+.output/
+.wxt/
+*.zip

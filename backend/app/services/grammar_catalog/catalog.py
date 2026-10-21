@@ -11,13 +11,50 @@ class GrammarRuleMetadata(BaseModel):
     level: str  # A1, A2, B1, B2
     formula: str
     description: str
-    key_points: List[str]
+    description_vi: Optional[str] = None
+    description_en: Optional[str] = None
+    key_points: List[str] = Field(default_factory=list)
     conjugation_table: Dict[str, Any] = Field(default_factory=dict)
-    examples: List[str]
+    examples: List[str] = Field(default_factory=list)
+    examples_correct: List[Dict[str, Any]] = Field(default_factory=list)
+    examples_incorrect: List[Dict[str, Any]] = Field(default_factory=list)
     keywords: List[str] = Field(default_factory=list)
+    spacy_pattern: Optional[Dict[str, Any]] = None
+    spacy_observation: Optional[str] = None
 
 
 FRENCH_GRAMMAR_CATALOG: Dict[str, GrammarRuleMetadata] = {
+    "aller_infinitif": GrammarRuleMetadata(
+        id="aller_infinitif",
+        name="Futur proche (aller + infinitif)",
+        category="Temps du verbe",
+        level="A1-A2",
+        formula="Sujet + aller (présent) + verbe à l'infinitif",
+        description="Exprime une action imminente ou une intention déjà arrêtée dans un avenir proche.",
+        description_vi="Diễn tả một hành động sắp xảy ra ngay hoặc một dự định chắc chắn trong tương lai gần.",
+        description_en="Expresses an imminent action or a firm intention in the near future.",
+        key_points=[
+            "Seul l'auxiliaire 'aller' se conjugue au présent de l'indicatif.",
+            "Le verbe d'action reste toujours à l'infinitif.",
+            "À la forme négative, 'ne... pas' entoure le verbe aller : 'Je ne vais pas partir'.",
+            "Les pronoms compléments se placent entre 'aller' et l'infinitif : 'Je vais le faire'.",
+        ],
+        conjugation_table={
+            "je": "vais + infinitif",
+            "tu": "vas + infinitif",
+            "il / elle / on": "va + infinitif",
+            "nous": "allons + infinitif",
+            "vous": "allez + infinitif",
+            "ils / elles": "vont + infinitif",
+        },
+        examples=[
+            "Je vais visiter mon ami ce week-end.",
+            "Nous allons partir en voyage la semaine prochaine.",
+            "Elle va commencer un nouveau roman.",
+            "Qu'est-ce que vous allez faire ce soir ?",
+        ],
+        keywords=["aller", "infinitif", "futur", "proche", "demain", "bientôt"],
+    ),
     "futur_proche": GrammarRuleMetadata(
         id="futur_proche",
         name="Futur proche (aller + infinitif)",
@@ -25,6 +62,8 @@ FRENCH_GRAMMAR_CATALOG: Dict[str, GrammarRuleMetadata] = {
         level="A1-A2",
         formula="Sujet + aller (présent) + verbe à l'infinitif",
         description="Exprime une action imminente ou une intention déjà arrêtée dans un avenir proche.",
+        description_vi="Diễn tả một hành động sắp xảy ra ngay hoặc một dự định chắc chắn trong tương lai gần.",
+        description_en="Expresses an imminent action or a firm intention in the near future.",
         key_points=[
             "Seul l'auxiliaire 'aller' se conjugue au présent de l'indicatif.",
             "Le verbe d'action reste toujours à l'infinitif.",
@@ -54,6 +93,8 @@ FRENCH_GRAMMAR_CATALOG: Dict[str, GrammarRuleMetadata] = {
         level="A2",
         formula="Sujet + auxiliaire (avoir / être au présent) + participe passé",
         description="Exprime une action passée, achevée et ponctuelle dans le temps.",
+        description_vi="Diễn tả một hành động đã hoàn tất trong quá khứ.",
+        description_en="Expresses a completed action in the past.",
         key_points=[
             "La plupart des verbes utilisent l'auxiliaire 'avoir'.",
             "Les verbes de déplacement/état (DR MRS VANDERTRAMP) et tous les verbes pronominaux se conjuguent avec 'être'.",
@@ -112,7 +153,7 @@ FRENCH_GRAMMAR_CATALOG: Dict[str, GrammarRuleMetadata] = {
         formula="ne (ou n') + verbe conjugué + pas / jamais / rien / plus / aucun",
         description="Encadre le verbe pour exprimer la négation totale, l'absence ou la fréquence nulle.",
         key_points=[
-            "'ne' devient 'n\'' devant une voyelle ou un 'h' muet.",
+            "'ne' devient 'n\\'' devant une voyelle ou un 'h' muet.",
             "Aux temps composés, 'ne' et le mot négatif encadrent l'auxiliaire : 'Je n'ai pas compris'.",
             "Devant un infinitif, les deux éléments restent groupés : 'Il m'a demandé de ne pas fumer'.",
         ],
@@ -211,10 +252,29 @@ FRENCH_GRAMMAR_CATALOG: Dict[str, GrammarRuleMetadata] = {
 
 
 def get_rule_by_id(rule_id: str) -> Optional[GrammarRuleMetadata]:
-    """Retrieve metadata for a rule ID."""
-    return FRENCH_GRAMMAR_CATALOG.get(rule_id.lower().strip())
+    """Retrieve metadata for a rule ID, prioritizing YAML definitions."""
+    key = rule_id.lower().strip()
+    try:
+        from app.services.grammar_catalog.yaml_loader import load_yaml_rules
+        yaml_rules = load_yaml_rules()
+        if key in yaml_rules:
+            return yaml_rules[key]
+        if key == "aller_infinitif" and "futur_proche" in yaml_rules:
+            return yaml_rules["futur_proche"]
+        if key == "futur_proche" and "aller_infinitif" in yaml_rules:
+            return yaml_rules["aller_infinitif"]
+    except Exception:
+        pass
+    return FRENCH_GRAMMAR_CATALOG.get(key)
 
 
 def list_all_rules() -> List[GrammarRuleMetadata]:
-    """Return all catalogued French grammar rules."""
-    return list(FRENCH_GRAMMAR_CATALOG.values())
+    """Return all catalogued French grammar rules (merging YAML + hardcoded)."""
+    merged = dict(FRENCH_GRAMMAR_CATALOG)
+    try:
+        from app.services.grammar_catalog.yaml_loader import load_yaml_rules
+        yaml_rules = load_yaml_rules()
+        merged.update(yaml_rules)
+    except Exception:
+        pass
+    return list(merged.values())

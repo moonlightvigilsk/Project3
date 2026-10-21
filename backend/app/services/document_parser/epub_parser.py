@@ -1,19 +1,22 @@
 import io
 import os
 import zipfile
-import tempfile
 from pathlib import Path
 from typing import List, Union
 from bs4 import BeautifulSoup
 import ebooklib
 from ebooklib import epub
 
-from app.services.document_parser.base import ExtractedChapter, ParsedDocument
+from app.services.document_parser.base import (
+    ExtractedChapter,
+    ParsedDocument,
+    EmptyDocumentError,
+)
 from app.services.document_parser.pdf_parser import clean_french_text
 
 
 def _parse_epub_with_zip(file_stream: Union[io.BytesIO, str], filename: str) -> ParsedDocument:
-    """Robust fallback: parse EPUB directly via standard zipfile and BeautifulSoup."""
+    """Robust parser: parse EPUB directly via standard zipfile and BeautifulSoup."""
     chapters: List[ExtractedChapter] = []
     doc_title = Path(filename).stem
     total_words = 0
@@ -77,6 +80,9 @@ def _parse_epub_with_zip(file_stream: Union[io.BytesIO, str], filename: str) -> 
                 chapter_idx += 1
             except Exception:
                 continue
+
+    if not chapters:
+        raise EmptyDocumentError("Tập tin EPUB không chứa nội dung văn bản đọc được.")
 
     return ParsedDocument(
         title=doc_title,

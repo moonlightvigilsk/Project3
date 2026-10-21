@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -31,7 +32,7 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['Merriweather', 'Georgia', 'Cambria', 'serif'],
+        serif: ['Lora', '"Noto Serif"', 'Georgia', 'Cambria', 'serif'],
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
       },

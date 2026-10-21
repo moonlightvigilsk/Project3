@@ -1,0 +1,59 @@
+id: "aller_infinitif"
+name: "Futur proche (aller + infinitif)"
+description_vi: "Diễn tả một hành động sắp xảy ra ngay hoặc một dự định chắc chắn trong tương lai gần."
+description_en: "Expresses an imminent action or a firm intention in the near future."
+formula: "Sujet + aller (présent de l'indicatif) + verbe à l'infinitif"
+level: "A1-A2"
+category: "Temps du verbe"
+
+spacy_observation: |
+  Quan sát thực tế trên mô hình spaCy 'fr_core_news_md':
+  1. Câu positive:
+     - 'Je vais visiter mon ami': 'vais' (lemma='aller', pos=VERB, dep=ROOT, morph=Tense=Pres|VerbForm=Fin), 'visiter' (lemma='visiter', pos=VERB, dep=xcomp, head='vais', morph=VerbForm=Inf).
+     - 'Nous allons visiter Hanoi': 'allons' (pos=VERB, dep=ROOT, morph=Tense=Pres|VerbForm=Fin), 'visiter' (pos=VERB, dep=xcomp, head='allons', morph=VerbForm=Inf).
+     - 'Elle va partir demain': 'va' (pos=VERB, dep=ROOT, morph=Tense=Pres|VerbForm=Fin), 'partir' (pos=VERB, dep=xcomp, head='va', morph=VerbForm=Inf).
+  2. Phản ví dụ:
+     - 'Je vais à Hanoi': 'vais' là ROOT, 'a' mang dep=xcomp nhưng morph=Tense=Pres|VerbForm=Fin (pos=AUX), KHÔNG PHẢI VerbForm=Inf -> Loại trừ chính xác nhờ kiểm tra VerbForm=Inf.
+     - 'J\'ai visité Hanoi': 'ai' (lemma='avoir'), 'visité' (pos=NOUN/VERB participe passé) -> Không có động từ aller ở thì hiện tại.
+     - 'Il allait partir': 'allait' có Tense=Imp chứ không phải Tense=Pres.
+
+spacy_pattern:
+  description: "spaCy DependencyMatcher: động từ aller ở hiện tại làm gốc, liên kết với động từ nguyên mẫu qua quan hệ xcomp hoặc phụ thuộc trực tiếp"
+  pattern:
+    - right_id: "aller_verb"
+      right_attrs:
+        LEMMA: "aller"
+        POS: "VERB"
+        MORPH:
+          IS_SUPERSET: ["Tense=Pres", "VerbForm=Fin"]
+    - left_id: "aller_verb"
+      rel_op: ">"
+      right_id: "infinitif_verb"
+      right_attrs:
+        POS: "VERB"
+        DEP: "xcomp"
+        MORPH:
+          IS_SUPERSET: ["VerbForm=Inf"]
+
+examples_correct:
+  - text: "Je vais visiter mon ami."
+    note: "vais (aller, présent) + visiter (infinitif)"
+  - text: "Nous allons visiter Hanoi."
+    note: "allons (aller, présent) + visiter (infinitif)"
+  - text: "Elle va partir demain."
+    note: "va (aller, présent) + partir (infinitif)"
+  - text: "Ils vont comprendre la situation."
+    note: "vont (aller, présent) + comprendre (infinitif)"
+  - text: "Tu vas apprendre le français rapidement."
+    note: "vas (aller, présent) + apprendre (infinitif)"
+
+examples_incorrect:
+  - text: "Je vais à Hanoi."
+    reason_vi: "Động từ 'aller' chỉ hành động di chuyển đến một địa điểm ('à Hanoi'), không đi kèm động từ nguyên mẫu."
+    reason_en: "'aller' is used as a motion verb towards a location, with no infinitive verb following."
+  - text: "J'ai visité Hanoi."
+    reason_vi: "Đây là thì Passé composé (auxiliaire avoir + participe passé visité), không phải cấu trúc aller + infinitif."
+    reason_en: "This is Passé composé (auxiliary avoir + past participle), not futur proche."
+  - text: "Il allait partir quand le téléphone a sonné."
+    reason_vi: "'allait' được chia ở thì Imparfait, không phải thì Présent của futur proche."
+    reason_en: "'allait' is in Imparfait, not the present tense required for standard futur proche."

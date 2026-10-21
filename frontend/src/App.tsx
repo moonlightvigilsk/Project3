@@ -7,11 +7,12 @@ import { GrammarCatalogView } from './components/grammar/GrammarCatalogView'
 import { GrammarDetailModal } from './components/grammar/GrammarDetailModal'
 import { PracticeModal } from './components/practice/PracticeModal'
 import { NotebookView } from './components/stats/NotebookView'
+import { VocabularyView } from './components/vocabulary/VocabularyView'
 import { api } from './services/api'
 import type { Document, DocumentSentence, GrammarRuleMetadata } from './types'
 
 export const App: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<'reader' | 'catalog' | 'stats'>('reader')
+  const [currentTab, setCurrentTab] = useState<'reader' | 'catalog' | 'stats' | 'vocab'>('reader')
   const [documents, setDocuments] = useState<Document[]>([])
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null)
   const [sentences, setSentences] = useState<DocumentSentence[]>([])
@@ -33,6 +34,25 @@ export const App: React.FC = () => {
 
   // Cache of grammar rules for fast metadata lookup
   const [grammarRules, setGrammarRules] = useState<Record<string, GrammarRuleMetadata>>({})
+
+  // Global Theme (Dark / Light)
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('french_learning_theme')
+    if (saved) return saved === 'dark'
+    return typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false
+  })
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark')
+      document.body.classList.add('dark')
+      localStorage.setItem('french_learning_theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      document.body.classList.remove('dark')
+      localStorage.setItem('french_learning_theme', 'light')
+    }
+  }, [darkMode])
 
   // Load documents and grammar catalog on mount
   useEffect(() => {
@@ -147,23 +167,25 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-parchment-100 flex flex-col font-sans text-ink-900">
+    <div className={`min-h-screen ${darkMode ? 'dark bg-[#141312] text-[#E8E3DA]' : 'bg-parchment-100 text-ink-900'} flex flex-col font-sans transition-colors duration-150`}>
       <Header
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
         onOpenUpload={() => setIsUploadOpen(true)}
         hasDocument={selectedDoc !== null}
+        darkMode={darkMode}
+        onToggleDarkMode={() => setDarkMode((prev) => !prev)}
       />
 
       <main className="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 flex flex-col">
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-xs text-red-800">
+          <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded text-xs text-red-800 dark:text-red-300">
             {error}
           </div>
         )}
 
         {isLoading && !selectedDoc && (
-          <div className="text-center py-20 text-xs text-ink-500 font-mono">
+          <div className="text-center py-20 text-xs text-ink-500 dark:text-[#A8A29E] font-mono">
             Đang tải dữ liệu...
           </div>
         )}
@@ -179,10 +201,23 @@ export const App: React.FC = () => {
                 onSelectSentence={(idx) => setActiveSentenceIndex(idx)}
                 onExplainSentence={handleExplainSentence}
                 onPracticeRule={handlePracticeRule}
+                onViewGrammarRule={async (ruleId) => {
+                  try {
+                    let ruleMeta = grammarRules[ruleId]
+                    if (!ruleMeta) {
+                      ruleMeta = await api.getGrammarRule(ruleId)
+                    }
+                    setSelectedRuleDetail(ruleMeta)
+                  } catch (e: any) {
+                    alert(`Không thể tải thông tin quy tắc: ${e.message}`)
+                  }
+                }}
                 onBackToList={() => {
                   setSelectedDoc(null)
                   setSentences([])
                 }}
+                darkMode={darkMode}
+                onToggleDarkMode={() => setDarkMode((prev) => !prev)}
               />
             ) : (
               <DocumentList
@@ -207,6 +242,11 @@ export const App: React.FC = () => {
         {/* View 3: Stats & Notebook */}
         {currentTab === 'stats' && (
           <NotebookView onPracticeRule={(ruleId) => handlePracticeRule(ruleId)} />
+        )}
+
+        {/* View 4: Vocabulary Management */}
+        {currentTab === 'vocab' && (
+          <VocabularyView />
         )}
       </main>
 

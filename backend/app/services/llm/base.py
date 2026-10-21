@@ -1,14 +1,17 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 from app.schemas.llm import (
     GrammarEvaluationRequest,
     GrammarEvaluationResult,
     GrammarExplanationRequest,
     GrammarExplanationResult,
+    LLMStructuredEvaluation,
+    RuleCheckResult,
 )
 
 
-class LLMProvider(ABC):
-    """Abstract interface for LLM backends (OpenAI, Gemini, Ollama, Mock)."""
+class LLMClient(ABC):
+    """Abstract interface for LLM clients used in the pedagogical grading pipeline."""
 
     @property
     @abstractmethod
@@ -17,8 +20,23 @@ class LLMProvider(ABC):
         pass
 
     @abstractmethod
+    async def evaluate_practice_submission(
+        self,
+        user_sentence: str,
+        target_rule_id: str,
+        target_rule_name: str,
+        rule_check: RuleCheckResult,
+    ) -> LLMStructuredEvaluation:
+        """Evaluate learner submission with strict JSON output matching LLMStructuredEvaluation.
+        
+        Must incorporate deterministic rule check results into prompt to prevent hallucination.
+        Retries up to 2 times upon JSON parsing/validation failure.
+        """
+        pass
+
+    @abstractmethod
     async def evaluate_sentence(self, request: GrammarEvaluationRequest) -> GrammarEvaluationResult:
-        """Evaluate a learner's sentence against a target grammar rule."""
+        """Legacy sentence evaluation."""
         pass
 
     @abstractmethod
@@ -30,3 +48,7 @@ class LLMProvider(ABC):
     async def health_check(self) -> bool:
         """Verify provider availability."""
         pass
+
+
+# Backward compatibility alias
+LLMProvider = LLMClient

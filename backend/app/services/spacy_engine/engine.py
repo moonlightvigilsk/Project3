@@ -46,6 +46,11 @@ class FrenchGrammarEngine(BaseLanguageEngine):
         self._matchers_by_id: Dict[str, BaseRuleMatcher] = {
             m.rule_id: m for m in self.matchers
         }
+        # Support aliases
+        if "aller_infinitif" in self._matchers_by_id:
+            self._matchers_by_id["futur_proche"] = self._matchers_by_id["aller_infinitif"]
+        elif "futur_proche" in self._matchers_by_id:
+            self._matchers_by_id["aller_infinitif"] = self._matchers_by_id["futur_proche"]
 
     @property
     def language_code(self) -> str:

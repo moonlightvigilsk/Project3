@@ -4,7 +4,7 @@
 >
 > 🚫 Không gamification, không vệt streak, không khóa học cố định gò bó — người học hoàn toàn điều khiển công cụ học của mình.
 >
-> 🎨 Thiết kế theo phong cách **Anti-slop / Typography-first**: Bảng màu dịu mắt (Parchment, Deep Ink, Stone, French Bordeaux), tối ưu hóa trải nghiệm đọc và thao tác nhanh bằng phím tắt.
+> 🎨 Thiết kế theo phong cách **Typography-first (Editorial Minimalist)**: Bảng màu dịu mắt (Parchment, Deep Ink, Stone, French Bordeaux), tối ưu hóa trải nghiệm đọc và thao tác nhanh bằng phím tắt.
 
 ---
 
@@ -36,6 +36,11 @@
   * Tailwind CSS v4 (cấu hình `@theme` biến màu parchment & ink typography)
   * Lucide React Icons
   * Vitest + Testing Library
+* **Extension (TextChecker Companion)**:
+  * WXT (Next-gen Web Extension Framework) + React 19 + TypeScript
+  * Multi-provider AI (Google Gemini, OpenAI GPT, Anthropic Claude)
+  * Design đồng bộ hệ thống Typography-first (Parchment & Deep Ink)
+  * Inline real-time grammar checking & shortcut on-demand checking (Ctrl+Shift+G)
 * **Backend**:
   * Python 3.11+
   * FastAPI (RESTful API, Lifespan management)
@@ -172,6 +177,39 @@ cd frontend
 npm run build
 ```
 * **Kết quả**: TypeScript strict compilation không lỗi, Vite bundle tối ưu hóa dung lượng.
+
+---
+
+### 4. Thiết lập Trình duyệt Extension (TextChecker Companion)
+
+Tiện ích mở rộng trình duyệt (Chrome / Firefox / Edge) giúp người học kiểm tra lỗi ngữ pháp, chính tả trực tiếp khi viết câu trên bất kỳ trang web nào (Google Docs, mạng xã hội, form bài tập...):
+
+1. Mở terminal và chuyển vào thư mục extension:
+   ```bash
+   cd extension
+   ```
+
+2. Cài đặt các gói phụ thuộc:
+   ```bash
+   npm install
+   ```
+
+3. Build extension:
+   ```bash
+   npm run build
+   # Hoặc npm run dev để chạy chế độ development tự động reload
+   ```
+
+4. Cài đặt vào Chrome / Edge / Brave:
+   * Truy cập `chrome://extensions/` (hoặc `edge://extensions/`).
+   * Bật **Developer mode** (góc trên bên phải).
+   * Nhấn **Load unpacked** (Tải tiện ích đã giải nén).
+   * Chọn thư mục `extension/.output/chrome-mv3`.
+
+5. Sử dụng:
+   * Nhấn biểu tượng TextChecker trên thanh công cụ để mở Popup cài đặt API key (Gemini, OpenAI, Claude).
+   * Chọn chế độ kiểm tra: **Real-time** (tự động theo thời gian thực) hoặc **On-demand** (nhấn `Ctrl + Shift + G`).
+   * Giao diện Popup, Options và thẻ Popover trực quan đều đã được thiết kế đồng bộ theo phong cách Parchment & Deep Ink.
 
 ---
 

@@ -1,10 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import {
   ChevronLeft,
+  ChevronRight,
   Sparkles,
   PenTool,
+  Sun,
+  Moon,
+  Columns2,
+  AlignJustify,
+  Maximize2,
 } from 'lucide-react'
-import type { Document, DocumentSentence } from '../../types'
+import type { Document, DocumentSection, DocumentSentence } from '../../types'
+import { api } from '../../services/api'
+import { GrammarAnalysisPanel } from '../grammar/GrammarAnalysisPanel'
+import { WordLookupPopup } from './WordLookupPopup'
+import { Highlighter } from 'lucide-react'
 
 interface ReaderViewProps {
   document: Document
@@ -13,7 +23,26 @@ interface ReaderViewProps {
   onSelectSentence: (sentenceIndex: number) => void
   onExplainSentence: (sentence: DocumentSentence) => void
   onPracticeRule: (ruleId: string, contextSentence?: string) => void
+  onViewGrammarRule?: (ruleId: string) => void
   onBackToList: () => void
+  darkMode?: boolean
+  onToggleDarkMode?: () => void
+}
+
+type FontSize = 'sm' | 'base' | 'lg' | 'xl'
+type LineWidth = 'narrow' | 'normal' | 'wide'
+
+const FONT_SIZE_CLASSES: Record<FontSize, string> = {
+  sm:   'text-sm leading-relaxed',
+  base: 'text-base leading-relaxed',
+  lg:   'text-lg leading-loose',
+  xl:   'text-xl leading-loose',
+}
+
+const LINE_WIDTH_CLASSES: Record<LineWidth, string> = {
+  narrow: 'reader-width-narrow',
+  normal: 'reader-width-normal',
+  wide:   'reader-width-wide',
 }
 
 export const ReaderView: React.FC<ReaderViewProps> = ({
@@ -23,97 +52,267 @@ export const ReaderView: React.FC<ReaderViewProps> = ({
   onSelectSentence,
   onExplainSentence,
   onPracticeRule,
+  onViewGrammarRule,
   onBackToList,
+  darkMode: initialDarkMode,
+  onToggleDarkMode,
 }) => {
-  const [fontSize, setFontSize] = useState<'base' | 'lg' | 'xl'>('lg')
-  const [fontFamily, setFontFamily] = useState<'serif' | 'sans'>('serif')
+  const [fontSize, setFontSize]     = useState<FontSize>('lg')
+  const [lineWidth, setLineWidth]   = useState<LineWidth>('normal')
+  const [darkMode, setDarkMode]     = useState(initialDarkMode ?? false)
+
+  useEffect(() => {
+    if (initialDarkMode !== undefined) {
+      setDarkMode(initialDarkMode)
+    }
+  }, [initialDarkMode])
+
+  const toggleDarkMode = useCallback(() => {
+    if (onToggleDarkMode) {
+      onToggleDarkMode()
+    } else {
+      setDarkMode((v) => !v)
+    }
+  }, [onToggleDarkMode])
   const [selectedChapter, setSelectedChapter] = useState<number | 'all'>('all')
+  const [sections, setSections]     = useState<DocumentSection[]>([])
+  const [analysisOpen, setAnalysisOpen] = useState(false)
+  const [analysisSentence, setAnalysisSentence] = useState<DocumentSentence | null>(null)
+
+  // Vocabulary highlight & double-click lookup states
+  const [highlightNewWords, setHighlightNewWords] = useState(true)
+  const [vocabStatusMap, setVocabStatusMap] = useState<Record<string, string>>({})
+  const [lookupWord, setLookupWord] = useState<string>('')
+  const [lookupContextSentence, setLookupContextSentence] = useState<string>('')
+  const [lookupPos, setLookupPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const [isLookupOpen, setIsLookupOpen] = useState(false)
+
+  // Fetch vocabulary status map for highlighting
+  const loadVocabMap = useCallback(() => {
+    api
+      .getVocabularyStatusMap(document.id)
+      .then(setVocabStatusMap)
+      .catch(() => {})
+  }, [document.id])
+
+  useEffect(() => {
+    loadVocabMap()
+  }, [loadVocabMap])
+
   const sentenceRefs = useRef<{ [key: number]: HTMLSpanElement | null }>({})
 
-  // Extract unique chapters
-  const chapters = Array.from(new Set(sentences.map((s) => s.chapter_index))).sort((a, b) => a - b)
+  // Fetch sections for chapter navigation
+  useEffect(() => {
+    api.getDocumentSections(document.id).then(setSections).catch(() => {})
+  }, [document.id])
 
-  // Filter sentences by chapter if selected
-  const displayedSentences =
-    selectedChapter === 'all'
-      ? sentences
-      : sentences.filter((s) => s.chapter_index === selectedChapter)
+  // Apply/remove dark class on body
+  useEffect(() => {
+    if (darkMode) {
+      window.document.body.classList.add('dark')
+    } else {
+      window.document.body.classList.remove('dark')
+    }
+    return () => window.document.body.classList.remove('dark')
+  }, [darkMode])
 
-  // Auto-scroll focused sentence into view
+  // Extract unique chapter indices from sentences
+  const chapters = useMemo(
+    () => Array.from(new Set(sentences.map((s) => s.chapter_index))).sort((a, b) => a - b),
+    [sentences],
+  )
+
+  // Filter sentences by selected chapter
+  const displayedSentences = useMemo(
+    () =>
+      selectedChapter === 'all'
+        ? sentences
+        : sentences.filter((s) => s.chapter_index === selectedChapter),
+    [sentences, selectedChapter],
+  )
+
+  // Chapter navigation helpers
+  const currentChapterPos = useMemo(() => {
+    if (selectedChapter === 'all') return -1
+    return chapters.indexOf(selectedChapter as number)
+  }, [chapters, selectedChapter])
+
+  const goToPrevChapter = useCallback(() => {
+    if (currentChapterPos <= 0) {
+      setSelectedChapter('all')
+    } else {
+      setSelectedChapter(chapters[currentChapterPos - 1])
+    }
+    onSelectSentence(-1)
+  }, [chapters, currentChapterPos, onSelectSentence])
+
+  const goToNextChapter = useCallback(() => {
+    if (selectedChapter === 'all' && chapters.length > 0) {
+      setSelectedChapter(chapters[0])
+    } else if (currentChapterPos < chapters.length - 1) {
+      setSelectedChapter(chapters[currentChapterPos + 1])
+    }
+    onSelectSentence(-1)
+  }, [chapters, currentChapterPos, selectedChapter, onSelectSentence])
+
+  const handleSentenceClick = (sent: DocumentSentence) => {
+    onSelectSentence(sent.sentence_index)
+    setAnalysisSentence(sent)
+    setAnalysisOpen(true)
+  }
+
+  const handleWordDoubleClick = (e: React.MouseEvent, wordText: string, sentenceText: string) => {
+    e.stopPropagation()
+    const clean = wordText.replace(/[.,;:!?«»()\[\]{}'’]/g, '').trim()
+    if (!clean) return
+
+    setLookupWord(clean)
+    setLookupContextSentence(sentenceText)
+    setLookupPos({ x: e.clientX, y: e.clientY })
+    setIsLookupOpen(true)
+  }
+
+  const renderSentenceWithVocab = (sent: DocumentSentence) => {
+    const isFocused = sent.sentence_index === activeSentenceIndex
+    const hasGrammar = Boolean(sent.matched_rules)
+
+    // Tokenize text into words & spaces for double-click & highlighting
+    const tokens = sent.text.split(/(\s+|[.,;:!?«»()\[\]{}]+)/)
+
+    return (
+      <span
+        key={sent.id}
+        data-sentence-index={sent.sentence_index}
+        ref={(el) => {
+          sentenceRefs.current[sent.sentence_index] = el
+        }}
+        onClick={() => handleSentenceClick(sent)}
+        title={hasGrammar ? `Cấu trúc: ${sent.matched_rules}` : 'Bấm để xem phân tích cú pháp'}
+        className={`inline cursor-pointer px-0.5 py-0.5 rounded transition-all ${
+          isFocused
+            ? tk.highlight
+            : hasGrammar
+            ? `${tk.hover} ${darkMode ? 'text-[#F5C880]' : 'text-ink-900'} underline decoration-dotted decoration-blue-400 dark:decoration-blue-500 underline-offset-4 decoration-2`
+            : `${tk.hover} ${tk.textBody}`
+        }`}
+      >
+        {tokens.map((token, tIdx) => {
+          const cleanWord = token.replace(/[.,;:!?«»()\[\]{}'’]/g, '').toLowerCase().trim()
+          const status = cleanWord ? vocabStatusMap[cleanWord] : undefined
+          const isUnknown = cleanWord && (!status || status === 'new')
+
+          // If highlighting enabled, tint unknown / new words lightly
+          const isWord = cleanWord.length > 1 && !/^\s+$/.test(token)
+          const wordClass =
+            highlightNewWords && isWord && isUnknown && !isFocused
+              ? darkMode
+                ? 'bg-amber-950/40 text-amber-200/90 rounded-xs px-0.5'
+                : 'bg-amber-100/60 text-amber-950 rounded-xs px-0.5'
+              : ''
+
+          return (
+            <span
+              key={tIdx}
+              onDoubleClick={(e) => isWord && handleWordDoubleClick(e, token, sent.text)}
+              className={`${wordClass} transition-colors`}
+              title={isWord ? 'Bấm đúp để tra từ điển' : undefined}
+            >
+              {token}
+            </span>
+          )
+        })}
+        {' '}
+      </span>
+    )
+  }
   useEffect(() => {
     if (activeSentenceIndex !== null && sentenceRefs.current[activeSentenceIndex]) {
       const el = sentenceRefs.current[activeSentenceIndex]
       if (el && typeof el.scrollIntoView === 'function') {
-        el.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        })
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }
     }
   }, [activeSentenceIndex])
 
-  // Keyboard navigation (j/k, e, p, Esc)
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger shortcuts if focus is in an input or textarea
-      if (
-        documentActiveElementIsInput() ||
-        displayedSentences.length === 0
-      ) {
-        return
-      }
+      if (isInputFocused() || displayedSentences.length === 0) return
 
-      if (e.key === 'j' || e.key === 'ArrowDown') {
-        e.preventDefault()
-        if (activeSentenceIndex === null) {
-          onSelectSentence(displayedSentences[0].sentence_index)
-        } else {
-          const currentIdx = displayedSentences.findIndex(
-            (s) => s.sentence_index === activeSentenceIndex
-          )
-          if (currentIdx < displayedSentences.length - 1) {
-            onSelectSentence(displayedSentences[currentIdx + 1].sentence_index)
-          }
-        }
-      } else if (e.key === 'k' || e.key === 'ArrowUp') {
-        e.preventDefault()
-        if (activeSentenceIndex !== null) {
-          const currentIdx = displayedSentences.findIndex(
-            (s) => s.sentence_index === activeSentenceIndex
-          )
-          if (currentIdx > 0) {
-            onSelectSentence(displayedSentences[currentIdx - 1].sentence_index)
-          }
-        }
-      } else if (e.key === 'Escape') {
-        onSelectSentence(-1) // Deselect
-      } else if (e.key === 'e' && activeSentenceIndex !== null) {
-        const activeSent = displayedSentences.find(
-          (s) => s.sentence_index === activeSentenceIndex
-        )
-        if (activeSent) {
+      switch (e.key) {
+        case 'j':
+        case 'ArrowDown': {
           e.preventDefault()
-          onExplainSentence(activeSent)
-        }
-      } else if (e.key === 'p' && activeSentenceIndex !== null) {
-        const activeSent = displayedSentences.find(
-          (s) => s.sentence_index === activeSentenceIndex
-        )
-        if (activeSent && activeSent.matched_rules) {
-          e.preventDefault()
-          const primaryRule = activeSent.matched_rules.split(',')[0].trim()
-          if (primaryRule) {
-            onPracticeRule(primaryRule, activeSent.text)
+          if (activeSentenceIndex === null) {
+            onSelectSentence(displayedSentences[0].sentence_index)
+          } else {
+            const idx = displayedSentences.findIndex(
+              (s) => s.sentence_index === activeSentenceIndex,
+            )
+            if (idx < displayedSentences.length - 1) {
+              onSelectSentence(displayedSentences[idx + 1].sentence_index)
+            }
           }
+          break
+        }
+        case 'k':
+        case 'ArrowUp': {
+          e.preventDefault()
+          if (activeSentenceIndex !== null) {
+            const idx = displayedSentences.findIndex(
+              (s) => s.sentence_index === activeSentenceIndex,
+            )
+            if (idx > 0) {
+              onSelectSentence(displayedSentences[idx - 1].sentence_index)
+            }
+          }
+          break
+        }
+        case 'ArrowLeft': {
+          e.preventDefault()
+          goToPrevChapter()
+          break
+        }
+        case 'ArrowRight': {
+          e.preventDefault()
+          goToNextChapter()
+          break
+        }
+        case 'Escape': {
+          onSelectSentence(-1)
+          break
+        }
+        case 'e': {
+          if (activeSentenceIndex !== null) {
+            const s = displayedSentences.find((s) => s.sentence_index === activeSentenceIndex)
+            if (s) { e.preventDefault(); onExplainSentence(s) }
+          }
+          break
+        }
+        case 'p': {
+          if (activeSentenceIndex !== null) {
+            const s = displayedSentences.find((s) => s.sentence_index === activeSentenceIndex)
+            if (s?.matched_rules) {
+              e.preventDefault()
+              const primaryRule = s.matched_rules.split(',').find((r) => r.trim()) ?? ''
+              if (primaryRule) onPracticeRule(primaryRule, s.text)
+            }
+          }
+          break
+        }
+        case 'd': {
+          e.preventDefault()
+          toggleDarkMode()
+          break
         }
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [displayedSentences, activeSentenceIndex, onSelectSentence, onExplainSentence, onPracticeRule])
+  }, [displayedSentences, activeSentenceIndex, onSelectSentence, onExplainSentence, onPracticeRule, goToPrevChapter, goToNextChapter])
 
-  function documentActiveElementIsInput(): boolean {
+  function isInputFocused(): boolean {
     const el = window.document.activeElement
     if (!el) return false
     const tag = el.tagName.toLowerCase()
@@ -121,152 +320,210 @@ export const ReaderView: React.FC<ReaderViewProps> = ({
   }
 
   const activeSentence = displayedSentences.find(
-    (s) => s.sentence_index === activeSentenceIndex
+    (s) => s.sentence_index === activeSentenceIndex,
   )
 
-  const fontSizeClasses = {
-    base: 'text-sm sm:text-base leading-relaxed',
-    lg: 'text-base sm:text-lg leading-loose',
-    xl: 'text-lg sm:text-xl leading-loose',
+  // Chapter title for selected chapter
+  const currentChapterTitle = useMemo(() => {
+    if (selectedChapter === 'all') return null
+    const sec = sections.find((s) => s.section_index === selectedChapter)
+    if (sec?.title) return sec.title
+    const sent = sentences.find((s) => s.chapter_index === selectedChapter)
+    return sent?.chapter_title ?? `Chương ${selectedChapter}`
+  }, [selectedChapter, sections, sentences])
+
+  // -- Theme tokens --
+  const tk = {
+    bg:         darkMode ? 'bg-[#1A1917]'  : 'bg-parchment-50',
+    surface:    darkMode ? 'bg-[#242220]'  : 'bg-parchment-100/60',
+    border:     darkMode ? 'border-[#3A3735]' : 'border-stone-border',
+    text:       darkMode ? 'text-[#E8E3DA]'  : 'text-ink-900',
+    textMuted:  darkMode ? 'text-[#78716C]'  : 'text-ink-500',
+    textBody:   darkMode ? 'text-[#D6D0C7]'  : 'text-ink-800',
+    highlight:  darkMode ? 'bg-[#3D3020] text-[#F5DEB3]' : 'bg-parchment-300 text-ink-900 underline decoration-french-bordeaux decoration-2',
+    hover:      darkMode ? 'hover:bg-[#2C2A27]' : 'hover:bg-parchment-200',
+    btnActive:  darkMode ? 'bg-[#E8E3DA] text-[#1A1917]' : 'bg-ink-900 text-white',
+    btnInactive:darkMode ? 'text-[#A8A29E] hover:bg-[#2C2A27]' : 'text-ink-700 hover:bg-parchment-200',
+    selectBg:   darkMode ? 'bg-[#2C2A27] text-[#E8E3DA] border-[#3A3735]' : 'bg-white border-stone-border text-ink-800',
+    barBg:      darkMode ? 'bg-[#1F1D1B]' : 'bg-white',
+    footerBg:   darkMode ? 'bg-[#1A1917]/60' : 'bg-parchment-100/40',
   }
 
   return (
-    <div className="flex flex-col h-full bg-parchment-50 border border-stone-border rounded-lg shadow-sm overflow-hidden">
-      {/* Reader Control Bar */}
-      <div className="flex items-center justify-between px-6 py-3 border-b border-stone-border bg-parchment-100/60">
-        <div className="flex items-center space-x-3">
+    <div className="flex h-full w-full overflow-hidden">
+      {/* ── Main Reader Column ── */}
+      <div
+        className={`flex flex-col h-full flex-1 min-w-0 ${tk.bg} border ${tk.border} rounded-lg shadow-sm overflow-hidden transition-colors duration-200`}
+      >
+      {/* ── Control Bar ── */}
+      <div className={`flex items-center justify-between px-4 py-2.5 border-b ${tk.border} ${tk.surface} flex-wrap gap-2`}>
+        {/* Left: back + title */}
+        <div className="flex items-center space-x-2 min-w-0">
           <button
             onClick={onBackToList}
-            className="text-xs font-medium text-ink-700 hover:text-ink-900 flex items-center space-x-1"
+            className={`text-xs font-medium ${tk.textMuted} hover:${tk.text} flex items-center space-x-1 shrink-0`}
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Tủ sách</span>
           </button>
-          <span className="text-stone-300">|</span>
-          <h3 className="font-serif font-bold text-sm text-ink-900 truncate max-w-xs sm:max-w-md">
+          <span className={`${tk.textMuted} opacity-40`}>|</span>
+          <h3 className={`font-serif font-bold text-sm ${tk.text} truncate max-w-[180px] sm:max-w-sm`}>
             {document.title}
           </h3>
         </div>
 
-        {/* Reader Preferences */}
-        <div className="flex items-center space-x-4 text-xs text-ink-700">
-          {/* Chapter select */}
+        {/* Right: controls */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Chapter navigation */}
           {chapters.length > 1 && (
-            <select
-              value={selectedChapter}
-              onChange={(e) =>
-                setSelectedChapter(
-                  e.target.value === 'all' ? 'all' : Number(e.target.value)
-                )
-              }
-              className="bg-white border border-stone-border text-xs rounded px-2 py-1 text-ink-800"
-            >
-              <option value="all">Tất cả các chương</option>
-              {chapters.map((ch) => (
-                <option key={ch} value={ch}>
-                  Chương / Mục {ch}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={goToPrevChapter}
+                disabled={selectedChapter === 'all'}
+                title="Chương trước (←)"
+                className={`p-1.5 border ${tk.border} rounded disabled:opacity-30 ${tk.btnInactive} transition-colors`}
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+
+              <select
+                value={selectedChapter}
+                onChange={(e) =>
+                  setSelectedChapter(
+                    e.target.value === 'all' ? 'all' : Number(e.target.value),
+                  )
+                }
+                className={`border ${tk.selectBg} text-xs rounded px-2 py-1`}
+              >
+                <option value="all">Tất cả chương</option>
+                {chapters.map((ch) => {
+                  const sec = sections.find((s) => s.section_index === ch)
+                  const label = sec?.title ? sec.title.slice(0, 28) : `Chương ${ch}`
+                  return (
+                    <option key={ch} value={ch}>
+                      {label}
+                    </option>
+                  )
+                })}
+              </select>
+
+              <button
+                onClick={goToNextChapter}
+                disabled={
+                  selectedChapter !== 'all' &&
+                  currentChapterPos === chapters.length - 1
+                }
+                title="Chương tiếp (→)"
+                className={`p-1.5 border ${tk.border} rounded disabled:opacity-30 ${tk.btnInactive} transition-colors`}
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           )}
 
-          {/* Font switcher */}
-          <div className="flex items-center border border-stone-border rounded bg-white p-0.5">
-            <button
-              onClick={() => setFontFamily('serif')}
-              className={`px-2 py-0.5 rounded text-[11px] font-serif ${
-                fontFamily === 'serif' ? 'bg-ink-900 text-white font-bold' : 'hover:bg-parchment-200'
-              }`}
-            >
-              Serif
-            </button>
-            <button
-              onClick={() => setFontFamily('sans')}
-              className={`px-2 py-0.5 rounded text-[11px] font-sans ${
-                fontFamily === 'sans' ? 'bg-ink-900 text-white font-bold' : 'hover:bg-parchment-200'
-              }`}
-            >
-              Sans
-            </button>
+          {/* Line width */}
+          <div className={`flex items-center border ${tk.border} rounded overflow-hidden`}>
+            {(['narrow', 'normal', 'wide'] as LineWidth[]).map((w, i) => {
+              const Icon = i === 0 ? Columns2 : i === 1 ? AlignJustify : Maximize2
+              return (
+                <button
+                  key={w}
+                  title={w === 'narrow' ? 'Hẹp' : w === 'normal' ? 'Vừa' : 'Rộng'}
+                  onClick={() => setLineWidth(w)}
+                  className={`px-2 py-1 transition-colors ${
+                    lineWidth === w ? tk.btnActive : tk.btnInactive
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </button>
+              )
+            })}
           </div>
 
-          {/* Size switcher */}
-          <div className="flex items-center space-x-1">
-            <button
-              onClick={() => setFontSize('base')}
-              className={`px-2 py-1 border border-stone-border rounded text-[11px] ${
-                fontSize === 'base' ? 'bg-ink-900 text-white' : 'bg-white hover:bg-parchment-200'
-              }`}
-            >
-              A-
-            </button>
-            <button
-              onClick={() => setFontSize('lg')}
-              className={`px-2 py-1 border border-stone-border rounded text-[11px] ${
-                fontSize === 'lg' ? 'bg-ink-900 text-white' : 'bg-white hover:bg-parchment-200'
-              }`}
-            >
-              A
-            </button>
-            <button
-              onClick={() => setFontSize('xl')}
-              className={`px-2 py-1 border border-stone-border rounded text-[11px] ${
-                fontSize === 'xl' ? 'bg-ink-900 text-white' : 'bg-white hover:bg-parchment-200'
-              }`}
-            >
-              A+
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Text Container */}
-      <div className="flex-1 overflow-y-auto px-6 sm:px-16 py-8 sm:py-12 max-w-4xl mx-auto w-full">
-        <div
-          className={`text-ink-900 transition-all ${
-            fontFamily === 'serif' ? 'font-serif' : 'font-sans'
-          } ${fontSizeClasses[fontSize]}`}
-        >
-          {displayedSentences.map((sent) => {
-            const isFocused = sent.sentence_index === activeSentenceIndex
-            const hasGrammarRule = Boolean(sent.matched_rules)
-
-            return (
-              <span
-                key={sent.id}
-                ref={(el) => {
-                  sentenceRefs.current[sent.sentence_index] = el
-                }}
-                onClick={() => onSelectSentence(sent.sentence_index)}
-                className={`inline cursor-pointer transition-colors px-1 py-0.5 rounded relative ${
-                  isFocused
-                    ? 'bg-parchment-300 text-ink-900 underline decoration-french-bordeaux decoration-2'
-                    : hasGrammarRule
-                    ? 'hover:bg-parchment-200 text-ink-900'
-                    : 'hover:bg-parchment-200 text-ink-800'
+          {/* Font size */}
+          <div className={`flex items-center border ${tk.border} rounded overflow-hidden`}>
+            {(['sm', 'base', 'lg', 'xl'] as FontSize[]).map((s) => (
+              <button
+                key={s}
+                onClick={() => setFontSize(s)}
+                className={`px-2 py-1 text-[11px] transition-colors ${
+                  fontSize === s ? tk.btnActive : tk.btnInactive
                 }`}
               >
-                {sent.text}{' '}
-              </span>
-            )
-          })}
+                {s === 'sm' ? 'A−' : s === 'base' ? 'A' : s === 'lg' ? 'A+' : 'A++'}
+              </button>
+            ))}
+          </div>
+
+          {/* Toggle highlight new words */}
+          <button
+            onClick={() => setHighlightNewWords((prev) => !prev)}
+            title={highlightNewWords ? 'Tắt tô màu từ chưa biết' : 'Bật tô màu từ chưa biết'}
+            className={`p-1.5 border ${tk.border} rounded transition-colors flex items-center gap-1 text-xs ${
+              highlightNewWords
+                ? 'bg-amber-100/80 text-amber-900 border-amber-300 font-medium'
+                : tk.btnInactive
+            }`}
+          >
+            <Highlighter className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline text-[11px]">Từ mới</span>
+          </button>
+
+          {/* Dark mode toggle */}
+          <button
+            onClick={toggleDarkMode}
+            title={darkMode ? 'Chế độ sáng (D)' : 'Chế độ tối (D)'}
+            className={`p-1.5 border ${tk.border} rounded transition-colors ${tk.btnInactive}`}
+          >
+            {darkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+          </button>
         </div>
       </div>
 
-      {/* Interactive Bottom Action Bar when a sentence is selected */}
+      {/* ── Chapter header strip ── */}
+      {currentChapterTitle && (
+        <div className={`px-6 py-2 border-b ${tk.border} ${tk.surface}`}>
+          <p className={`text-xs font-semibold uppercase tracking-widest ${tk.textMuted} font-serif`}>
+            {currentChapterTitle}
+          </p>
+        </div>
+      )}
+
+      {/* ── Main text area ── */}
+      <div className={`flex-1 overflow-y-auto py-10 px-4`}>
+        <div
+          className={`${LINE_WIDTH_CLASSES[lineWidth]} mx-auto transition-all duration-200`}
+        >
+          <div
+            className={`font-serif ${FONT_SIZE_CLASSES[fontSize]} ${tk.textBody} transition-colors duration-200`}
+          >
+            {displayedSentences.length === 0 ? (
+              <p className={`text-center ${tk.textMuted} text-sm mt-16`}>Không có câu nào.</p>
+            ) : (
+              displayedSentences.map((sent) => renderSentenceWithVocab(sent))
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Bottom action bar (active sentence) ── */}
       {activeSentence && (
-        <div className="border-t border-stone-border bg-white px-6 py-3 flex items-center justify-between text-xs transition-all">
-          <div className="flex items-center space-x-2 truncate">
-            <span className="font-semibold text-ink-700">Câu đã chọn:</span>
-            <span className="font-serif italic text-ink-900 truncate max-w-md">
-              "{activeSentence.text}"
+        <div
+          className={`border-t ${tk.border} ${tk.barBg} px-4 py-2.5 flex items-center justify-between gap-2 text-xs flex-wrap transition-colors`}
+        >
+          <div className="flex items-center gap-2 truncate min-w-0">
+            <span className={`font-semibold ${tk.textMuted} shrink-0`}>Câu đã chọn:</span>
+            <span className={`font-serif italic ${tk.text} truncate max-w-xs sm:max-w-sm`}>
+              «{activeSentence.text}»
             </span>
             {activeSentence.matched_rules && (
-              <div className="hidden sm:flex items-center space-x-1 ml-2">
-                {activeSentence.matched_rules.split(',').map((r) => (
+              <div className="hidden sm:flex items-center gap-1 ml-1">
+                {activeSentence.matched_rules.split(',').filter(Boolean).map((r) => (
                   <span
                     key={r}
-                    className="px-1.5 py-0.5 rounded bg-french-navy/10 text-french-navy font-mono text-[10px]"
+                    className={`px-1.5 py-0.5 rounded font-mono text-[10px] ${
+                      darkMode ? 'bg-[#3D3020] text-[#F5C880]' : 'bg-french-navy/10 text-french-navy'
+                    }`}
                   >
                     {r.trim()}
                   </span>
@@ -275,43 +532,104 @@ export const ReaderView: React.FC<ReaderViewProps> = ({
             )}
           </div>
 
-          <div className="flex items-center space-x-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => {
+                setAnalysisSentence(activeSentence)
+                setAnalysisOpen(true)
+              }}
+              className={`px-2.5 py-1.5 border ${tk.border} rounded font-medium ${tk.text} transition-colors flex items-center gap-1.5 ${tk.hover}`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-french-navy dark:text-blue-400" />
+              <span>Cú pháp & Token</span>
+            </button>
+
             <button
               onClick={() => onExplainSentence(activeSentence)}
-              className="px-3 py-1.5 border border-stone-border hover:border-ink-900 rounded font-medium text-ink-800 transition-colors flex items-center space-x-1.5"
+              className={`px-2.5 py-1.5 border ${tk.border} rounded font-medium ${tk.text} transition-colors flex items-center gap-1.5 ${tk.hover}`}
             >
               <Sparkles className="w-3.5 h-3.5 text-french-ochre" />
-              <span>Giải thích cú pháp (E)</span>
+              <span>Giải thích (E)</span>
             </button>
 
             {activeSentence.matched_rules && (
               <button
                 onClick={() => {
-                  const ruleId = activeSentence.matched_rules!.split(',')[0].trim()
-                  onPracticeRule(ruleId, activeSentence.text)
+                  const ruleId = activeSentence.matched_rules!.split(',').find((r) => r.trim()) ?? ''
+                  if (ruleId) onPracticeRule(ruleId, activeSentence.text)
                 }}
-                className="px-3 py-1.5 bg-ink-900 text-white hover:bg-ink-800 rounded font-medium transition-colors flex items-center space-x-1.5"
+                className={`px-2.5 py-1.5 rounded font-medium transition-colors flex items-center gap-1.5 ${
+                  darkMode ? 'bg-[#E8E3DA] text-[#1A1917] hover:bg-parchment-300' : 'bg-ink-900 text-white hover:bg-ink-800'
+                }`}
               >
                 <PenTool className="w-3.5 h-3.5" />
-                <span>Luyện cấu trúc này (P)</span>
+                <span>Luyện viết (P)</span>
               </button>
             )}
           </div>
         </div>
       )}
 
-      {/* Keyboard Shortcuts Hint Footer */}
-      <div className="border-t border-stone-border/60 bg-parchment-100/40 px-6 py-1.5 flex items-center justify-between text-[11px] text-ink-500">
-        <div className="flex items-center space-x-4">
+      {/* ── Footer keyboard hints ── */}
+      <div
+        className={`border-t ${tk.border} ${tk.footerBg} px-4 py-1.5 flex items-center justify-between text-[11px] ${tk.textMuted}`}
+      >
+        <div className="flex items-center gap-3 flex-wrap">
           <span>Phím tắt:</span>
-          <span><kbd className="px-1 py-0.5 bg-white border border-stone-border rounded font-mono">j</kbd> Câu tiếp</span>
-          <span><kbd className="px-1 py-0.5 bg-white border border-stone-border rounded font-mono">k</kbd> Câu trước</span>
-          <span><kbd className="px-1 py-0.5 bg-white border border-stone-border rounded font-mono">e</kbd> Giải thích</span>
-          <span><kbd className="px-1 py-0.5 bg-white border border-stone-border rounded font-mono">p</kbd> Luyện viết</span>
-          <span><kbd className="px-1 py-0.5 bg-white border border-stone-border rounded font-mono">Esc</kbd> Bỏ chọn</span>
+          {[
+            ['j', 'Câu tiếp'],
+            ['k', 'Câu trước'],
+            ['←/→', 'Chương'],
+            ['e', 'Giải thích'],
+            ['p', 'Luyện viết'],
+            ['d', 'Tối/Sáng'],
+            ['Esc', 'Bỏ chọn'],
+          ].map(([key, label]) => (
+            <span key={key}>
+              <kbd
+                className={`px-1 py-0.5 rounded font-mono text-[10px] border ${
+                  darkMode ? 'bg-[#2C2A27] border-[#3A3735]' : 'bg-white border-stone-border'
+                }`}
+              >
+                {key}
+              </kbd>{' '}
+              {label}
+            </span>
+          ))}
         </div>
         <span>{displayedSentences.length} câu</span>
       </div>
     </div>
+
+    {/* ── Right Grammar Analysis Panel ── */}
+    {analysisOpen && (
+      <div className="w-80 md:w-96 shrink-0 h-full ml-3">
+        <GrammarAnalysisPanel
+          sentence={analysisSentence || activeSentence || null}
+          darkMode={darkMode}
+          onClose={() => setAnalysisOpen(false)}
+          onViewRule={(ruleId) => {
+            if (onViewGrammarRule) {
+              onViewGrammarRule(ruleId)
+            }
+          }}
+        />
+      </div>
+    )}
+
+    {/* ── Double-click Word Lookup Popup ── */}
+    <WordLookupPopup
+      isOpen={isLookupOpen}
+      word={lookupWord}
+      contextSentence={lookupContextSentence}
+      documentId={document.id}
+      position={lookupPos}
+      darkMode={darkMode}
+      onClose={() => setIsLookupOpen(false)}
+      onStatusChanged={(lemma, newStatus) => {
+        setVocabStatusMap((prev) => ({ ...prev, [lemma]: newStatus }))
+      }}
+    />
+  </div>
   )
 }
