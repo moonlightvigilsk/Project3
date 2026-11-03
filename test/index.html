@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page de Test - TextChecker & French Grammar Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --parchment-50: #FDFCF9;
+      --parchment-100: #F9F6F0;
+      --parchment-200: #F0EAE1;
+      --ink-900: #1C1917;
+      --ink-800: #292524;
+      --ink-600: #57534E;
+      --ink-400: #A8A29E;
+      --bordeaux: #800020;
+      --border: #E7E5E4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--parchment-100);
+      color: var(--ink-900);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--bordeaux);
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      color: var(--ink-600);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--parchment-50);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .card-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--parchment-200);
+      color: var(--ink-800);
+      border: 1px solid var(--border);
+    }
+
+    .instructions {
+      font-size: 13px;
+      color: var(--ink-600);
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-600);
+      margin-bottom: 8px;
+    }
+
+    /* Test elements */
+    textarea.test-area {
+      width: 100%;
+      height: 150px;
+      padding: 14px;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-900);
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      resize: vertical;
+      overflow-y: scroll;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea.test-area:focus {
+      border-color: var(--bordeaux);
+      box-shadow: 0 0 0 2px rgba(128, 0, 32, 0.1);
+    }
+
+    input.test-input {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--ink-900);
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input.test-input:focus {
+      border-color: var(--bordeaux);
+      box-shadow: 0 0 0 2px rgba(128, 0, 32, 0.1);
+    }
+
+    div.test-contenteditable {
+      width: 100%;
+      min-height: 120px;
+      padding: 14px;
+      font-family: 'Lora', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-900);
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    div.test-contenteditable:focus {
+      border-color: var(--bordeaux);
+      box-shadow: 0 0 0 2px rgba(128, 0, 32, 0.1);
+    }
+
+    .rule-list {
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--parchment-100);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--ink-800);
+    }
+
+    .rule-list ul {
+      margin-left: 20px;
+      margin-top: 6px;
+    }
+
+    .rule-list li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Page de Vérification & Banc d'Essai</h1>
+      <p class="subtitle">
+        Environnement de test pour le correcteur grammatical local (WXT MV3 Content Script).
+        Activez l'extension pour vérifier le soulignement automatique, les calculs de coordonnées et les infobulles d'erreur.
+      </p>
+    </header>
+
+    <!-- Section 1: Textarea avec ascenseur (scrollable) -->
+    <div class="card">
+      <div class="card-title">
+        1. Zone Textarea (avec défilement vertical)
+        <span class="badge">&lt;textarea&gt;</span>
+      </div>
+      <p class="instructions">
+        Contient plusieurs phrases avec fautes ciblées par le <code>MockChecker</code>. Teste le calcul du Mirror DIV, le repli des lignes (word-wrap) et le masquage des soulignements hors champ lors du défilement.
+      </p>
+      <label for="sample-textarea">Saisie Textarea :</label>
+      <textarea id="sample-textarea" class="test-area">Demain, nous allons mangé au restaurant avec mon amis Pierre.
+Hier, je suis aller au marché pour faire des courses et j ai acheté beaucoup des légumes frais.
+C'est pas la première fois que nous faisons cette promenade dans Paris.
+Ensuite, nous avons discuté pendant des heures près de la Seine avant de rentrer tranquillement chez nous.</textarea>
+
+      <div class="rule-list">
+        <strong>Fautes simulées dans ce bloc :</strong>
+        <ul>
+          <li><code>mangé</code> &rarr; <em>manger</em> (règle semi-auxiliaire avec décalage de test d'index +2)</li>
+          <li><code>mon amis</code> &rarr; <em>mes amis</em> (accord possessif pluriel)</li>
+          <li><code>je suis aller</code> &rarr; <em>je suis allé</em> (accord participe passé avec être)</li>
+          <li><code>j ai</code> &rarr; <em>j'ai</em> (élision)</li>
+          <li><code>beaucoup des</code> &rarr; <em>beaucoup de</em> (quantité)</li>
+          <li><code>c'est pas</code> &rarr; <em>ce n'est pas</em> (négation soignée)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 2: Input texte classique (une seule ligne) -->
+    <div class="card">
+      <div class="card-title">
+        2. Champ de saisie simple ligne
+        <span class="badge">&lt;input type="text"&gt;</span>
+      </div>
+      <p class="instructions">
+        Teste le calcul des coordonnées en mode <code>white-space: pre</code> sans retour à la ligne.
+      </p>
+      <label for="sample-input">Saisie Input :</label>
+      <input id="sample-input" type="text" class="test-input" value="Tu as fais une remarque très pertinente , mon cher collègue.">
+
+      <div class="rule-list">
+        <strong>Fautes simulées :</strong>
+        <ul>
+          <li><code>tu as fais</code> &rarr; <em>tu as fait</em> (participe passé en -t)</li>
+          <li><code>espace avant virgule ( ,)</code> &rarr; <em>,</em> (typographie)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 3: Éditeur enrichi contenteditable -->
+    <div class="card">
+      <div class="card-title">
+        3. Zone éditable enrichie (Rich-Text / SPA)
+        <span class="badge">&lt;div contenteditable="true"&gt;</span>
+      </div>
+      <p class="instructions">
+        Teste le TreeWalker avec des balises <code>&lt;br&gt;</code> và des nœuds texte imbriqués.
+      </p>
+      <label>Saisie Contenteditable :</label>
+      <div id="sample-editable" class="test-contenteditable" contenteditable="true">Voici l ami de Jacques qui arrive tout juste de Lyon.<br>D accord , nous allons mangé ensemble ce midi.</div>
+
+      <div class="rule-list">
+        <strong>Fautes simulées :</strong>
+        <ul>
+          <li><code>l ami</code> &rarr; <em>l'ami</em> (élision avec apostrophe)</li>
+          <li><code>d accord</code> &rarr; <em>d'accord</em> (locution avec apostrophe)</li>
+          <li><code>mangé</code> &rarr; <em>manger</em> (après saut de ligne <code>&lt;br&gt;</code>)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

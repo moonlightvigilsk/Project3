@@ -25,6 +25,8 @@ export default defineContentScript({
     let statusButton: HTMLDivElement | null = null;
     let suggestionPanel: HTMLDivElement | null = null;
     let isChecking = false;
+    let activeElementResizeObserver: ResizeObserver | null = null;
+    let currentRequestId = 0;
     let unwatchSettings: (() => void) | null = null;
     let popoverCloseTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -49,118 +51,32 @@ export default defineContentScript({
       console.error("Failed to watch settings:", error);
     }
 
-    // TextareaObserver for dynamic element detection
+    // TextareaObserver for dynamic element detection & removal
     class TextareaObserver {
       private observer: MutationObserver | null = null;
-      private processedElements = new WeakSet<HTMLElement>();
-      private pendingElements = new Set<HTMLElement>();
-      private rafId: number | null = null;
 
       start() {
         if (this.observer) return;
 
-        // Process existing textareas first
-        this.scanExistingElements();
-
-        this.observer = new MutationObserver((mutations) => {
-          this.handleMutations(mutations);
+        this.observer = new MutationObserver(() => {
+          // If activeElement was detached from DOM, clean up
+          if (activeElement && !document.contains(activeElement)) {
+            cleanup();
+            activeElement = null;
+          }
         });
 
         this.observer.observe(document.body, {
           childList: true,
           subtree: true,
-          attributes: true,
-          attributeFilter: ["contenteditable", "role", "g_editable"],
         });
       }
 
       stop() {
-        if (this.rafId) {
-          cancelAnimationFrame(this.rafId);
-          this.rafId = null;
-        }
         if (this.observer) {
           this.observer.disconnect();
           this.observer = null;
         }
-        this.pendingElements.clear();
-      }
-
-      private scanExistingElements() {
-        const textareas = document.querySelectorAll(
-          'textarea, input, [contenteditable="true"], [role="textbox"], [g_editable="true"]'
-        );
-        textareas.forEach((el) => {
-          if (el instanceof HTMLElement && isEditableElement(el)) {
-            this.scheduleProcessing(el);
-          }
-        });
-      }
-
-      private handleMutations(mutations: MutationRecord[]) {
-        for (const mutation of mutations) {
-          // Handle attribute changes (contenteditable or role added to existing element)
-          if (mutation.type === "attributes" && mutation.target instanceof HTMLElement) {
-            this.checkElement(mutation.target);
-          }
-          
-          // Handle new nodes
-          for (const node of mutation.addedNodes) {
-            if (node instanceof HTMLElement) {
-              this.checkElement(node);
-            }
-          }
-        }
-      }
-
-      private checkElement(element: HTMLElement) {
-        // Check the element itself
-        if (
-          isEditableElement(element) &&
-          !this.processedElements.has(element)
-        ) {
-          this.scheduleProcessing(element);
-        }
-
-        // Check children
-        const editables = element.querySelectorAll(
-          'textarea, input, [contenteditable="true"], [role="textbox"], [g_editable="true"]'
-        );
-        editables.forEach((el) => {
-          if (
-            el instanceof HTMLElement &&
-            isEditableElement(el) &&
-            !this.processedElements.has(el)
-          ) {
-            this.scheduleProcessing(el);
-          }
-        });
-      }
-
-      private scheduleProcessing(element: HTMLElement) {
-        this.pendingElements.add(element);
-
-        if (!this.rafId) {
-          this.rafId = requestAnimationFrame(() => {
-            this.processBatch();
-          });
-        }
-      }
-
-      private processBatch() {
-        this.rafId = null;
-
-        this.pendingElements.forEach((element) => {
-          if (
-            !this.processedElements.has(element) &&
-            document.contains(element)
-          ) {
-            this.processedElements.add(element);
-            handleFocus(element);
-          }
-        });
-
-        this.pendingElements.clear();
       }
     }
 
@@ -703,7 +619,7 @@ export default defineContentScript({
       overlayContainer = document.createElement("div");
       overlayContainer.id = "textchecker-overlay";
       overlayContainer.style.cssText =
-        "position: absolute; top: 0; left: 0; pointer-events: none; z-index: 2147483647;";
+        "position: fixed; top: 0; left: 0; width: 0; height: 0; pointer-events: none; z-index: 2147483647;";
 
       const shadow = overlayContainer.attachShadow({ mode: "open" });
       const style = document.createElement("style");
@@ -719,9 +635,14 @@ export default defineContentScript({
       hideStatusButton();
       hideSuggestionPanel();
       hidePopover();
-      if (overlayContainer) {
-        overlayContainer.remove();
-        overlayContainer = null;
+      if (activeElementResizeObserver) {
+        activeElementResizeObserver.disconnect();
+        activeElementResizeObserver = null;
+      }
+      if (overlayContainer?.shadowRoot) {
+        overlayContainer.shadowRoot
+          .querySelectorAll(".tc-underline")
+          .forEach((el) => el.remove());
       }
     }
 
@@ -730,7 +651,7 @@ export default defineContentScript({
       text: string,
       forceCheck = false
     ): Promise<GrammarCheckResult | null> {
-      if (!text.trim() || text.length < 3) return null;
+      if (!text.trim()) return null;
 
       try {
         const response = await browser.runtime.sendMessage({
@@ -738,14 +659,16 @@ export default defineContentScript({
           payload: { text, forceCheck },
         });
 
-        if (response.success) {
-          return response.result as GrammarCheckResult;
+        if (response && response.success) {
+          return response.result;
         } else {
-          console.error("Grammar check failed:", response.error);
+          console.error("Grammar check failed:", response?.error);
+          showStatusButton("error");
           return null;
         }
       } catch (error) {
-        console.error("Failed to check grammar:", error);
+        console.error("Failed to send message to background:", error);
+        showStatusButton("error");
         return null;
       }
     }
@@ -760,7 +683,7 @@ export default defineContentScript({
 
     // Show/update status button near the active element
     function showStatusButton(
-      state: "loading" | "errors" | "clean",
+      state: "loading" | "errors" | "clean" | "error",
       errorCount = 0
     ) {
       if (!activeElement) return;
@@ -776,7 +699,7 @@ export default defineContentScript({
       statusButton.className = `tc-status-btn ${
         state === "loading"
           ? "tc-loading"
-          : state === "errors"
+          : state === "errors" || state === "error"
           ? "tc-has-errors"
           : "tc-no-errors"
       }`;
@@ -796,9 +719,15 @@ export default defineContentScript({
           <div class="tc-status-icon" style="color: #ef4444;">${ICONS.alert}</div>
           <span class="tc-error-count">${errorCount}</span>
         `;
-        statusButton.title = `${errorCount} issue${
+        statusButton.title = `${errorCount} problème${
           errorCount > 1 ? "s" : ""
-        } found. Click to see details.`;
+        } trouvé${errorCount > 1 ? "s" : ""}. Cliquez pour voir les détails.`;
+      } else if (state === "error") {
+        statusButton.innerHTML = `
+          <div class="tc-status-icon" style="color: #ef4444;">${ICONS.alert}</div>
+          <span style="color: #dc2626; font-size: 11px; font-weight: 600;">Erreur</span>
+        `;
+        statusButton.title = "Une erreur est survenue lors de l'analyse.";
       } else {
         statusButton.innerHTML = `
           <div class="tc-status-icon" style="color: #22c55e;">${ICONS.check}</div>
@@ -1023,28 +952,152 @@ export default defineContentScript({
         );
       }
 
-      // For contenteditable
+      return getContenteditableCharacterRects(element, startIndex, endIndex);
+    }
+
+    function getTextareaCharacterRects(
+      element: HTMLTextAreaElement | HTMLInputElement,
+      startIndex: number,
+      endIndex: number
+    ): DOMRect[] {
+      const text = element.value;
+      if (startIndex < 0 || endIndex > text.length || startIndex >= endIndex) {
+        return [];
+      }
+
+      const isInput = element.tagName.toLowerCase() === "input";
+      const computed = window.getComputedStyle(element);
+      const elemRect = element.getBoundingClientRect();
+
+      const mirror = document.createElement("div");
+      mirror.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        pointer-events: none;
+        z-index: -9999;
+        box-sizing: ${computed.boxSizing};
+        font-family: ${computed.fontFamily};
+        font-size: ${computed.fontSize};
+        font-weight: ${computed.fontWeight};
+        font-style: ${computed.fontStyle};
+        line-height: ${computed.lineHeight};
+        letter-spacing: ${computed.letterSpacing};
+        word-spacing: ${computed.wordSpacing};
+        text-transform: ${computed.textTransform};
+        text-indent: ${computed.textIndent};
+        tab-size: ${computed.tabSize};
+        padding-top: ${computed.paddingTop};
+        padding-right: ${computed.paddingRight};
+        padding-bottom: ${computed.paddingBottom};
+        padding-left: ${computed.paddingLeft};
+        border-top-width: ${computed.borderTopWidth};
+        border-right-width: ${computed.borderRightWidth};
+        border-bottom-width: ${computed.borderBottomWidth};
+        border-left-width: ${computed.borderLeftWidth};
+        border-style: solid;
+        white-space: ${isInput ? "pre" : computed.whiteSpace};
+        word-wrap: ${isInput ? "normal" : computed.wordWrap};
+        word-break: ${isInput ? "normal" : computed.wordBreak};
+        overflow-wrap: ${isInput ? "normal" : computed.overflowWrap};
+        width: ${element.clientWidth}px;
+        height: auto;
+        overflow: hidden;
+      `;
+
+      const textNode = document.createTextNode(text);
+      mirror.appendChild(textNode);
+      document.body.appendChild(mirror);
+
+      const mirrorRect = mirror.getBoundingClientRect();
+      const range = document.createRange();
+      range.setStart(textNode, startIndex);
+      range.setEnd(textNode, endIndex);
+      const clientRects = Array.from(range.getClientRects());
+      document.body.removeChild(mirror);
+
+      const borderLeft = parseFloat(computed.borderLeftWidth) || 0;
+      const borderTop = parseFloat(computed.borderTopWidth) || 0;
+
+      const visibleTop = elemRect.top + borderTop;
+      const visibleBottom = visibleTop + element.clientHeight;
+      const visibleLeft = elemRect.left + borderLeft;
+      const visibleRight = visibleLeft + element.clientWidth;
+
+      const finalRects: DOMRect[] = [];
+
+      for (const r of clientRects) {
+        const relX = r.left - mirrorRect.left;
+        const relY = r.top - mirrorRect.top;
+
+        const actualLeft = elemRect.left + borderLeft + relX - element.scrollLeft;
+        const actualTop = elemRect.top + borderTop + relY - element.scrollTop;
+        const actualWidth = r.width;
+        const actualHeight = r.height;
+
+        // Clip rects outside visible scroll boundary
+        if (
+          actualTop + actualHeight < visibleTop ||
+          actualTop > visibleBottom ||
+          actualLeft + actualWidth < visibleLeft ||
+          actualLeft > visibleRight
+        ) {
+          continue;
+        }
+
+        finalRects.push(new DOMRect(actualLeft, actualTop, actualWidth, actualHeight));
+      }
+
+      return finalRects;
+    }
+
+    function getContenteditableCharacterRects(
+      element: HTMLElement,
+      startIndex: number,
+      endIndex: number
+    ): DOMRect[] {
       const range = document.createRange();
       let currentIndex = 0;
-      let startNode: Text | null = null;
+      let startNode: Node | null = null;
       let startOffset = 0;
-      let endNode: Text | null = null;
+      let endNode: Node | null = null;
       let endOffset = 0;
 
-      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-      let node: Text | null;
+      const walker = document.createTreeWalker(
+        element,
+        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+        {
+          acceptNode(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+              return NodeFilter.FILTER_ACCEPT;
+            }
+            if (node.nodeName === "BR") {
+              return NodeFilter.FILTER_ACCEPT;
+            }
+            return NodeFilter.FILTER_SKIP;
+          },
+        }
+      );
 
-      while ((node = walker.nextNode() as Text)) {
-        const nodeLength = node.length;
+      let node: Node | null;
+      while ((node = walker.nextNode())) {
+        if (node.nodeName === "BR") {
+          currentIndex += 1;
+          continue;
+        }
+
+        const textNode = node as Text;
+        const nodeLength = textNode.length;
 
         if (!startNode && currentIndex + nodeLength > startIndex) {
-          startNode = node;
-          startOffset = startIndex - currentIndex;
+          startNode = textNode;
+          startOffset = Math.max(0, startIndex - currentIndex);
         }
 
         if (!endNode && currentIndex + nodeLength >= endIndex) {
-          endNode = node;
-          endOffset = endIndex - currentIndex;
+          endNode = textNode;
+          endOffset = Math.min(nodeLength, endIndex - currentIndex);
           break;
         }
 
@@ -1060,68 +1113,6 @@ export default defineContentScript({
       } catch {
         return [];
       }
-    }
-
-    function getTextareaCharacterRects(
-      element: HTMLTextAreaElement | HTMLInputElement,
-      startIndex: number,
-      endIndex: number
-    ): DOMRect[] {
-      const text = element.value;
-      const computedStyle = window.getComputedStyle(element);
-      const rect = element.getBoundingClientRect();
-
-      const mirror = document.createElement("div");
-      mirror.style.cssText = `
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        overflow: hidden;
-        visibility: hidden;
-        font-family: ${computedStyle.fontFamily};
-        font-size: ${computedStyle.fontSize};
-        font-weight: ${computedStyle.fontWeight};
-        line-height: ${computedStyle.lineHeight};
-        letter-spacing: ${computedStyle.letterSpacing};
-        padding: ${computedStyle.padding};
-        border: ${computedStyle.border};
-        width: ${element.offsetWidth}px;
-      `;
-
-      const before = document.createElement("span");
-      before.textContent = text.substring(0, startIndex);
-
-      const marked = document.createElement("span");
-      marked.textContent = text.substring(startIndex, endIndex);
-
-      const after = document.createElement("span");
-      after.textContent = text.substring(endIndex);
-
-      mirror.appendChild(before);
-      mirror.appendChild(marked);
-      mirror.appendChild(after);
-      document.body.appendChild(mirror);
-
-      const markedRect = marked.getBoundingClientRect();
-      const mirrorRect = mirror.getBoundingClientRect();
-
-      const relativeTop = markedRect.top - mirrorRect.top;
-      const relativeLeft = markedRect.left - mirrorRect.left;
-
-      const scrollTop = element.scrollTop || 0;
-      const scrollLeft = element.scrollLeft || 0;
-
-      const finalRect = new DOMRect(
-        rect.left + relativeLeft - scrollLeft,
-        rect.top + relativeTop - scrollTop,
-        markedRect.width,
-        markedRect.height
-      );
-
-      document.body.removeChild(mirror);
-      return [finalRect];
     }
 
     // Inline popover (shown on underline click)
@@ -1362,26 +1353,66 @@ export default defineContentScript({
     }
 
     // Event handlers
+    function updateStatusButtonPosition() {
+      if (statusButton && activeElement) {
+        const rect = activeElement.getBoundingClientRect();
+        const btnLeft = Math.min(rect.right - 80, window.innerWidth - 90);
+        const btnTop = Math.min(rect.bottom - 32, window.innerHeight - 40);
+        statusButton.style.left = `${btnLeft}px`;
+        statusButton.style.top = `${btnTop}px`;
+      }
+    }
+
+    function attachElementObservers(el: HTMLElement) {
+      if (activeElementResizeObserver) {
+        activeElementResizeObserver.disconnect();
+      }
+      activeElementResizeObserver = new ResizeObserver(() => {
+        if (activeElement && currentSuggestions.length > 0) {
+          renderUnderlines();
+          updateStatusButtonPosition();
+        }
+      });
+      activeElementResizeObserver.observe(el);
+    }
+
     function handleFocus(element: HTMLElement) {
       if (!settings.enabled || !isEditableElement(element)) return;
 
       activeElement = element;
+      attachElementObservers(element);
 
       if (settings.checkMode === "realtime") {
         const text = getTextFromElement(element);
-        if (text.length > 10) {
+        if (text.trim().length > 0) {
           debouncedCheck(text);
         }
       }
     }
 
-    function handleBlur() {
+    function handleBlur(e?: FocusEvent) {
+      const related = e?.relatedTarget as HTMLElement | null;
+      if (
+        related &&
+        (overlayContainer?.contains(related) ||
+          overlayContainer?.shadowRoot?.contains(related) ||
+          related === activeElement)
+      ) {
+        return;
+      }
+
       setTimeout(() => {
-        if (document.activeElement !== activeElement) {
-          cleanup();
-          activeElement = null;
+        if (
+          document.activeElement === activeElement ||
+          currentPopover ||
+          suggestionPanel
+        ) {
+          return;
         }
-      }, 300);
+
+        cleanup();
+        activeElement = null;
+      }, 200);
     }
 
     function handleInput(element: HTMLElement) {
@@ -1393,7 +1424,7 @@ export default defineContentScript({
 
       if (settings.checkMode === "realtime") {
         const text = getTextFromElement(element);
-        if (text.length > 10) {
+        if (text.trim().length > 0) {
           debouncedCheck(text);
         } else {
           cleanup();
@@ -1402,28 +1433,35 @@ export default defineContentScript({
     }
 
     const debouncedCheck = debounce(async (text: string) => {
-      if (isChecking || !activeElement) return;
-      isChecking = true;
+      if (!activeElement) return;
 
+      const requestId = ++currentRequestId;
       showStatusButton("loading");
 
       try {
         const result = await checkGrammarRequest(text);
-        if (result && activeElement) {
-          currentSuggestions = result.suggestions;
-          renderUnderlines();
+        if (requestId !== currentRequestId) {
+          return;
+        }
 
-          if (currentSuggestions.length > 0) {
-            showStatusButton("errors", currentSuggestions.length);
-          } else {
-            showStatusButton("clean");
+        if (result && activeElement) {
+          const currentText = getTextFromElement(activeElement);
+          if (currentText === result.text) {
+            currentSuggestions = result.suggestions;
+            renderUnderlines();
+
+            if (currentSuggestions.length > 0) {
+              showStatusButton("errors", currentSuggestions.length);
+            } else {
+              showStatusButton("clean");
+            }
           }
         }
       } catch (error) {
-        console.error("Grammar check error:", error);
-        hideStatusButton();
-      } finally {
-        isChecking = false;
+        if (requestId === currentRequestId) {
+          console.error("Grammar check error:", error);
+          showStatusButton("error");
+        }
       }
     }, settings.realtimeDelay);
 
@@ -1434,7 +1472,7 @@ export default defineContentScript({
           googleDocsHandler.triggerManualCheck();
         } else if (activeElement) {
           const text = getTextFromElement(activeElement);
-          if (text.length > 3) {
+          if (text.trim().length > 0) {
             showStatusButton("loading");
             checkGrammarRequest(text, true)
               .then((result) => {
@@ -1449,7 +1487,7 @@ export default defineContentScript({
                 }
               })
               .catch(() => {
-                hideStatusButton();
+                showStatusButton("error");
               });
           }
         }
@@ -1465,7 +1503,11 @@ export default defineContentScript({
       true
     );
 
-    document.addEventListener("focusout", () => handleBlur(), true);
+    document.addEventListener(
+      "focusout",
+      (e) => handleBlur(e as FocusEvent),
+      true
+    );
 
     document.addEventListener(
       "input",
@@ -1478,14 +1520,7 @@ export default defineContentScript({
     const handleScroll = debounce(() => {
       if (activeElement && currentSuggestions.length > 0) {
         renderUnderlines();
-        // Update status button position
-        if (statusButton && activeElement) {
-          const rect = activeElement.getBoundingClientRect();
-          const btnLeft = Math.min(rect.right - 80, window.innerWidth - 90);
-          const btnTop = Math.min(rect.bottom - 32, window.innerHeight - 40);
-          statusButton.style.left = `${btnLeft}px`;
-          statusButton.style.top = `${btnTop}px`;
-        }
+        updateStatusButtonPosition();
       }
     }, 50);
 
@@ -1503,6 +1538,7 @@ export default defineContentScript({
       () => {
         if (activeElement && currentSuggestions.length > 0) {
           renderUnderlines();
+          updateStatusButtonPosition();
         }
       },
       { passive: true }
