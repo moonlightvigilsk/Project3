@@ -43,6 +43,7 @@ backend/data/uploads/
 
 # Node / Frontend
 node_modules/
+.test-profile/
 .pnp
 .pnp.js
 coverage/

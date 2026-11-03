@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { settingsStorage, apiKeysStorage, dictionaryStorage, statsStorage } from '@/lib/storage';
 import { ENABLE_AI } from '@/lib/config';
-import type { Settings, APIKeys, AIProvider } from '@/types';
+import { getT } from '@/lib/i18n';
+import type { Settings, APIKeys, AIProvider, UILanguage } from '@/types';
 import { DEFAULT_SETTINGS, AVAILABLE_MODELS, SUPPORTED_LANGUAGES } from '@/types';
-import { Key, Settings as SettingsIcon, Book, BarChart3, Eye, EyeOff, Trash2, Save, CheckCircle } from 'lucide-react';
+import { Key, Settings as SettingsIcon, Book, BarChart3, Eye, EyeOff, Trash2, CheckCircle, Globe } from 'lucide-react';
 
 type TabType = 'api-keys' | 'settings' | 'dictionary' | 'stats';
 
@@ -15,6 +16,9 @@ export default function App() {
   const [stats, setStats] = useState({ checksPerformed: 0, errorsFound: 0, correctionsApplied: 0 });
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+
+  const currentUiLang: UILanguage = settings.uiLanguage || 'vi';
+  const t = getT(currentUiLang);
 
   useEffect(() => {
     loadData();
@@ -57,10 +61,10 @@ export default function App() {
   }
 
   const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [
-    ...(ENABLE_AI ? [{ id: 'api-keys' as TabType, label: 'Clés API', icon: <Key className="w-4 h-4" /> }] : []),
-    { id: 'settings' as TabType, label: 'Configuration', icon: <SettingsIcon className="w-4 h-4" /> },
-    { id: 'dictionary' as TabType, label: 'Dictionnaire personnel', icon: <Book className="w-4 h-4" /> },
-    { id: 'stats' as TabType, label: 'Statistiques', icon: <BarChart3 className="w-4 h-4" /> },
+    ...(ENABLE_AI ? [{ id: 'api-keys' as TabType, label: t.tabApiKeys, icon: <Key className="w-4 h-4" /> }] : []),
+    { id: 'settings' as TabType, label: t.tabSettings, icon: <SettingsIcon className="w-4 h-4" /> },
+    { id: 'dictionary' as TabType, label: t.tabDictionary, icon: <Book className="w-4 h-4" /> },
+    { id: 'stats' as TabType, label: t.tabStats, icon: <BarChart3 className="w-4 h-4" /> },
   ];
 
   return (
@@ -70,11 +74,46 @@ export default function App() {
         <header className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-border pb-6">
           <div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink-900 tracking-tight">
-              TextChecker &bull; Paramètres
+              {t.pageTitle}
             </h1>
             <p className="text-ink-600 text-sm mt-1">
-              Assistant de rédaction et correction de grammaire.
+              {t.pageSubtitle}
             </p>
+          </div>
+
+          {/* Quick UI Language Pill Switcher */}
+          <div className="flex items-center gap-1.5 bg-parchment-50 border border-stone-border rounded-lg p-1 self-start sm:self-auto shadow-sm">
+            <Globe className="w-3.5 h-3.5 text-ink-500 ml-1.5 mr-1" />
+            <button
+              onClick={() => saveSettings({ ...settings, uiLanguage: 'vi' })}
+              className={`px-2.5 py-1 rounded text-xs font-mono font-medium transition-colors ${
+                currentUiLang === 'vi'
+                  ? 'bg-ink-900 text-parchment-50 shadow-sm'
+                  : 'text-ink-600 hover:text-ink-900 hover:bg-parchment-200'
+              }`}
+            >
+              Tiếng Việt
+            </button>
+            <button
+              onClick={() => saveSettings({ ...settings, uiLanguage: 'en' })}
+              className={`px-2.5 py-1 rounded text-xs font-mono font-medium transition-colors ${
+                currentUiLang === 'en'
+                  ? 'bg-ink-900 text-parchment-50 shadow-sm'
+                  : 'text-ink-600 hover:text-ink-900 hover:bg-parchment-200'
+              }`}
+            >
+              English
+            </button>
+            <button
+              onClick={() => saveSettings({ ...settings, uiLanguage: 'fr' })}
+              className={`px-2.5 py-1 rounded text-xs font-mono font-medium transition-colors ${
+                currentUiLang === 'fr'
+                  ? 'bg-ink-900 text-parchment-50 shadow-sm'
+                  : 'text-ink-600 hover:text-ink-900 hover:bg-parchment-200'
+              }`}
+            >
+              Français
+            </button>
           </div>
         </header>
 
@@ -111,12 +150,12 @@ export default function App() {
               />
             )}
             {activeTab === 'settings' && (
-              <SettingsTab settings={settings} saveSettings={saveSettings} apiKeys={apiKeys} />
+              <SettingsTab settings={settings} saveSettings={saveSettings} apiKeys={apiKeys} t={t} />
             )}
             {activeTab === 'dictionary' && (
-              <DictionaryTab dictionary={dictionary} removeFromDictionary={removeFromDictionary} />
+              <DictionaryTab dictionary={dictionary} removeFromDictionary={removeFromDictionary} t={t} />
             )}
-            {activeTab === 'stats' && <StatsTab stats={stats} />}
+            {activeTab === 'stats' && <StatsTab stats={stats} t={t} />}
           </div>
         </div>
 
@@ -126,12 +165,12 @@ export default function App() {
             {saveStatus === 'saving' ? (
               <>
                 <div className="w-3.5 h-3.5 border-2 border-parchment-50 border-t-transparent rounded-full animate-spin" />
-                Enregistrement...
+                ...
               </>
             ) : (
               <>
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-                Paramètres enregistrés
+                {t.savedNotice}
               </>
             )}
           </div>
@@ -250,10 +289,12 @@ function SettingsTab({
   settings,
   saveSettings,
   apiKeys,
+  t,
 }: {
   settings: Settings;
   saveSettings: (settings: Settings) => void;
   apiKeys: APIKeys;
+  t: ReturnType<typeof getT>;
 }) {
   const providers: AIProvider[] = ['google', 'openai', 'anthropic'];
   const availableProviders = providers.filter((p) => apiKeys[p]);
@@ -262,12 +303,26 @@ function SettingsTab({
     <div className="space-y-6 max-w-2xl">
       {!ENABLE_AI && (
         <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl p-4 text-xs text-ink-800">
-          <p className="font-semibold text-emerald-800 mb-1">Moteur de Règles Grammaticales Actif</p>
-          <p className="text-ink-700 leading-relaxed">
-            L'assistant analyse vos textes localement avec les règles grammaticales autonomes (accords, élisions, verbes), garantissant une exécution instantanée, sans dépendance externe ni besoin de clé API.
-          </p>
+          <p className="font-semibold text-emerald-800 mb-1">{t.offlineBannerTitle}</p>
+          <p className="text-ink-700 leading-relaxed">{t.offlineBannerDesc}</p>
         </div>
       )}
+
+      {/* Interface Language */}
+      <div>
+        <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-2">
+          {t.uiLanguageLabel}
+        </label>
+        <select
+          value={settings.uiLanguage || 'vi'}
+          onChange={(e) => saveSettings({ ...settings, uiLanguage: e.target.value as UILanguage })}
+          className="w-full px-3 py-2 bg-parchment-100 border border-stone-border rounded-lg text-sm text-ink-900 focus:outline-none focus:border-french-bordeaux"
+        >
+          <option value="vi">Tiếng Việt (Vietnamese)</option>
+          <option value="en">English (Tiếng Anh)</option>
+          <option value="fr">Français (Tiếng Pháp)</option>
+        </select>
+      </div>
 
       {ENABLE_AI && (
         <>
@@ -346,7 +401,7 @@ function SettingsTab({
       {/* Check Mode */}
       <div className="pt-2 border-t border-stone-border">
         <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-2">
-          Mode d'analyse
+          {t.analysisMode}
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
@@ -358,10 +413,8 @@ function SettingsTab({
                 : 'border-stone-border bg-parchment-100/60 hover:bg-parchment-200/60 text-ink-600'
             }`}
           >
-            <div className="text-xs font-semibold">Temps réel</div>
-            <div className="text-[11px] text-ink-500 mt-1">
-              Vérifie au fur et à mesure de votre saisie.
-            </div>
+            <div className="text-xs font-semibold">{t.realtime}</div>
+            <div className="text-[11px] text-ink-500 mt-1">{t.realtimeDescLong}</div>
           </button>
           <button
             type="button"
@@ -372,18 +425,16 @@ function SettingsTab({
                 : 'border-stone-border bg-parchment-100/60 hover:bg-parchment-200/60 text-ink-600'
             }`}
           >
-            <div className="text-xs font-semibold">À la demande</div>
-            <div className="text-[11px] text-ink-500 mt-1">
-              Raccourci clavier (Ctrl+Shift+G).
-            </div>
+            <div className="text-xs font-semibold">{t.ondemand}</div>
+            <div className="text-[11px] text-ink-500 mt-1">{t.ondemandDescLong}</div>
           </button>
         </div>
       </div>
 
-      {/* Language */}
+      {/* Target Language */}
       <div>
         <label className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-2">
-          Langue cible
+          {t.targetLanguage}
         </label>
         <select
           value={settings.language}
@@ -403,7 +454,7 @@ function SettingsTab({
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="text-xs font-semibold text-ink-800 uppercase tracking-wider">
-              Délai de temporisation
+              {t.delayLabel}
             </label>
             <span className="text-xs font-mono text-ink-600">{settings.realtimeDelay} ms</span>
           </div>
@@ -425,27 +476,29 @@ function SettingsTab({
 function DictionaryTab({
   dictionary,
   removeFromDictionary,
+  t,
 }: {
   dictionary: string[];
   removeFromDictionary: (word: string) => void;
+  t: ReturnType<typeof getT>;
 }) {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
         <h3 className="font-serif font-bold text-base text-ink-900 mb-1">
-          Dictionnaire personnel
+          {t.dictTitle}
         </h3>
         <p className="text-xs text-ink-600 leading-relaxed">
-          Mots ignorés par le correcteur orthographique lors de vos sessions d'écriture.
+          {t.dictDesc}
         </p>
       </div>
 
       {dictionary.length === 0 ? (
         <div className="text-center py-12 border border-dashed border-stone-border rounded-xl">
           <Book className="w-8 h-8 text-ink-300 mx-auto mb-2" />
-          <p className="text-xs font-medium text-ink-500">Aucun mot ignoré pour le moment</p>
+          <p className="text-xs font-medium text-ink-500">{t.dictEmpty}</p>
           <p className="text-[11px] text-ink-400 mt-1">
-            Utilisez &laquo; Ignorer &raquo; dans les popovers de correction pour en ajouter.
+            {t.dictEmptyDesc}
           </p>
         </div>
       ) : (
@@ -456,7 +509,7 @@ function DictionaryTab({
               <button
                 onClick={() => removeFromDictionary(word)}
                 className="p-1 text-ink-400 hover:text-french-bordeaux transition-colors"
-                title="Supprimer du dictionnaire"
+                title="Supprimer"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -468,15 +521,21 @@ function DictionaryTab({
   );
 }
 
-function StatsTab({ stats }: { stats: { checksPerformed: number; errorsFound: number; correctionsApplied: number } }) {
+function StatsTab({
+  stats,
+  t,
+}: {
+  stats: { checksPerformed: number; errorsFound: number; correctionsApplied: number };
+  t: ReturnType<typeof getT>;
+}) {
   return (
     <div>
       <div className="mb-6">
         <h3 className="font-serif font-bold text-base text-ink-900 mb-1">
-          Bilan d'utilisation
+          {t.statsTitle}
         </h3>
         <p className="text-xs text-ink-600 leading-relaxed">
-          Statistiques de détection et corrections appliquées sur l'ensemble de votre navigation.
+          {t.statsDesc}
         </p>
       </div>
 
@@ -484,19 +543,19 @@ function StatsTab({ stats }: { stats: { checksPerformed: number; errorsFound: nu
         <div className="bg-parchment-100 border border-stone-border rounded-xl p-5 text-center">
           <div className="text-3xl font-mono font-bold text-ink-900">{stats.checksPerformed}</div>
           <div className="text-xs font-sans uppercase tracking-wider text-ink-500 mt-1">
-            Analyses effectuées
+            {t.analyses}
           </div>
         </div>
         <div className="bg-[#FAF5EB] border border-[#E8DCB8] rounded-xl p-5 text-center">
           <div className="text-3xl font-mono font-bold text-french-bordeaux">{stats.errorsFound}</div>
           <div className="text-xs font-sans uppercase tracking-wider text-ink-500 mt-1">
-            Erreurs relevées
+            {t.errors}
           </div>
         </div>
         <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl p-5 text-center">
           <div className="text-3xl font-mono font-bold text-emerald-700">{stats.correctionsApplied}</div>
           <div className="text-xs font-sans uppercase tracking-wider text-ink-500 mt-1">
-            Corrections adoptées
+            {t.corrected}
           </div>
         </div>
       </div>

@@ -4,6 +4,8 @@ export type CheckMode = 'realtime' | 'ondemand';
 
 export type SuggestionType = 'grammar' | 'spelling' | 'style' | 'punctuation';
 
+export type UILanguage = 'vi' | 'en' | 'fr';
+
 export interface APIKeys {
   google?: string;
   openai?: string;
@@ -16,6 +18,7 @@ export interface Settings {
   customModel?: string;
   checkMode: CheckMode;
   language: string;
+  uiLanguage?: UILanguage;
   enabled: boolean;
   realtimeDelay: number;
 }
@@ -55,6 +58,7 @@ export const DEFAULT_SETTINGS: Settings = {
   model: 'gemini-2.5-flash',
   checkMode: 'realtime',
   language: 'auto',
+  uiLanguage: 'vi',
   enabled: true,
   realtimeDelay: 500,
 };

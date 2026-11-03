@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { settingsStorage, statsStorage } from '@/lib/storage';
 import { ENABLE_AI } from '@/lib/config';
-import type { Settings, AIProvider, CheckMode } from '@/types';
+import { getT } from '@/lib/i18n';
+import type { Settings, AIProvider, CheckMode, UILanguage } from '@/types';
 import { DEFAULT_SETTINGS } from '@/types';
 import { Settings as SettingsIcon, Power, Keyboard, Zap, AlertCircle } from 'lucide-react';
 
@@ -14,6 +15,9 @@ export default function App() {
   });
   const [stats, setStats] = useState({ checksPerformed: 0, errorsFound: 0, correctionsApplied: 0 });
   const [loading, setLoading] = useState(true);
+
+  const currentUiLang: UILanguage = settings.uiLanguage || 'vi';
+  const t = getT(currentUiLang);
 
   useEffect(() => {
     loadData();
@@ -47,6 +51,12 @@ export default function App() {
     await settingsStorage.setValue(newSettings);
   }
 
+  async function setUiLanguage(uiLanguage: UILanguage) {
+    const newSettings: Settings = { ...settings, uiLanguage };
+    setSettings(newSettings);
+    await settingsStorage.setValue(newSettings);
+  }
+
   function openOptions() {
     browser.runtime.openOptionsPage();
   }
@@ -59,7 +69,7 @@ export default function App() {
     return (
       <div className="w-full min-w-72 max-w-80 p-6 flex flex-col items-center justify-center bg-parchment-50">
         <div className="animate-spin w-5 h-5 border-2 border-french-bordeaux border-t-transparent rounded-full mb-2" />
-        <span className="text-xs text-ink-500 font-mono">Chargement...</span>
+        <span className="text-xs text-ink-500 font-mono">...</span>
       </div>
     );
   }
@@ -68,13 +78,52 @@ export default function App() {
     <div className="w-full min-w-72 max-w-80 bg-parchment-50 text-ink-900 border border-stone-border select-none">
       {/* Header */}
       <div className="border-b border-stone-border bg-parchment-100 px-4 py-3 flex items-center justify-between">
-        <span className="font-serif font-bold text-base text-ink-900 tracking-tight">
-          TextChecker
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="font-serif font-bold text-base text-ink-900 tracking-tight">
+            {t.appName}
+          </span>
+          {/* Quick UI Language Switcher */}
+          <div className="flex items-center bg-parchment-200 border border-stone-border rounded p-0.5 text-[10px] font-mono">
+            <button
+              onClick={() => setUiLanguage('vi')}
+              className={`px-1.5 py-0.5 rounded ${
+                currentUiLang === 'vi'
+                  ? 'bg-ink-900 text-white font-bold'
+                  : 'text-ink-600 hover:text-ink-900'
+              }`}
+              title="Tiếng Việt"
+            >
+              VI
+            </button>
+            <button
+              onClick={() => setUiLanguage('en')}
+              className={`px-1.5 py-0.5 rounded ${
+                currentUiLang === 'en'
+                  ? 'bg-ink-900 text-white font-bold'
+                  : 'text-ink-600 hover:text-ink-900'
+              }`}
+              title="English"
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setUiLanguage('fr')}
+              className={`px-1.5 py-0.5 rounded ${
+                currentUiLang === 'fr'
+                  ? 'bg-ink-900 text-white font-bold'
+                  : 'text-ink-600 hover:text-ink-900'
+              }`}
+              title="Français"
+            >
+              FR
+            </button>
+          </div>
+        </div>
+
         <button
           onClick={openOptions}
           className="p-1.5 text-ink-600 hover:text-ink-900 hover:bg-parchment-200 rounded-md transition-colors"
-          title="Paramètres"
+          title={t.settings}
         >
           <SettingsIcon className="w-4 h-4" />
         </button>
@@ -107,11 +156,11 @@ export default function App() {
                 }`}
               />
               <span className="text-xs font-semibold text-ink-800">
-                {settings.enabled ? 'Actif' : 'Désactivé'}
+                {settings.enabled ? t.active : t.disabled}
               </span>
             </div>
             <span className="text-[11px] font-mono text-ink-500 bg-parchment-200 px-2 py-0.5 rounded border border-stone-border">
-              {ENABLE_AI ? providerName : 'Règles locales'}
+              {ENABLE_AI ? providerName : t.localRulesBadge}
             </span>
           </div>
         )}
@@ -137,7 +186,7 @@ export default function App() {
               />
               <div className="text-xs">
                 <span className="font-medium">
-                  {settings.enabled ? 'Vérification activée' : 'Vérification suspendue'}
+                  {settings.enabled ? t.checkEnabled : t.checkDisabled}
                 </span>
               </div>
             </div>
@@ -167,17 +216,15 @@ export default function App() {
               )}
               <div>
                 <div className="text-xs font-medium text-ink-900">
-                  {settings.checkMode === 'realtime' ? 'Temps réel' : 'À la demande'}
+                  {settings.checkMode === 'realtime' ? t.realtime : t.ondemand}
                 </div>
                 <div className="text-[11px] text-ink-500 font-mono mt-0.5">
-                  {settings.checkMode === 'realtime'
-                    ? 'Vérification continue'
-                    : 'Raccourci: Ctrl+Shift+G'}
+                  {settings.checkMode === 'realtime' ? t.realtimeDesc : t.ondemandDesc}
                 </div>
               </div>
             </div>
             <span className="text-[10px] font-mono text-ink-400 hover:text-ink-700">
-              Basculer
+              {t.switchMode}
             </span>
           </button>
         </div>
@@ -186,26 +233,26 @@ export default function App() {
       {/* Stats Summary */}
       <div className="p-3.5 border-t border-stone-border bg-parchment-100/60">
         <div className="text-[11px] font-semibold text-ink-600 uppercase tracking-wider mb-2">
-          Statistiques de session
+          {t.sessionStats}
         </div>
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="p-2 bg-parchment-50 border border-stone-border rounded-lg">
             <div className="font-mono text-sm font-bold text-ink-900">
               {stats.checksPerformed}
             </div>
-            <div className="text-[10px] text-ink-500 font-mono mt-0.5">Analyses</div>
+            <div className="text-[10px] text-ink-500 font-mono mt-0.5">{t.analyses}</div>
           </div>
           <div className="p-2 bg-parchment-50 border border-stone-border rounded-lg">
             <div className="font-mono text-sm font-bold text-french-bordeaux">
               {stats.errorsFound}
             </div>
-            <div className="text-[10px] text-ink-500 font-mono mt-0.5">Erreurs</div>
+            <div className="text-[10px] text-ink-500 font-mono mt-0.5">{t.errors}</div>
           </div>
           <div className="p-2 bg-parchment-50 border border-stone-border rounded-lg">
             <div className="font-mono text-sm font-bold text-emerald-700">
               {stats.correctionsApplied}
             </div>
-            <div className="text-[10px] text-ink-500 font-mono mt-0.5">Corrigées</div>
+            <div className="text-[10px] text-ink-500 font-mono mt-0.5">{t.corrected}</div>
           </div>
         </div>
       </div>

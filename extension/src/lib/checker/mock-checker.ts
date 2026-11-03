@@ -7,86 +7,94 @@ interface RuleDefinition {
   replacement: string;
   explanation: string;
   type: 'grammar' | 'spelling' | 'punctuation' | 'style';
-  /**
-   * If provided, deliberately offsets the reported startIndex to test resolveSuggestions
-   */
   deliberateOffset?: number;
 }
 
 const MOCK_RULES: RuleDefinition[] = [
-  // Deliberate offset test rule: "mangé" in "nous allons mangé" is reported with +2 offset
   {
     pattern: 'mangé',
     replacement: 'manger',
-    explanation: "Après le semi-auxiliaire 'aller', le verbe doit être à l'infinitif ('manger').",
+    explanation:
+      "Sau semi-auxiliaire 'aller', động từ theo sau phải ở nguyên mẫu 'manger'. (Après 'aller', le verbe doit être à l'infinitif).",
     type: 'grammar',
     deliberateOffset: 2, // Intentional offset to verify coordinate resolution in Bước 2
   },
   {
     pattern: 'mon amis',
     replacement: 'mes amis',
-    explanation: "Accord en nombre : 'amis' est au pluriel, utilisez le déterminant possessif 'mes'.",
+    explanation:
+      "Hòa hợp số lượng: 'amis' ở số nhiều, dùng tính từ sở hữu số nhiều 'mes'. (Accord en nombre : 'amis' est au pluriel, utilisez 'mes').",
     type: 'grammar',
   },
   {
     pattern: 'je suis aller',
     replacement: 'je suis allé',
-    explanation: "Le participe passé s'accorde avec le sujet avec l'auxiliaire 'être' ('allé').",
+    explanation:
+      "Hòa hợp quá khứ phân từ với trợ động từ 'être' ('allé'). (Accord du participe passé avec l'auxiliaire 'être').",
     type: 'grammar',
   },
   {
     pattern: 'beaucoup des',
     replacement: 'beaucoup de',
-    explanation: "Après un adverbe de quantité ('beaucoup'), utilisez la préposition 'de' seule.",
+    explanation:
+      "Sau từ chỉ lượng 'beaucoup', chỉ dùng giới từ 'de'. (Après l'adverbe de quantité 'beaucoup', utilisez 'de' seul).",
     type: 'grammar',
   },
   {
     pattern: "c'est pas",
     replacement: "ce n'est pas",
-    explanation: "En français soigné, ne pas omettre la négation 'ne'.",
+    explanation:
+      "Trong tiếng Pháp chuẩn, không lược bỏ từ phủ định 'ne'. (En français soigné, ne pas omettre la négation 'ne').",
     type: 'style',
   },
   {
     pattern: 'tu as fais',
     replacement: 'tu as fait',
-    explanation: "Le participe passé du verbe 'faire' prend un 't' final ('fait').",
+    explanation:
+      "Quá khứ phân từ của động từ 'faire' kết thúc bằng 't' ('fait'). (Le participe passé de 'faire' se termine par un 't').",
     type: 'spelling',
   },
   // Regex rules
   {
     pattern: /\bl ami\b/gi,
     replacement: "l'ami",
-    explanation: "Élision obligatoire devant une voyelle : écrivez 'l'ami'.",
+    explanation:
+      "Bắt buộc lược âm (élision) trước nguyên âm: viết 'l'ami'. (Élision obligatoire devant une voyelle).",
     type: 'spelling',
   },
   {
     pattern: /\bj ai\b/gi,
     replacement: "j'ai",
-    explanation: "Élision obligatoire pour le pronom 'je' devant une voyelle : 'j'ai'.",
+    explanation:
+      "Bắt buộc lược âm cho đại từ 'je' trước nguyên âm: 'j'ai'. (Élision obligatoire pour le pronom 'je').",
     type: 'spelling',
   },
   {
     pattern: /\bc est\b/gi,
     replacement: "c'est",
-    explanation: "Élision du pronom démonstratif 'ce' devant 'est' : 'c'est'.",
+    explanation:
+      "Lược âm cho đại từ 'ce' trước 'est': 'c'est'. (Élision du pronom 'ce' devant 'est').",
     type: 'spelling',
   },
   {
     pattern: /\bd accord\b/gi,
     replacement: "d'accord",
-    explanation: "Écrivez la locution avec une apostrophe : 'd'accord'.",
+    explanation:
+      "Viết cụm từ có dấu nháy: 'd'accord'. (Écrivez la locution avec une apostrophe).",
     type: 'spelling',
   },
   {
     pattern: / ,/g,
     replacement: ',',
-    explanation: "Pas d'espace avant la virgule en typographie française.",
+    explanation:
+      "Quy tắc dấu câu: Không để khoảng trắng trước dấu phẩy. (Pas d'espace avant la virgule).",
     type: 'punctuation',
   },
   {
     pattern: / {2,}/g,
     replacement: ' ',
-    explanation: "Espaces consécutifs superflus.",
+    explanation:
+      'Khoảng trắng kép thừa. (Espaces consécutifs superflus).',
     type: 'punctuation',
   },
 ];
@@ -118,7 +126,6 @@ export class MockChecker implements GrammarChecker {
           const exactEnd = foundPos + needle.length;
           const offset = rule.deliberateOffset ?? 0;
 
-          // Apply deliberate offset if specified
           const reportedStart = Math.max(0, exactStart + offset);
           const reportedEnd = Math.min(text.length, exactEnd + offset);
 
@@ -135,7 +142,6 @@ export class MockChecker implements GrammarChecker {
           searchIndex = foundPos + needle.length;
         }
       } else {
-        // RegExp pattern
         const regex = new RegExp(rule.pattern.source, rule.pattern.flags);
         let match: RegExpExecArray | null;
 
@@ -161,7 +167,6 @@ export class MockChecker implements GrammarChecker {
       }
     }
 
-    // Pass all suggestions through resolveSuggestions to guarantee valid, sorted, non-overlapping coordinates
     const resolvedSuggestions = resolveSuggestions(text, rawSuggestions);
 
     return {

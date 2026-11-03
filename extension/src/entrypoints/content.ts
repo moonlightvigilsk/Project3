@@ -1,4 +1,5 @@
 import { settingsStorage } from "@/lib/storage";
+import { getT } from "@/lib/i18n";
 import {
   debounce,
   isEditableElement,
@@ -688,6 +689,9 @@ export default defineContentScript({
     ) {
       if (!activeElement) return;
 
+      const uiLang = settings.uiLanguage || "vi";
+      const t = getT(uiLang);
+
       const container = createOverlayContainer();
       const shadow = container.shadowRoot!;
 
@@ -719,19 +723,17 @@ export default defineContentScript({
           <div class="tc-status-icon" style="color: #ef4444;">${ICONS.alert}</div>
           <span class="tc-error-count">${errorCount}</span>
         `;
-        statusButton.title = `${errorCount} problème${
-          errorCount > 1 ? "s" : ""
-        } trouvé${errorCount > 1 ? "s" : ""}. Cliquez pour voir les détails.`;
+        statusButton.title = t.issuesFound(errorCount);
       } else if (state === "error") {
         statusButton.innerHTML = `
           <div class="tc-status-icon" style="color: #ef4444;">${ICONS.alert}</div>
-          <span style="color: #dc2626; font-size: 11px; font-weight: 600;">Erreur</span>
+          <span style="color: #dc2626; font-size: 11px; font-weight: 600;">${t.errorState}</span>
         `;
-        statusButton.title = "Une erreur est survenue lors de l'analyse.";
+        statusButton.title = t.errorState;
       } else {
         statusButton.innerHTML = `
           <div class="tc-status-icon" style="color: #22c55e;">${ICONS.check}</div>
-          <span style="color: #16a34a;">All good!</span>
+          <span style="color: #16a34a;">${t.allGood}</span>
         `;
       }
 
@@ -773,6 +775,9 @@ export default defineContentScript({
     function showSuggestionPanel() {
       if (!activeElement || currentSuggestions.length === 0) return;
 
+      const uiLang = settings.uiLanguage || "vi";
+      const t = getT(uiLang);
+
       hideSuggestionPanel();
       hidePopover();
 
@@ -800,7 +805,7 @@ export default defineContentScript({
         <div class="tc-panel-header">
           <div class="tc-panel-title">
             ${ICONS.pencil}
-            <span>${errorCount} issue${errorCount > 1 ? "s" : ""} found</span>
+            <span>${t.issuesFound(errorCount)}</span>
           </div>
           <button class="tc-panel-close" data-action="close-panel">${
             ICONS.close
@@ -814,7 +819,7 @@ export default defineContentScript({
               <div class="tc-suggestion-header">
                 <span class="tc-badge" style="background: ${getSuggestionColor(
                   s.type
-                )}">${getSuggestionLabel(s.type)}</span>
+                )}">${getSuggestionLabel(s.type, uiLang)}</span>
               </div>
               <div class="tc-suggestion-text">
                 <span class="tc-original">${escapeHtml(s.original)}</span>
@@ -823,11 +828,11 @@ export default defineContentScript({
               </div>
               <div class="tc-explanation">${escapeHtml(s.explanation)}</div>
               <div class="tc-suggestion-actions">
-                <button class="tc-btn tc-btn-primary tc-btn-sm" data-action="apply" data-index="${i}">Apply</button>
-                <button class="tc-btn tc-btn-secondary tc-btn-sm" data-action="ignore" data-index="${i}">Ignore</button>
+                <button class="tc-btn tc-btn-primary tc-btn-sm" data-action="apply" data-index="${i}">${t.applyCorrection}</button>
+                <button class="tc-btn tc-btn-secondary tc-btn-sm" data-action="ignore" data-index="${i}">${t.ignore}</button>
                 ${
                   s.type === "spelling"
-                    ? `<button class="tc-btn tc-btn-text tc-btn-sm" data-action="dictionary" data-index="${i}">Add to dictionary</button>`
+                    ? `<button class="tc-btn tc-btn-text tc-btn-sm" data-action="dictionary" data-index="${i}">+ ${t.addToDict}</button>`
                     : ""
                 }
               </div>
@@ -1147,8 +1152,10 @@ export default defineContentScript({
         currentPopover.style.top = `${anchorRect.bottom + 8}px`;
       }
 
+      const uiLang = settings.uiLanguage || "vi";
+      const t = getT(uiLang);
       const color = getSuggestionColor(suggestion.type);
-      const label = getSuggestionLabel(suggestion.type);
+      const label = getSuggestionLabel(suggestion.type, uiLang);
 
       currentPopover.innerHTML = `
         <div class="tc-popover-header">
@@ -1161,11 +1168,11 @@ export default defineContentScript({
         </div>
         <div class="tc-explanation">${escapeHtml(suggestion.explanation)}</div>
         <div class="tc-popover-actions">
-          <button class="tc-btn tc-btn-primary" data-action="apply">Apply</button>
-          <button class="tc-btn tc-btn-secondary" data-action="ignore">Ignore</button>
+          <button class="tc-btn tc-btn-primary" data-action="apply">${t.applyCorrection}</button>
+          <button class="tc-btn tc-btn-secondary" data-action="ignore">${t.ignore}</button>
           ${
             suggestion.type === "spelling"
-              ? '<button class="tc-btn tc-btn-text" data-action="dictionary">+Dict</button>'
+              ? `<button class="tc-btn tc-btn-text" data-action="dictionary">+ ${t.addToDict}</button>`
               : ""
           }
         </div>

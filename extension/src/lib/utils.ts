@@ -1,4 +1,4 @@
-import type { SuggestionType } from '@/types';
+import type { SuggestionType, UILanguage } from '@/types';
 
 export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(
   func: T,
@@ -35,19 +35,28 @@ export function getSuggestionColor(type: SuggestionType): string {
   }
 }
 
-export function getSuggestionLabel(type: SuggestionType): string {
-  switch (type) {
-    case 'spelling':
-      return 'Spelling';
-    case 'grammar':
-      return 'Grammar';
-    case 'punctuation':
-      return 'Punctuation';
-    case 'style':
-      return 'Style';
-    default:
-      return 'Issue';
-  }
+export function getSuggestionLabel(type: SuggestionType, lang: UILanguage = 'vi'): string {
+  const labels: Record<UILanguage, Record<SuggestionType, string>> = {
+    vi: {
+      spelling: 'Chính tả',
+      grammar: 'Ngữ pháp',
+      punctuation: 'Dấu câu',
+      style: 'Văn phong',
+    },
+    en: {
+      spelling: 'Spelling',
+      grammar: 'Grammar',
+      punctuation: 'Punctuation',
+      style: 'Style',
+    },
+    fr: {
+      spelling: 'Orthographe',
+      grammar: 'Grammaire',
+      punctuation: 'Ponctuation',
+      style: 'Style',
+    },
+  };
+  return labels[lang]?.[type] || labels.vi[type] || 'Lỗi';
 }
 
 export function isEditableElement(element: Element): boolean {
@@ -100,8 +109,4 @@ export function escapeHtml(text: string): string {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
-}
-
-export function cn(...classes: (string | boolean | undefined | null)[]): string {
-  return classes.filter(Boolean).join(' ');
 }
