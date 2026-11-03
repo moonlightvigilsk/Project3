@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page de Test - TextChecker & French Grammar Tool</title>
+  <title>Trang Kiểm Thử - TextChecker & French Grammar Tool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -35,7 +35,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 820px;
       margin: 0 auto;
     }
 
@@ -43,6 +43,16 @@
       margin-bottom: 32px;
       border-bottom: 1px solid var(--border);
       padding-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
     }
 
     h1 {
@@ -56,6 +66,42 @@
     p.subtitle {
       color: var(--ink-600);
       font-size: 14px;
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: inline-flex;
+      background: var(--parchment-200);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--ink-600);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .lang-btn:hover {
+      color: var(--ink-900);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .lang-btn.active {
+      background: var(--ink-900);
+      color: #FFFFFF;
+      font-weight: 700;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .card {
@@ -167,105 +213,288 @@
 
     .rule-list {
       margin-top: 16px;
-      padding: 12px;
+      padding: 14px;
       background: var(--parchment-100);
       border: 1px dashed var(--border);
       border-radius: 8px;
-      font-size: 12px;
-      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
       color: var(--ink-800);
     }
 
     .rule-list ul {
       margin-left: 20px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .rule-list li {
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    .rule-list code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(128, 0, 32, 0.08);
+      color: var(--bordeaux);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .rule-list em {
+      font-style: italic;
+      color: #15803d;
+      font-weight: 500;
+    }
+
+    .rule-desc {
+      color: var(--ink-600);
+      font-size: 12px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Page de Vérification & Banc d'Essai</h1>
-      <p class="subtitle">
-        Environnement de test pour le correcteur grammatical local (WXT MV3 Content Script).
-        Activez l'extension pour vérifier le soulignement automatique, les calculs de coordonnées et les infobulles d'erreur.
-      </p>
+      <div class="header-top">
+        <div>
+          <h1 id="page-title">Trang Kiểm Thử & Đánh Giá Tiện Ích</h1>
+          <p id="page-subtitle" class="subtitle">
+            Môi trường thử nghiệm cho bộ kiểm tra ngữ pháp tiếng Pháp cục bộ (WXT MV3 Content Script).
+            Hãy mở tiện ích TextChecker để kiểm tra tự động gạch chân lỗi, tính toán tọa độ và hiển thị popover sửa lỗi.
+          </p>
+        </div>
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="setLang('vi')">VI</button>
+          <button class="lang-btn" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('fr')">FR</button>
+        </div>
+      </div>
     </header>
 
-    <!-- Section 1: Textarea avec ascenseur (scrollable) -->
+    <!-- Section 1: Textarea với thanh cuộn (scrollable) -->
     <div class="card">
       <div class="card-title">
-        1. Zone Textarea (avec défilement vertical)
+        <span id="sec1-title">1. Vùng Textarea (có thanh cuộn dọc)</span>
         <span class="badge">&lt;textarea&gt;</span>
       </div>
-      <p class="instructions">
-        Contient plusieurs phrases avec fautes ciblées par le <code>MockChecker</code>. Teste le calcul du Mirror DIV, le repli des lignes (word-wrap) et le masquage des soulignements hors champ lors du défilement.
+      <p id="sec1-instructions" class="instructions">
+        Chứa nhiều câu tiếng Pháp với các lỗi được MockChecker hỗ trợ. Kiểm tra cơ chế Mirror DIV, ngắt dòng (word-wrap) và ẩn gạch chân khi cuộn ra ngoài khung nhìn.
       </p>
-      <label for="sample-textarea">Saisie Textarea :</label>
+      <label id="sec1-label" for="sample-textarea">Ô nhập Textarea :</label>
       <textarea id="sample-textarea" class="test-area">Demain, nous allons mangé au restaurant avec mon amis Pierre.
 Hier, je suis aller au marché pour faire des courses et j ai acheté beaucoup des légumes frais.
 C'est pas la première fois que nous faisons cette promenade dans Paris.
 Ensuite, nous avons discuté pendant des heures près de la Seine avant de rentrer tranquillement chez nous.</textarea>
 
       <div class="rule-list">
-        <strong>Fautes simulées dans ce bloc :</strong>
-        <ul>
-          <li><code>mangé</code> &rarr; <em>manger</em> (règle semi-auxiliaire avec décalage de test d'index +2)</li>
-          <li><code>mon amis</code> &rarr; <em>mes amis</em> (accord possessif pluriel)</li>
-          <li><code>je suis aller</code> &rarr; <em>je suis allé</em> (accord participe passé avec être)</li>
-          <li><code>j ai</code> &rarr; <em>j'ai</em> (élision)</li>
-          <li><code>beaucoup des</code> &rarr; <em>beaucoup de</em> (quantité)</li>
-          <li><code>c'est pas</code> &rarr; <em>ce n'est pas</em> (négation soignée)</li>
+        <strong id="sec1-rules-title">Các lỗi được mô phỏng trong khối này :</strong>
+        <ul id="sec1-rules-list">
+          <!-- Populated by JS -->
         </ul>
       </div>
     </div>
 
-    <!-- Section 2: Input texte classique (une seule ligne) -->
+    <!-- Section 2: Input một dòng -->
     <div class="card">
       <div class="card-title">
-        2. Champ de saisie simple ligne
+        <span id="sec2-title">2. Ô nhập văn bản một dòng</span>
         <span class="badge">&lt;input type="text"&gt;</span>
       </div>
-      <p class="instructions">
-        Teste le calcul des coordonnées en mode <code>white-space: pre</code> sans retour à la ligne.
+      <p id="sec2-instructions" class="instructions">
+        Kiểm tra tính toán tọa độ chế độ <code>white-space: pre</code> không có ngắt dòng.
       </p>
-      <label for="sample-input">Saisie Input :</label>
+      <label id="sec2-label" for="sample-input">Ô nhập Input :</label>
       <input id="sample-input" type="text" class="test-input" value="Tu as fais une remarque très pertinente , mon cher collègue.">
 
       <div class="rule-list">
-        <strong>Fautes simulées :</strong>
-        <ul>
-          <li><code>tu as fais</code> &rarr; <em>tu as fait</em> (participe passé en -t)</li>
-          <li><code>espace avant virgule ( ,)</code> &rarr; <em>,</em> (typographie)</li>
+        <strong id="sec2-rules-title">Các lỗi được mô phỏng :</strong>
+        <ul id="sec2-rules-list">
+          <!-- Populated by JS -->
         </ul>
       </div>
     </div>
 
-    <!-- Section 3: Éditeur enrichi contenteditable -->
+    <!-- Section 3: Contenteditable -->
     <div class="card">
       <div class="card-title">
-        3. Zone éditable enrichie (Rich-Text / SPA)
+        <span id="sec3-title">3. Vùng soạn thảo giàu văn bản (Contenteditable / Rich-Text)</span>
         <span class="badge">&lt;div contenteditable="true"&gt;</span>
       </div>
-      <p class="instructions">
-        Teste le TreeWalker avec des balises <code>&lt;br&gt;</code> và des nœuds texte imbriqués.
+      <p id="sec3-instructions" class="instructions">
+        Kiểm tra cơ chế TreeWalker với thẻ <code>&lt;br&gt;</code> và các text node lồng nhau.
       </p>
-      <label>Saisie Contenteditable :</label>
+      <label id="sec3-label">Ô nhập Contenteditable :</label>
       <div id="sample-editable" class="test-contenteditable" contenteditable="true">Voici l ami de Jacques qui arrive tout juste de Lyon.<br>D accord , nous allons mangé ensemble ce midi.</div>
 
       <div class="rule-list">
-        <strong>Fautes simulées :</strong>
-        <ul>
-          <li><code>l ami</code> &rarr; <em>l'ami</em> (élision avec apostrophe)</li>
-          <li><code>d accord</code> &rarr; <em>d'accord</em> (locution avec apostrophe)</li>
-          <li><code>mangé</code> &rarr; <em>manger</em> (après saut de ligne <code>&lt;br&gt;</code>)</li>
+        <strong id="sec3-rules-title">Các lỗi được mô phỏng :</strong>
+        <ul id="sec3-rules-list">
+          <!-- Populated by JS -->
         </ul>
       </div>
     </div>
   </div>
+
+  <script>
+    const I18N = {
+      vi: {
+        docTitle: "Trang Kiểm Thử - TextChecker & French Grammar Tool",
+        title: "Trang Kiểm Thử & Đánh Giá Tiện Ích",
+        subtitle: "Môi trường thử nghiệm cho bộ kiểm tra ngữ pháp tiếng Pháp cục bộ (WXT MV3 Content Script). Hãy mở tiện ích TextChecker để kiểm tra tự động gạch chân lỗi, tính toán tọa độ và hiển thị popover sửa lỗi.",
+        sec1Title: "1. Vùng Textarea (có thanh cuộn dọc)",
+        sec1Desc: "Chứa nhiều câu tiếng Pháp với các lỗi được MockChecker hỗ trợ. Kiểm tra cơ chế Mirror DIV, ngắt dòng (word-wrap) và ẩn gạch chân khi cuộn ra ngoài khung nhìn.",
+        sec1Label: "Ô nhập Textarea :",
+        sec1RulesTitle: "Các lỗi được mô phỏng trong khối này :",
+        sec1Rules: [
+          { error: "mangé", fix: "manger", desc: "quy tắc bán trợ động từ 'aller + infinitif' (có kiểm tra tự khôi phục khi lệch offset index +2)" },
+          { error: "mon amis", fix: "mes amis", desc: "hòa hợp tính từ sở hữu số nhiều" },
+          { error: "je suis aller", fix: "je suis allé", desc: "hòa hợp quá khứ phân từ với trợ động từ être" },
+          { error: "j ai", fix: "j'ai", desc: "hiện tượng lược âm (élision)" },
+          { error: "beaucoup des", fix: "beaucoup de", desc: "từ chỉ số lượng đi với de" },
+          { error: "c'est pas", fix: "ce n'est pas", desc: "cấu trúc phủ định chuẩn mực" }
+        ],
+        sec2Title: "2. Ô nhập văn bản một dòng",
+        sec2Desc: "Kiểm tra tính toán tọa độ chế độ <code>white-space: pre</code> không có ngắt dòng.",
+        sec2Label: "Ô nhập Input :",
+        sec2RulesTitle: "Các lỗi được mô phỏng :",
+        sec2Rules: [
+          { error: "tu as fais", fix: "tu as fait", desc: "quá khứ phân từ của động từ faire kết thúc bằng -t" },
+          { error: "khoảng trắng trước dấu phẩy ( ,)", fix: ",", desc: "quy tắc dấu câu tiếng Pháp" }
+        ],
+        sec3Title: "3. Vùng soạn thảo giàu văn bản (Contenteditable / Rich-Text)",
+        sec3Desc: "Kiểm tra cơ chế TreeWalker với thẻ <code>&lt;br&gt;</code> và các text node lồng nhau.",
+        sec3Label: "Ô nhập Contenteditable :",
+        sec3RulesTitle: "Các lỗi được mô phỏng :",
+        sec3Rules: [
+          { error: "l ami", fix: "l'ami", desc: "lược âm mạo từ xác định đứng trước nguyên âm" },
+          { error: "d accord", fix: "d'accord", desc: "thành ngữ với dấu nháy đơn" },
+          { error: "mangé", fix: "manger", desc: "sau thẻ xuống dòng <br>" }
+        ]
+      },
+      en: {
+        docTitle: "Test Bench - TextChecker & French Grammar Tool",
+        title: "Verification & Test Bench Page",
+        subtitle: "Test environment for the local French grammar checker (WXT MV3 Content Script). Enable the TextChecker extension to verify automatic error underlining, coordinate calculations, and correction popovers.",
+        sec1Title: "1. Textarea Area (with vertical scroll)",
+        sec1Desc: "Contains several French sentences with errors targeted by MockChecker. Tests Mirror DIV calculation, word-wrapping, and clipping off-screen underlines during scrolling.",
+        sec1Label: "Textarea Input :",
+        sec1RulesTitle: "Simulated errors in this block :",
+        sec1Rules: [
+          { error: "mangé", fix: "manger", desc: "semi-auxiliary verb rule 'aller + infinitive' (with +2 index offset recovery test)" },
+          { error: "mon amis", fix: "mes amis", desc: "plural possessive adjective agreement" },
+          { error: "je suis aller", fix: "je suis allé", desc: "past participle agreement with auxiliary être" },
+          { error: "j ai", fix: "j'ai", desc: "elision before vowel" },
+          { error: "beaucoup des", fix: "beaucoup de", desc: "quantity adverb followed by de" },
+          { error: "c'est pas", fix: "ce n'est pas", desc: "standard formal negation" }
+        ],
+        sec2Title: "2. Single-line Text Input",
+        sec2Desc: "Tests coordinate calculation in <code>white-space: pre</code> mode without line breaks.",
+        sec2Label: "Input Field :",
+        sec2RulesTitle: "Simulated errors :",
+        sec2Rules: [
+          { error: "tu as fais", fix: "tu as fait", desc: "past participle of faire ends in -t" },
+          { error: "space before comma ( ,)", fix: ",", desc: "punctuation spacing rule" }
+        ],
+        sec3Title: "3. Rich-Text Editable Area (Contenteditable)",
+        sec3Desc: "Tests TreeWalker handling of <code>&lt;br&gt;</code> tags and nested text nodes.",
+        sec3Label: "Contenteditable Input :",
+        sec3RulesTitle: "Simulated errors :",
+        sec3Rules: [
+          { error: "l ami", fix: "l'ami", desc: "definite article elision with apostrophe" },
+          { error: "d accord", fix: "d'accord", desc: "idiomatic phrase with apostrophe" },
+          { error: "mangé", fix: "manger", desc: "error positioned after a <br> line break" }
+        ]
+      },
+      fr: {
+        docTitle: "Page de Test - TextChecker & French Grammar Tool",
+        title: "Page de Vérification & Banc d'Essai",
+        subtitle: "Environnement de test pour le correcteur grammatical local (WXT MV3 Content Script). Activez l'extension pour vérifier le soulignement automatique, les calculs de coordonnées et les infobulles d'erreur.",
+        sec1Title: "1. Zone Textarea (avec défilement vertical)",
+        sec1Desc: "Contient plusieurs phrases avec fautes ciblées par le MockChecker. Teste le calcul du Mirror DIV, le repli des lignes (word-wrap) et le masquage des soulignements hors champ lors du défilement.",
+        sec1Label: "Saisie Textarea :",
+        sec1RulesTitle: "Fautes simulées dans ce bloc :",
+        sec1Rules: [
+          { error: "mangé", fix: "manger", desc: "règle semi-auxiliaire (aller + infinitif) avec décalage de test d'index +2" },
+          { error: "mon amis", fix: "mes amis", desc: "accord possessif pluriel" },
+          { error: "je suis aller", fix: "je suis allé", desc: "accord participe passé avec être" },
+          { error: "j ai", fix: "j'ai", desc: "élision devant voyelle" },
+          { error: "beaucoup des", fix: "beaucoup de", desc: "adverbe de quantité" },
+          { error: "c'est pas", fix: "ce n'est pas", desc: "négation soignée" }
+        ],
+        sec2Title: "2. Champ de saisie simple ligne",
+        sec2Desc: "Teste le calcul des coordonnées en mode <code>white-space: pre</code> sans retour à la ligne.",
+        sec2Label: "Saisie Input :",
+        sec2RulesTitle: "Fautes simulées :",
+        sec2Rules: [
+          { error: "tu as fais", fix: "tu as fait", desc: "participe passé du verbe faire en -t" },
+          { error: "espace avant virgule ( ,)", fix: ",", desc: "typographie de la ponctuation" }
+        ],
+        sec3Title: "3. Zone éditable enrichie (Rich-Text / SPA)",
+        sec3Desc: "Teste le TreeWalker avec des balises <code>&lt;br&gt;</code> et des nœuds texte imbriqués.",
+        sec3Label: "Saisie Contenteditable :",
+        sec3RulesTitle: "Fautes simulées :",
+        sec3Rules: [
+          { error: "l ami", fix: "l'ami", desc: "élision de l'article défini avec apostrophe" },
+          { error: "d accord", fix: "d'accord", desc: "locution adverbiale avec apostrophe" },
+          { error: "mangé", fix: "manger", desc: "après un saut de ligne <br>" }
+        ]
+      }
+    };
+
+    function renderRules(listId, rules) {
+      const el = document.getElementById(listId);
+      el.innerHTML = rules.map(r => `
+        <li>
+          <code>${r.error}</code> &rarr; <em>${r.fix}</em>
+          <span class="rule-desc">(${r.desc})</span>
+        </li>
+      `).join('');
+    }
+
+    function setLang(lang) {
+      const data = I18N[lang] || I18N.vi;
+      document.title = data.docTitle;
+      document.getElementById('page-title').textContent = data.title;
+      document.getElementById('page-subtitle').innerHTML = data.subtitle;
+
+      document.getElementById('sec1-title').textContent = data.sec1Title;
+      document.getElementById('sec1-instructions').innerHTML = data.sec1Desc;
+      document.getElementById('sec1-label').textContent = data.sec1Label;
+      document.getElementById('sec1-rules-title').textContent = data.sec1RulesTitle;
+      renderRules('sec1-rules-list', data.sec1Rules);
+
+      document.getElementById('sec2-title').textContent = data.sec2Title;
+      document.getElementById('sec2-instructions').innerHTML = data.sec2Desc;
+      document.getElementById('sec2-label').textContent = data.sec2Label;
+      document.getElementById('sec2-rules-title').textContent = data.sec2RulesTitle;
+      renderRules('sec2-rules-list', data.sec2Rules);
+
+      document.getElementById('sec3-title').textContent = data.sec3Title;
+      document.getElementById('sec3-instructions').innerHTML = data.sec3Desc;
+      document.getElementById('sec3-label').textContent = data.sec3Label;
+      document.getElementById('sec3-rules-title').textContent = data.sec3RulesTitle;
+      renderRules('sec3-rules-list', data.sec3Rules);
+
+      // Update button classes
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+      });
+
+      try {
+        localStorage.setItem('test_page_lang', lang);
+      } catch (e) {}
+    }
+
+    // Initialize with saved lang or default to Vietnamese
+    const savedLang = (function() {
+      try {
+        return localStorage.getItem('test_page_lang');
+      } catch (e) {
+        return null;
+      }
+    })() || 'vi';
+
+    setLang(savedLang);
+  </script>
 </body>
 </html>
