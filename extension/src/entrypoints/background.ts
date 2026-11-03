@@ -1,9 +1,11 @@
-import { checkGrammar, rewriteText } from '@/lib/ai/grammar-check';
+import { rewriteText } from '@/lib/ai/grammar-check';
+import { ENABLE_AI } from '@/lib/config';
+import { getGrammarChecker } from '@/lib/checker';
 import { settingsStorage, apiKeysStorage, getCachedResult, setCachedResult, incrementStats, dictionaryStorage } from '@/lib/storage';
 import type { GrammarSuggestion } from '@/types';
 
 export default defineBackground(() => {
-  console.log('TextChecker background script loaded');
+  console.log('TextChecker background script loaded (ENABLE_AI =', ENABLE_AI, ')');
 
   // Handle messages from content scripts and popup
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
@@ -41,25 +43,30 @@ export default defineBackground(() => {
 
           // Get settings and API keys
           const settings = await settingsStorage.getValue();
-          const apiKeys = await apiKeysStorage.getValue();
-          const apiKey = apiKeys[settings.provider];
+          let apiKey: string | undefined;
 
-          if (!apiKey) {
-            sendResponse({
-              success: false,
-              error: `No API key configured for ${settings.provider}. Please add your API key in the extension settings.`,
-            });
-            return;
+          if (ENABLE_AI) {
+            const apiKeys = await apiKeysStorage.getValue();
+            apiKey = apiKeys[settings.provider];
+
+            if (!apiKey) {
+              sendResponse({
+                success: false,
+                error: `No API key configured for ${settings.provider}. Please add your API key in the extension settings.`,
+              });
+              return;
+            }
           }
 
-           // Perform grammar check - use customModel if model is 'custom'
-           const modelId = settings.model === 'custom' ? settings.customModel : settings.model;
-           const result = await checkGrammar(text, {
-             provider: settings.provider,
-             model: modelId || settings.model,
-             apiKey,
-             language: settings.language,
-           });
+          // Perform grammar check using current checker (Mock or AI)
+          const checker = getGrammarChecker();
+          const modelId = settings.model === 'custom' ? settings.customModel : settings.model;
+          const result = await checker.check(text, {
+            language: settings.language,
+            provider: settings.provider,
+            model: modelId || settings.model,
+            apiKey,
+          });
 
           // Filter out words in personal dictionary
           const dictionary = await dictionaryStorage.getValue();
@@ -86,6 +93,14 @@ export default defineBackground(() => {
         }
 
         case 'REWRITE_TEXT': {
+          if (!ENABLE_AI) {
+            sendResponse({
+              success: false,
+              error: 'Rewrite feature is disabled in offline mode.',
+            });
+            return;
+          }
+
           const { text, style } = message.payload as {
             text: string;
             style: 'formal' | 'casual' | 'concise' | 'elaborate';
@@ -103,12 +118,12 @@ export default defineBackground(() => {
             return;
           }
 
-           const modelId = settings.model === 'custom' ? settings.customModel : settings.model;
-           const rewritten = await rewriteText(text, style, {
-             provider: settings.provider,
-             model: modelId || settings.model,
-             apiKey,
-           });
+          const modelId = settings.model === 'custom' ? settings.customModel : settings.model;
+          const rewritten = await rewriteText(text, style, {
+            provider: settings.provider,
+            model: modelId || settings.model,
+            apiKey,
+          });
 
           sendResponse({ success: true, result: rewritten });
           break;
@@ -120,6 +135,7 @@ export default defineBackground(() => {
           sendResponse({
             success: true,
             settings,
+            enableAi: ENABLE_AI,
             hasApiKey: {
               google: !!apiKeys.google,
               openai: !!apiKeys.openai,

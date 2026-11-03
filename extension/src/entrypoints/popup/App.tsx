@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { settingsStorage, statsStorage } from '@/lib/storage';
+import { ENABLE_AI } from '@/lib/config';
 import type { Settings, AIProvider, CheckMode } from '@/types';
 import { DEFAULT_SETTINGS } from '@/types';
 import { Settings as SettingsIcon, Power, Keyboard, Zap, AlertCircle } from 'lucide-react';
@@ -51,6 +52,7 @@ export default function App() {
   }
 
   const hasAnyApiKey = hasApiKey.google || hasApiKey.openai || hasApiKey.anthropic;
+  const isReady = ENABLE_AI ? hasAnyApiKey : true;
   const providerName = settings.provider.charAt(0).toUpperCase() + settings.provider.slice(1);
 
   if (loading) {
@@ -80,7 +82,7 @@ export default function App() {
 
       {/* Status Bar */}
       <div className="p-3.5 border-b border-stone-border bg-parchment-50">
-        {!hasAnyApiKey ? (
+        {!isReady ? (
           <div className="flex items-start gap-2.5 bg-[#FAF5EB] border border-[#E8DCB8] text-ink-900 p-3 rounded-lg">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-french-ochre" />
             <div className="text-xs">
@@ -109,14 +111,14 @@ export default function App() {
               </span>
             </div>
             <span className="text-[11px] font-mono text-ink-500 bg-parchment-200 px-2 py-0.5 rounded border border-stone-border">
-              {providerName}
+              {ENABLE_AI ? providerName : 'Règles locales'}
             </span>
           </div>
         )}
       </div>
 
       {/* Controls */}
-      {hasAnyApiKey && (
+      {isReady && (
         <div className="p-3.5 space-y-2.5">
           {/* Enable / Disable Button */}
           <button
@@ -181,39 +183,31 @@ export default function App() {
         </div>
       )}
 
-      {/* Statistics */}
-      <div className="p-3 border-t border-stone-border bg-parchment-100/70">
-        <div className="grid grid-cols-3 gap-1 text-center">
-          <div className="px-1 py-1">
-            <div className="text-base font-mono font-semibold text-ink-900">
+      {/* Stats Summary */}
+      <div className="p-3.5 border-t border-stone-border bg-parchment-100/60">
+        <div className="text-[11px] font-semibold text-ink-600 uppercase tracking-wider mb-2">
+          Statistiques de session
+        </div>
+        <div className="grid grid-cols-3 gap-2 text-center">
+          <div className="p-2 bg-parchment-50 border border-stone-border rounded-lg">
+            <div className="font-mono text-sm font-bold text-ink-900">
               {stats.checksPerformed}
             </div>
-            <div className="text-[10px] uppercase tracking-wider text-ink-500 font-sans">
-              Analyses
-            </div>
+            <div className="text-[10px] text-ink-500 font-mono mt-0.5">Analyses</div>
           </div>
-          <div className="px-1 py-1 border-x border-stone-border">
-            <div className="text-base font-mono font-semibold text-french-bordeaux">
+          <div className="p-2 bg-parchment-50 border border-stone-border rounded-lg">
+            <div className="font-mono text-sm font-bold text-french-bordeaux">
               {stats.errorsFound}
             </div>
-            <div className="text-[10px] uppercase tracking-wider text-ink-500 font-sans">
-              Erreurs
-            </div>
+            <div className="text-[10px] text-ink-500 font-mono mt-0.5">Erreurs</div>
           </div>
-          <div className="px-1 py-1">
-            <div className="text-base font-mono font-semibold text-emerald-700">
+          <div className="p-2 bg-parchment-50 border border-stone-border rounded-lg">
+            <div className="font-mono text-sm font-bold text-emerald-700">
               {stats.correctionsApplied}
             </div>
-            <div className="text-[10px] uppercase tracking-wider text-ink-500 font-sans">
-              Corrigées
-            </div>
+            <div className="text-[10px] text-ink-500 font-mono mt-0.5">Corrigées</div>
           </div>
         </div>
-      </div>
-
-      {/* Footer */}
-      <div className="p-2 border-t border-stone-border flex justify-between items-center text-[10px] font-mono text-ink-400 bg-parchment-50">
-        <span>v1.0.0</span>
       </div>
     </div>
   );
