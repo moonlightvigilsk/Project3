@@ -3,6 +3,7 @@ import { getT } from "@/lib/i18n";
 import {
   debounce,
   isEditableElement,
+  getTargetEditableElement,
   getTextFromElement,
   setTextInElement,
   applyReplacementToElement,
@@ -852,7 +853,8 @@ export default defineContentScript({
 
       suggestionPanel.addEventListener("click", async (e) => {
         const target = e.target as HTMLElement;
-        const action = target.dataset.action;
+        const btn = target.closest('[data-action]') as HTMLElement | null;
+        const action = btn?.dataset.action || target.dataset.action;
         const indexStr = target.dataset.index;
 
         e.preventDefault();
@@ -1129,7 +1131,7 @@ export default defineContentScript({
     // Inline popover (shown on underline click)
     let currentPopover: HTMLDivElement | null = null;
 
-    function showPopover(suggestion: GrammarSuggestion, anchorRect: DOMRect) {
+    function showPopover(suggestion: GrammarSuggestion, anchorRect: DOMRect, boundElement: HTMLElement | null = activeElement) {
       hidePopover();
       hideSuggestionPanel();
 
@@ -1194,10 +1196,11 @@ export default defineContentScript({
         e.stopPropagation();
 
         const target = e.target as HTMLElement;
-        const action = target.dataset.action;
+        const btn = target.closest('[data-action]') as HTMLElement | null;
+        const action = btn?.dataset.action || target.dataset.action;
 
         if (action === "apply") {
-          applySuggestion(suggestion);
+          applySuggestion(suggestion, boundElement);
           hidePopover();
           updateStatusAfterChange();
         } else if (action === "ignore") {
@@ -1276,11 +1279,12 @@ export default defineContentScript({
       return div.innerHTML;
     }
 
-    function applySuggestion(suggestion: GrammarSuggestion) {
-      if (!activeElement) return;
+    function applySuggestion(suggestion: GrammarSuggestion, targetOverride: HTMLElement | null = null) {
+      const targetEl = targetOverride || activeElement;
+      if (!targetEl) return;
 
       applyReplacementToElement(
-        activeElement,
+        targetEl,
         suggestion.startIndex,
         suggestion.endIndex,
         suggestion.original,
@@ -1392,9 +1396,10 @@ export default defineContentScript({
     }
 
     function handleFocus(element: HTMLElement) {
-      if (!settings.enabled || !isEditableElement(element)) return;
+      const target = getTargetEditableElement(element) || element;
+      if (!settings.enabled || !isEditableElement(target)) return;
 
-      activeElement = element;
+      activeElement = target;
       attachElementObservers(element);
 
       if (settings.checkMode === "realtime") {
@@ -1431,9 +1436,10 @@ export default defineContentScript({
     }
 
     function handleInput(element: HTMLElement) {
-      if (!settings.enabled || !isEditableElement(element)) return;
+      const target = getTargetEditableElement(element) || element;
+      if (!settings.enabled || !isEditableElement(target)) return;
 
-      activeElement = element;
+      activeElement = target;
       hideSuggestionPanel();
       hidePopover();
 

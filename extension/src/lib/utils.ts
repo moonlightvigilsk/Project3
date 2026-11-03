@@ -59,6 +59,23 @@ export function getSuggestionLabel(type: SuggestionType, lang: UILanguage = 'vi'
   return labels[lang]?.[type] || labels.vi[type] || 'Lỗi';
 }
 
+
+export function getTargetEditableElement(element: HTMLElement | null): HTMLElement | null {
+  if (!element) return null;
+  const tagName = element.tagName.toLowerCase();
+  if (tagName === 'textarea' || tagName === 'input') {
+    return element;
+  }
+  if (element.isContentEditable) {
+    const root = element.closest('[contenteditable="true"]') as HTMLElement | null;
+    if (root) return root;
+    const roleRoot = element.closest('[role="textbox"]') as HTMLElement | null;
+    if (roleRoot) return roleRoot;
+    return element;
+  }
+  return element;
+}
+
 export function isEditableElement(element: Element): boolean {
   if (!element) return false;
 
@@ -181,15 +198,16 @@ export function applyReplacementToElement(
   originalText: string,
   replacement: string
 ): boolean {
+  const targetEl = getTargetEditableElement(element) || element;
   try {
-    element.focus();
+    targetEl.focus();
   } catch (e) {}
 
-  const tagName = element.tagName.toLowerCase();
+  const tagName = targetEl.tagName.toLowerCase();
   const isInputOrTextarea = tagName === 'textarea' || tagName === 'input';
 
   if (isInputOrTextarea) {
-    const inputEl = element as HTMLInputElement | HTMLTextAreaElement;
+    const inputEl = targetEl as HTMLInputElement | HTMLTextAreaElement;
     let actualStart = startIndex;
     let actualEnd = endIndex;
     const currentVal = inputEl.value;
@@ -221,7 +239,6 @@ export function applyReplacementToElement(
       applied = false;
     }
 
-    // Fallback for React controlled inputs where execCommand may be bypassed
     if (!applied || inputEl.value === currentVal) {
       const nextVal =
         currentVal.substring(0, actualStart) +
@@ -254,22 +271,26 @@ export function applyReplacementToElement(
     return true;
   }
 
-  // --- CONTENTEDITABLE SUPPORT (Zalo Web, Messenger, etc.) ---
-  const fullText = getTextFromElement(element);
+  // --- CONTENTEDITABLE SUPPORT (Zalo Web, Messenger, React, etc.) ---
+  const fullText = getTextFromElement(targetEl);
   let actualStart = startIndex;
   let actualEnd = endIndex;
 
-  if (fullText.substring(actualStart, actualEnd) !== originalText) {
+  // Normalized search (handles non-breaking spaces   from rich editors)
+  const normFull = fullText.replace(/\u00A0/g, ' ');
+  const normOrig = originalText.replace(/\u00A0/g, ' ');
+
+  if (normFull.substring(actualStart, actualEnd) !== normOrig) {
     let bestIdx = -1;
     let minDiff = Infinity;
-    let idx = fullText.indexOf(originalText);
+    let idx = normFull.indexOf(normOrig);
     while (idx !== -1) {
       const diff = Math.abs(idx - startIndex);
       if (diff < minDiff) {
         minDiff = diff;
         bestIdx = idx;
       }
-      idx = fullText.indexOf(originalText, idx + 1);
+      idx = normFull.indexOf(normOrig, idx + 1);
     }
     if (bestIdx !== -1) {
       actualStart = bestIdx;
@@ -277,12 +298,23 @@ export function applyReplacementToElement(
     }
   }
 
-  const range = getContenteditableRange(element, actualStart, actualEnd);
+  const range = getContenteditableRange(targetEl, actualStart, actualEnd);
   if (range) {
     const sel = window.getSelection();
     if (sel) {
       sel.removeAllRanges();
       sel.addRange(range);
+
+      // Dispatch standard beforeinput first
+      try {
+        const beforeEvt = new InputEvent('beforeinput', {
+          bubbles: true,
+          cancelable: true,
+          inputType: 'insertText',
+          data: replacement,
+        });
+        targetEl.dispatchEvent(beforeEvt);
+      } catch (e) {}
 
       let applied = false;
       try {
@@ -291,19 +323,23 @@ export function applyReplacementToElement(
         applied = false;
       }
 
-      if (applied) {
-        element.dispatchEvent(
-          new InputEvent('input', {
-            bubbles: true,
-            cancelable: true,
-            inputType: 'insertReplacementText',
-            data: replacement,
-          })
-        );
+      // Check if text actually updated
+      const textAfter = getTextFromElement(targetEl).replace(/\u00A0/g, ' ');
+      if (applied && textAfter.includes(replacement)) {
+        try {
+          targetEl.dispatchEvent(
+            new InputEvent('input', {
+              bubbles: true,
+              cancelable: false,
+              inputType: 'insertText',
+              data: replacement,
+            })
+          );
+        } catch (e) {}
         return true;
       }
 
-      // Fallback 1: DOM range replacement
+      // Fallback: DOM Range replacement
       try {
         range.deleteContents();
         const textNode = document.createTextNode(replacement);
@@ -314,14 +350,15 @@ export function applyReplacementToElement(
         caretRange.collapse(true);
         sel.addRange(caretRange);
 
-        element.dispatchEvent(
+        targetEl.dispatchEvent(
           new InputEvent('input', {
             bubbles: true,
-            cancelable: true,
+            cancelable: false,
             inputType: 'insertText',
             data: replacement,
           })
         );
+        targetEl.dispatchEvent(new Event('input', { bubbles: true }));
         return true;
       } catch (e) {
         console.warn('Fallback range replacement failed:', e);
@@ -329,13 +366,13 @@ export function applyReplacementToElement(
     }
   }
 
-  // Final fallback: bulk replace
-  const currentText = getTextFromElement(element);
+  // Final fallback
+  const currentText = getTextFromElement(targetEl);
   const nextText =
     currentText.substring(0, actualStart) +
     replacement +
     currentText.substring(actualEnd);
-  setTextInElement(element, nextText);
+  setTextInElement(targetEl, nextText);
   return true;
 }
 
