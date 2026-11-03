@@ -1,5 +1,6 @@
 import type { GrammarChecker, GrammarCheckerOptions } from './types';
 import type { GrammarCheckResult, GrammarSuggestion } from '@/types';
+import { resolveSuggestions } from '@/lib/suggestions/resolve';
 
 interface RuleDefinition {
   pattern: string | RegExp;
@@ -7,7 +8,7 @@ interface RuleDefinition {
   explanation: string;
   type: 'grammar' | 'spelling' | 'punctuation' | 'style';
   /**
-   * If true, deliberately offsets the reported startIndex by +2 to test resolveSuggestions
+   * If provided, deliberately offsets the reported startIndex to test resolveSuggestions
    */
   deliberateOffset?: number;
 }
@@ -101,7 +102,7 @@ export class MockChecker implements GrammarChecker {
       };
     }
 
-    const suggestions: GrammarSuggestion[] = [];
+    const rawSuggestions: GrammarSuggestion[] = [];
     let counter = 0;
 
     for (const rule of MOCK_RULES) {
@@ -121,7 +122,7 @@ export class MockChecker implements GrammarChecker {
           const reportedStart = Math.max(0, exactStart + offset);
           const reportedEnd = Math.min(text.length, exactEnd + offset);
 
-          suggestions.push({
+          rawSuggestions.push({
             id: `mock-${Date.now()}-${counter++}`,
             original: needle,
             replacement: rule.replacement,
@@ -143,12 +144,11 @@ export class MockChecker implements GrammarChecker {
           const startIndex = match.index;
           const endIndex = startIndex + original.length;
 
-          // Avoid infinite loops with zero-width matches
           if (match.index === regex.lastIndex) {
             regex.lastIndex++;
           }
 
-          suggestions.push({
+          rawSuggestions.push({
             id: `mock-${Date.now()}-${counter++}`,
             original,
             replacement: rule.replacement,
@@ -161,8 +161,11 @@ export class MockChecker implements GrammarChecker {
       }
     }
 
+    // Pass all suggestions through resolveSuggestions to guarantee valid, sorted, non-overlapping coordinates
+    const resolvedSuggestions = resolveSuggestions(text, rawSuggestions);
+
     return {
-      suggestions,
+      suggestions: resolvedSuggestions,
       text,
       language: opts.language === 'auto' ? 'fr' : opts.language,
       timestamp: Date.now(),
