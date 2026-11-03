@@ -5,6 +5,7 @@ import {
   isEditableElement,
   getTextFromElement,
   setTextInElement,
+  applyReplacementToElement,
   getSuggestionColor,
   getSuggestionLabel,
 } from "@/lib/utils";
@@ -844,6 +845,11 @@ export default defineContentScript({
       `;
 
       // Event delegation for panel actions
+      suggestionPanel.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
       suggestionPanel.addEventListener("click", async (e) => {
         const target = e.target as HTMLElement;
         const action = target.dataset.action;
@@ -1179,6 +1185,7 @@ export default defineContentScript({
       `;
 
       currentPopover.addEventListener("mousedown", (e) => {
+        e.preventDefault();
         e.stopPropagation();
       });
 
@@ -1272,12 +1279,13 @@ export default defineContentScript({
     function applySuggestion(suggestion: GrammarSuggestion) {
       if (!activeElement) return;
 
-      const text = getTextFromElement(activeElement);
-      const newText =
-        text.substring(0, suggestion.startIndex) +
-        suggestion.replacement +
-        text.substring(suggestion.endIndex);
-      setTextInElement(activeElement, newText);
+      applyReplacementToElement(
+        activeElement,
+        suggestion.startIndex,
+        suggestion.endIndex,
+        suggestion.original,
+        suggestion.replacement
+      );
 
       const lengthDiff =
         suggestion.replacement.length - suggestion.original.length;
