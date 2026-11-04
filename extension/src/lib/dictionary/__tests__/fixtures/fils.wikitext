@@ -1,0 +1,288 @@
+== {{langue|fr}} ==
+=== {{S|étymologie}} ===
+: ''(Nom commun 1)'' {{siècle|lang=fr|X}} Du {{étyl|frm|fr|fils}}, de l’{{étyl|fro|fr|fils}} (cas sujet)<!--Passion du Christ et La Vie de St. Léger-->, ''{{lien|fiz|fro}}'', ''{{lien|fil|fro}}'', du {{étyl|la|fr|mot=filius|dif=fīlius|sens=fils, enfant}}, puis « descendant » en bas-latin.
+: La forme actuelle représente l’ancien cas sujet de l’ancien français conservé en raison de son emploi fréquent comme vocatif et probablement aussi pour éviter la confusion avec ''{{lien|fil|fr}}''.
+: ''(Nom commun 2)'' De l’{{étyl|ar|fr|فلس}}, du {{étyl|la|fr|follis}}. Voir aussi ''[[fals]]''.
+
+=== {{S|nom|fr|num=1}} ===
+{{fr-inv|fis|sp=1}}
+'''fils''' {{pron|fis|fr}} {{m}} {{équiv-pour|lang=fr|une femme|fille}} {{sp}}
+# Tout être humain [[de genre masculin]] considéré par rapport à son père et à sa mère, ou à un des deux seulement.
+#* {{exemple | lang=fr | Mes '''fils''' ont cassé les fils sur mes deux cannes à brochet en les accrochant dans les arbres .}}
+#* {{exemple | lang=fr
+ | En l’année 561, après une expédition contre l’un de ses '''fils''', dont il punit la révolte en le faisant brûler avec sa femme et ses enfants, Chlother, dans un calme parfait d’esprit et de conscience, revint à sa maison de Braine.
+ | source={{w|Augustin Thierry}}, ''Récits des temps mérovingiens'', {{1er|récit}} : ''Les quatre fils de Chlother I{{er}} — Leur caractère — Leurs mariages — Histoire de Galeswinthe (561-568)'', 1833–1837}}
+#* {{exemple | lang=fr
+ | Premiers matins où les jeunes mères aiment leur '''fils''', mais pas encore par amour maternel ; elles le plaignent, elles l’admirent : il sera un grand artiste : il se mariera.
+ | source={{w|Jean Giraudoux}}, ''Retour d'Alsace - Août 1914'', 1916}}
+#* […]'' le père de Laforgue, qui s’était depuis quelque temps consolé du refus de son '''fils''' d’entrer à Polytechnique, lui parlait d’une thèse de doctorat, après l’agrégation ''[…] {{source|{{w|Paul Nizan}}, ''{{w|La Conspiration}}'', 1938, page 52}}
+# {{figuré|fr}} Celui qu’on [[regarder|regarde]] ou qu’on [[aimer|aime]] comme son fils.
+#* {{exemple | lang=fr | L’orphelin qu’il avait protégé devint pour lui un véritable '''fils'''.}}
+# [[descendant|Descendant]] de [[genre]] [[masculin]].
+#* {{exemple | lang=fr | Jésus, '''fils''' de David.}}
+# {{plus rare}} {{au pluriel}} Descendants [[direct]]s, [[quel que soit]] leur genre.
+#* {{exemple | lang=fr
+ | Chez le vertébré comme chez l’annelé, nous voyons d’ailleurs les '''fils''' ressembler au père ou à la mère, aux différences individuelles près.
+ | source={{w|Jean Louis Armand de Quatrefages de Bréau}}, ''[[s:Les Métamorphoses et la généagénèse/03|Les Métamorphoses et la généagénèse]]'', {{w|Revue des Deux Mondes}}, {{2e|période}}, tome 3, 1856 (pages 496-519)}}
+#* {{exemple | lang=fr
+ | Et nous autres, leurs '''fils''' lointains, à travers les milliers d'années, nous ne sommes guère moins touchés en lisant aujourd’hui ces vénérables ''enfances'' du genre humain, […].
+ | source={{w|Jules Michelet}}, ''Bible de l’Humanité'', Calmann-lévy, 1876, page 28}}
+# Ce qui [[dérivé|dérive]] et qui est [[consubstantiel]] à autre chose.
+#* {{exemple | lang=fr
+ | Le système de la '''réciprocité''' dans sa forme moderne est le '''fils''' ainé du protectionnisme ; s'il en adoucit légèrement les rigueurs, il est l'incarnation même de sa pensée.
+ | source=''Traités de commerce et réciprocité'', rapport présenté par Anthony Beaujon, [[w:Exposition coloniale|Exposition Internationale et coloniale]] d'[[Amsterdam]] de 1883, page 6}}
+# {{familier|fr}} {{ironique|fr}} {{par plaisanterie|fr}} S'emploie couramment pour désigner son interlocuteur de façon [[paternaliste]] voire [[condescendant|condescendante]].
+#* {{exemple|lang=fr|— Je te paie un rhum, '''fils'''.<br
+/>— Je veux bien, Georgina, mais je remettrai ça, je te préviens.<br
+/>— Je te ferai pas d’offense, '''fils'''.|source={{w|René Fallet}}, ''{{w| Paris au mois d’août (roman)|Paris au mois d’août}}'', Denoël, 1964, Le Livre de Poche, page 43}}
+#*''Et tout s’arrangeait ou se réglait à la danse<br/>L'un disait « '''Fils''' ! tu as aucune chance ».'' {{source|IAM, ''Je danse le MIA'', 1994}}
+
+==== {{S|variantes}} ====
+* [[fi]]
+
+==== {{S|synonymes}} ====
+* [[fiston]] {{familier|nocat=1}}
+
+==== {{S|hyperonymes}} ====
+* [[enfant]]
+* [[rejeton]] {{familier|nocat=1}}
+
+==== {{S|dérivés}} ====
+{{(}}
+* [[à père avare, fils prodigue]]
+* [[de père en fils]]
+* [[être de fils de ses œuvres]] : Ne devoir qu’à son mérite sa fortune, la considération dont on jouit, le rang qu’on occupe.
+* [[faire le beau fils]] : Se dit d’un jeune homme qui fait des dépenses excessives dans sa toilette et sa manière de vivre.
+* [[fils à papa]]
+* [[fils ainé de l’Église]] {{ortho1990}}
+* [[fils aîné de l’Église]] : Le roi de France.
+* [[fils d’archevêque]]
+* [[fils de]]
+* [[fils de bâtard]]
+* [[fils de catin]]
+* [[fils de chien]]
+* [[fils de chienne]]
+* [[fils de cœur]]
+* [[fils de famille]]
+* [[fils de France]] : {{vieilli|nocat=1}} Fils du roi de France.
+* [[fils de l’homme]] : {{info lex|religion}} Jésus-Christ
+* [[fils de la maison]] : Le fils du [[maître de maison]].
+* [[fils de la plage]]
+* [[fils de la terre]] : {{figuré|nocat=1}} Homme de souche paysanne.
+* [[fils de la Veuve]]
+* [[fils de Pétain]]
+* [[fils de pub]]
+* [[fils de putain]], [[fils de pute]]
+* [[Fils du Ciel]]
+* [[fils spirituel]] : Personne qui a reçu les soins, l’enseignement d’un maître et qui le continue.
+* [[il est bien fils de son père]] : {{figuré|nocat=1}} Il ressemble beaucoup physiquement et moralement à son père, ou a les mêmes défauts que son père.
+* [[il faut vraiment être le fils de personne]]
+* [[mon fils]]
+* [[retour du fils prodigue]]
+* [[tel père, tel fils]]
+{{)}}
+
+==== {{S|vocabulaire}} ====
+* [[beau-fils]]
+* [[petit-fils]]
+* [[arrière-petit-fils]]
+* [[fille]]
+* [[père]]
+* [[mère]]
+
+==== {{S|traductions}} ====
+{{trad-début|Être humain masculin considéré via son père ou sa mère|1}}
+* {{T|af}} : {{trad+|af|seun}}
+* {{T|akk}} : {{trad|akk|𒀸|R=aplu}}
+* {{T|sq}} : {{trad+|sq|bir}}
+* {{T|ale}} : {{trad|ale|hlax̂}}
+* {{T|de}} : {{trad+|de|Sohn|m}}
+* {{T|alt}} : {{trad|alt|уул}}
+* {{T|en}} : {{trad+|en|son}}
+* {{T|ang}} : {{trad-|ang|sunu}}
+* {{T|ar}} : {{trad+|ar|ابن|s|R=ibn|dif=اِبْن}}
+* {{T|arq}} : {{trad|arq|بن}}, {{trad|arq|ولد}}, {{trad|arq|وليد}}
+* {{T|az}} : {{trad+|az|oğul}}
+* {{T|ba}} : {{trad|ba|ул}}
+* {{T|bm}} : {{trad-|bm|denkɛ}}
+* {{T|eu}} : {{trad+|eu|seme}}
+* {{T|bar}} : {{trad|bar|Bua|m}}
+* {{T|br}} : {{trad+|br|mab}}
+* {{T|ca}} : {{trad+|ca|fill|m}}, {{trad+|ca|fills|p}}
+* {{T|shy}} : {{trad+|shy|memi}}, {{trad|shy|memmi}}
+* {{T|zh}} : {{trad+|zh|儿子|tr=érzi|tradi=兒子}}
+* {{T|shi}} : {{trad|shi|ⵉⵡⵉⵙ}}
+* {{T|ko}} : {{trad+|ko|아들|tr=adeul}}
+* {{T|kw}} : {{trad-|kw|mab|m}}
+* {{T|da}} : {{trad+|da|søn}}
+* {{T|es}} : {{trad+|es|hijo}}
+* {{T|eo}} : {{trad+|eo|filo}}
+* {{T|ett}} : {{trad|ett|𐌂𐌋𐌀𐌍}}
+* {{T|fo}} : {{trad+|fo|sonur}}
+* {{T|fi}} : {{trad+|fi|poika}}
+* {{T|vls}} : {{trad|vls|zeun}}
+* {{T|frp}} : ''(savoyard)'' {{trad|frp|fyu}}
+* {{T|gd}} : {{trad+|gd|mac}}
+* {{T|gag}} : {{trad|gag|ool}}
+* {{T|cy}} : {{trad+|cy|mab|m}}
+* {{T|ka}} : {{trad-|ka|ვაჟიშვილი|tr=važišvili}}, {{trad-|ka|ძე|tr=dze}}
+* {{T|el}} : {{trad+|el|γιος|R=yios}}
+* {{T|grc}} : {{trad|grc|υἱός|tr=uhiós}}
+* {{T|hbo}} : {{trad|hbo|בן|dif=בֵּן}}
+* {{T|hi}} : {{trad+|hi|बेटा|R=bēṭī|m}}
+* {{T|hu}} : {{trad+|hu|fiú}}
+* {{T|sah}} : {{trad|sah|уол}}
+* {{T|io}} : {{trad+|io|filiulo}}
+* {{T|iu}} : {{trad-|iu|ᐃᕐᓂᖅ|R=[[irniq]]}}
+* {{T|pgl}} : {{trad|pgl|ᚋᚐᚊᚔ}}, {{trad|pgl|ᚋᚐᚉᚉᚔ}}
+* {{T|is}} : {{trad+|is|sonur}}
+* {{T|ruo}} : {{trad|ruo|fil’}}
+* {{T|it}} : {{trad+|it|figlio}}, {{trad+|it|figliolo}}
+* {{T|ja}} : {{trad+|ja|息子|tr=musuko}}
+* {{T|kab}} : {{trad|kab|mmi}}, {{trad|kab|mmi-s n}}, {{trad|kab|u-}}
+* {{T|krc}} : {{trad|krc|джаш}}, {{trad|krc|улан}}
+* {{T|ks}} : {{trad+|ks|نیٚچُو}}, {{trad+|ks|گۆبُر}}
+* {{T|kk}} : {{trad+|kk|ұл|tr=ul}}
+* {{T|ky}} : {{trad+|ky|уул|tr=uul}}
+* {{T|avk}} : {{trad|avk|nazbeikye}}
+* {{T|kum}} : {{trad|kum|улан}}
+* {{T|ku}} : {{trad+|ku|kur}}, {{trad+|ku|law}}
+* {{T|leq}} : {{trad|leq|nyege}}
+* {{T|lv}} : {{trad+|lv|dēls}}
+* {{T|mrs}} : {{trad|mrs|netën}}
+* {{T|yua}} : {{trad|yua|paal}}
+* {{T|crg}} : {{trad|crg|gaarsoon}}
+* {{T|mye}} : {{trad|mye|onghwan'onome}}
+* {{T|nl}} : {{trad+|nl|zoon}}
+* {{T|niv}} : {{trad|niv|эӻлӈ}}, {{trad|niv|уткуоӻла}}, {{trad|niv|азмытьэӻлӈ}}
+* {{T|nog}} : {{trad|nog|увыл}}
+* {{T|normand}} : {{trad|normand|fis}}, {{trad|normand|gâs}}
+* {{T|nb}} : {{trad+|nb|sønn}}
+* {{T|nn}} : {{trad+|no|son}}
+* {{T|ngh}} : {{trad|ngh|ʘûu}}
+* {{T|oc}} : {{trad+|oc|filh}}, {{trad+|oc|hilh}} {{oc gascon|nocat=1}}
+* {{T|ryu}} : {{trad|ryu|子}}, {{trad|ryu|小}}, {{trad|ryu|っくゎ|tr=kkwa}}
+* {{T|uby}} : {{trad|uby|qᵒá}}
+* {{T|pap}} : {{trad|pap|yiu homber}}
+* {{T|fa}} : {{trad+|fa|پسر|R=pesar}}
+* {{T|phn}} : {{trad|phn|𐤁𐤍|tr=bn}}
+* {{T|xpi}} : {{trad|xpi|ᚋᚐᚊᚊᚑ|R=maqqo}}
+* {{T|myp}} : {{trad|myp|hoagí}}
+* {{T|pl}} : {{trad+|pl|syn}}
+* {{T|pt}} : {{trad+|pt|filho|m}}
+* {{T|ro}} : {{trad+|ro|fiu}}
+* {{T|ru}} : {{trad+|ru|сын|tr=syn}}
+* {{T|se}} : {{trad|se|bárdni}}
+* {{T|sg}} : {{trad+|sg|môlengê-kôlï}}
+* {{T|swb}} : {{trad|swb|mwana mutruɓaɓa|R=mwana mutrubaba}}, {{trad|swb|mwanamtsa mutru-ɓaɓa|tr=mwanamtsa mutru-baba}}
+* {{T|zdj}} : {{trad|zdj|mwana}}, {{trad|zdj|mwana-mme}}
+* {{T|scn}} : {{trad+|scn|figghiu|m}}, {{trad+|scn|figliu|m}}, {{trad+|scn|fillu|m}}, {{trad+|scn|fignu|m}}, {{trad+|scn|sonni|m}}
+* {{T|solrésol}} : {{trad|solrésol|resiresol}}, {{trad|solrésol|r'esiresol}}
+* {{T|ses}} : {{trad|ses|ize}}
+* {{T|srn}} : {{trad|srn|manpikin}}
+* {{T|sv}} : {{trad+|sv|son}}
+* {{T|sw}} : {{trad+|sw|mwana}}
+* {{T|tl}} : {{trad-|tl|anak na laláki}}
+* {{T|crh}} : {{trad|crh|oğul}}
+* {{T|tt}} : {{trad+|tt|ул}}
+* {{T|cs}} : {{trad+|cs|syn}}
+* {{T|ckt}} : {{trad|ckt|экык}}
+* {{T|cv}} : {{trad|cv|ывăл}}
+* {{T|te}} : {{trad+|te|పుత్రుడు|tr=putruḍu}}
+* {{T|kim}} : {{trad|kim|оол}}
+* {{T|tourangeau}} : {{trad|tourangeau|fieu}}
+* {{T|tyv}} : {{trad|tyv|оол}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|ngémukh}}
+* {{T|tr}} : {{trad+|tr|oğul}}
+* {{T|tk}} : {{trad-|tk|ogul}}
+* {{T|uk}} : {{trad+|uk|син|R=syn}}
+* {{T|uum}} : {{trad|uum|огул}}
+* {{T|non}} : {{trad|non|sonr|m}}
+* {{T|zu}} : {{trad+|zu|indodana}}
+{{trad-fin}}
+{{trad-début|Descendant direct quel que soit le sexe|4}}
+* {{T|avk}} : {{trad|avk|nazbeik}}
+* {{T|mye}} : {{trad|mye|onghwana}}
+* {{T|solrésol}} : {{trad|solrésol|r'esiresol}}
+{{trad-fin}}
+
+=== {{S|nom|fr|num=2}} ===
+{{fr-accord-mf|ps=fils|p=fulus|p2=fulûs|pp=f(u.)lus}}
+'''fils''' {{pron|fils|fr}} {{m}}
+# {{monnaies|fr}} Monnaie [[subdivisionnaire]] de [[plusieurs]] [[pays]] [[arabe]]s.
+#* {{exemple|lang=fr}}
+
+==== {{S|holonymes}} ====
+* [[dinar]]
+** [[dinar bahreïni]] : 1 [[BHD]] = {{unité|1000|fils}}
+** [[dinar irakien]] : 1 [[IQD]] = {{unité|1000|fils}}
+** [[dinar jordanien]] : 1 [[JOD]] = {{unité|1000|fils}}
+** [[dinar koweïtien]] : 1 [[KWD]] = {{unité|1000|fils}}
+* [[dirham]]
+** [[dirham des Émirats arabes unis]] : 1 [[AED]] = 100 fils
+* [[rial]] ou [[riyal]]
+** [[rial yéménite]] : 1 [[YER]] = 100 fils
+
+==== {{S|apparentés}} ====
+* [[fals]]
+* [[fels]]
+* [[flouze]]
+* [[follis]]
+
+==== {{S|traductions}} ====
+{{trad-début}}
+{{trad-fin}}
+
+=== {{S|nom|fr|flexion}} ===
+{{fr-rég|fil|s=fil}}
+'''fils''' {{pron|fil|fr}} {{m}}
+# ''Pluriel de'' [[fil]].
+#* {{exemple | lang=fr | Mes fils ont cassé mes '''fils''' de pêche.}}
+#* {{exemple | lang=fr
+ | L’eau frangeait les ramures, alourdissait les '''fils''' d’araignée, imbibait les écorces gluantes, et des feuilles tombaient, çà et là, en tournant, dans le tranquille égouttement, dans le grand calme profond.
+ | source=Alphonse de Châteaubriant, ''Monsieur des Lourdines'', chapitre 2, 1910}}
+
+=== {{S|prononciation}} ===
+{{note}}
+: Ce mot est un des rares [[:Catégorie:Homographes non homophones en français|exemples de mot français ayant deux prononciations]].
+([[#fr-flex-nom|Pluriel de « fil »]]) :
+* {{pron|fil|fr}}
+* Canada : {{pron|fɪl|fr}}
+* {{écouter|lang=fr|France (Saint-Étienne)|audio=LL-Q150 (fra)-0x010C-fils (pluriel de fil).wav}}
+
+([[#fr-nom|Enfant]]) :
+* {{pron|fis|fr}} : On ne prononce pas le {{graphie|l}}. Autrefois, le {{graphie|s}} était aussi muet, mais sa prononciation a été restaurée entre le {{siècle2|XVIII}} et le début du {{siècle2|XX}} siècle{{R|TLFi}}.
+* Canada : {{pron|fɪs|fr}}
+* {{écouter|lang=fr|France <!-- précisez svp la ville ou la région -->|fis|audio=Fr-fils.ogg}}
+* {{écouter||fis|lang=fr|audio=LL-Q150 (fra)-Guilhelma-fils.wav}}
+* {{écouter|lang=fr|France (Saint-Étienne)|audio=LL-Q150 (fra)-0x010C-fils (enfant).wav}}
+* {{écouter|lang=fr|France|audio=LL-Q150 (fra)-Fhala.K-fils.wav}}
+* {{écouter|lang=fr|France (Paris)|audio=LL-Q150 (fra)-GrandCelinien-fils.wav}}
+* {{écouter|lang=fr|France (Paris)|audio=LL-Q150 (fra)-Exilexi-fils.wav}}
+* {{écouter|lang=fr|France (Toulouse)|audio=LL-Q150 (fra)-Lepticed7-fils.wav}}
+* {{écouter|lang=fr|France (Lyon)||audio=LL-Q150 (fra)-WikiLucas00-fils.wav}}
+* {{écouter|lang=fr|France (Vosges)||audio=LL-Q150 (fra)-LoquaxFR-fils.wav}}
+* {{écouter|lang=fr|France (Vosges)||audio=LL-Q150 (fra)-Poslovitch-fils.wav}}
+* {{écouter|lang=fr|Suisse (Lausanne)||audio=LL-Q150 (fra)-Eihel-fils.wav}}
+* {{écouter|France||lang=fr|audio=LL-Q150 (fra)-Lunagrouh-fils.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-fils.wav}}
+
+==== {{S|homophones|fr}} ====
+; \fis\ :
+* [[FIS]]
+* [[fisse]], [[fissent]], [[fisses]] {{cf|lang=fr|faire}}
+; \fil\ :
+* [[fil]]
+* [[file#fr-nom|file]], [[files#fr-flex-nom|files]]
+* [[file#fr-flex-verb|file]], [[filent]], [[files#fr-flex-verb|files]] {{cf|lang=fr|filer}}
+
+=== {{S|voir aussi}} ===
+* [[Annexe:Famille en français]]
+* {{WP}}
+
+=== {{S|références}} ===
+* {{Import:DAF8}}
+<references>
+{{R|TLFi}}
+</references>
+

@@ -1,10 +1,29 @@
+import { openAssistantPanel } from '@/lib/side-panel';
 import { useState, useEffect } from 'react';
 import { settingsStorage, statsStorage } from '@/lib/storage';
 import { ENABLE_AI } from '@/lib/config';
 import { getT } from '@/lib/i18n';
 import type { Settings, AIProvider, CheckMode, UILanguage } from '@/types';
 import { DEFAULT_SETTINGS } from '@/types';
-import { Settings as SettingsIcon, Power, Keyboard, Zap, AlertCircle } from 'lucide-react';
+import { Settings as SettingsIcon, Power, Keyboard, Zap, AlertCircle, MessageSquare } from 'lucide-react';
+import { PopupVocab } from './PopupVocab';
+import { PopupReview } from './PopupReview';
+import { PopupPractice } from './PopupPractice';
+import type { VocabularyState } from '@/lib/vocabulary/model';
+import { getVocabulary, watchVocabulary } from '@/lib/vocabulary/client';
+import { badgeText, dueSummary } from '@/lib/vocabulary/review';
+
+type PopupTab = 'overview' | 'vocab' | 'review' | 'practice';
+const TAB_KEY = 'tc-popup-tab';
+
+function readTab(): PopupTab {
+  try {
+    const tab = localStorage.getItem(TAB_KEY);
+    return tab === 'vocab' || tab === 'review' || tab === 'practice' ? tab : 'overview';
+  } catch {
+    return 'overview';
+  }
+}
 
 export default function App() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
@@ -19,8 +38,30 @@ export default function App() {
   const currentUiLang: UILanguage = settings.uiLanguage || 'vi';
   const t = getT(currentUiLang);
 
+  const [windowId, setWindowId] = useState<number | null>(null);
+  /** US-07: the last tab is remembered between openings. */
+  const [tab, setTab] = useState<PopupTab>(readTab);
+  /** US-10: number of due words on the "Review" tab (also when the icon badge is turned off). */
+  const [dueBadge, setDueBadge] = useState('');
+
+  useEffect(() => {
+    const show = (state: VocabularyState) => setDueBadge(badgeText(dueSummary(Object.values(state.entries), Date.now()).due));
+    void getVocabulary().then(show, () => undefined);
+    return watchVocabulary(show);
+  }, []);
+
+  function selectTab(next: PopupTab) {
+    setTab(next);
+    try {
+      localStorage.setItem(TAB_KEY, next);
+    } catch {
+      // storage unavailable: the popup opens on the overview next time
+    }
+  }
+
   useEffect(() => {
     loadData();
+    void browser.windows.getCurrent().then((w) => setWindowId(w.id ?? null));
   }, []);
 
   async function loadData() {
@@ -59,6 +100,13 @@ export default function App() {
 
   function openOptions() {
     browser.runtime.openOptionsPage();
+  }
+
+  async function openChatPanel() {
+    // sidePanel.open() needs the click's user gesture, so it is called before any await
+    // (the window id is read when the popup loads).
+    if (windowId === null) return;
+    if (await openAssistantPanel({ windowId })) window.close();
   }
 
   const hasAnyApiKey = hasApiKey.google || hasApiKey.openai || hasApiKey.anthropic;
@@ -121,18 +169,55 @@ export default function App() {
         </div>
 
         <button
+          type="button"
           onClick={openOptions}
           className="p-1.5 text-ink-600 hover:text-ink-900 hover:bg-parchment-200 rounded-md transition-colors"
           title={t.settings}
+          aria-label={t.settings}
         >
           <SettingsIcon className="w-4 h-4" />
         </button>
       </div>
 
+      {/* Tabs (US-07) */}
+      <div role="tablist" className="flex border-b border-stone-border bg-parchment-100 px-2 text-xs">
+        {(
+          [
+            ['overview', t.popupTabOverview],
+            ['vocab', t.popupTabVocab],
+            ['review', t.popupTabReview],
+            ['practice', t.historyTab],
+          ] as const
+        ).map(([id, label]) => (
+          <button
+            key={id}
+            role="tab"
+            aria-selected={tab === id}
+            onClick={() => selectTab(id)}
+            className={`px-2.5 py-2 -mb-px border-b-2 font-medium transition-colors ${
+              tab === id ? 'border-french-bordeaux text-ink-900' : 'border-transparent text-ink-500 hover:text-ink-900'
+            }`}
+          >
+            {label}
+            {id === 'review' && dueBadge && (
+              <span className="ml-1.5 inline-block min-w-4 px-1 rounded-full bg-french-bordeaux text-white text-[10px] leading-4 text-center">
+                {dueBadge}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'vocab' && <PopupVocab t={t} lang={currentUiLang} />}
+      {tab === 'review' && <PopupReview t={t} lang={currentUiLang} />}
+      {tab === 'practice' && <PopupPractice t={t} lang={currentUiLang} />}
+
+      {tab === 'overview' && (
+      <>
       {/* Status Bar */}
       <div className="p-3.5 border-b border-stone-border bg-parchment-50">
         {!isReady ? (
-          <div className="flex items-start gap-2.5 bg-[#FAF5EB] border border-[#E8DCB8] text-ink-900 p-3 rounded-lg">
+          <div className="flex items-start gap-2.5 bg-note border border-note-line text-ink-900 p-3 rounded-lg">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-french-ochre" />
             <div className="text-xs">
               <p className="font-semibold text-french-ochre">Configuration requise</p>
@@ -169,8 +254,19 @@ export default function App() {
       {/* Controls */}
       {isReady && (
         <div className="p-3.5 space-y-2.5">
+          <button
+            onClick={() => void openChatPanel()}
+            className="w-full flex items-center gap-2.5 p-2.5 rounded-lg border border-stone-border bg-parchment-50 hover:bg-parchment-200 text-left text-xs font-medium text-ink-900 transition-all"
+          >
+            <MessageSquare className="w-4 h-4 text-french-bordeaux" />
+            {t.openChatPanel}
+          </button>
+
           {/* Enable / Disable Button */}
           <button
+            type="button"
+            role="switch"
+            aria-checked={settings.enabled}
             onClick={toggleEnabled}
             className={`w-full flex items-center justify-between p-2.5 rounded-lg border text-left transition-all ${
               settings.enabled
@@ -196,7 +292,7 @@ export default function App() {
               }`}
             >
               <div
-                className={`w-3 h-3 rounded-full bg-white transition-transform ${
+                className={`w-3 h-3 rounded-full bg-[#ffffff] shadow-sm transition-transform ${
                   settings.enabled ? 'translate-x-4' : 'translate-x-0'
                 }`}
               />
@@ -256,6 +352,8 @@ export default function App() {
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

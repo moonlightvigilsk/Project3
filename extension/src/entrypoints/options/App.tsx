@@ -1,18 +1,49 @@
 import { useState, useEffect } from 'react';
-import { settingsStorage, apiKeysStorage, dictionaryStorage, statsStorage } from '@/lib/storage';
+import { settingsStorage, apiKeysStorage, statsStorage } from '@/lib/storage';
+import { getVocabulary, unignoreSpelling, watchVocabulary } from '@/lib/vocabulary/client';
+import { spellingEntries } from '@/lib/vocabulary/model';
 import { ENABLE_AI } from '@/lib/config';
 import { getT } from '@/lib/i18n';
-import type { Settings, APIKeys, AIProvider, UILanguage } from '@/types';
+import type { Settings, APIKeys, AIProvider, UILanguage, ThemePreference } from '@/types';
 import { DEFAULT_SETTINGS, AVAILABLE_MODELS, SUPPORTED_LANGUAGES } from '@/types';
-import { Key, Settings as SettingsIcon, Book, BarChart3, Eye, EyeOff, Trash2, CheckCircle, Globe } from 'lucide-react';
+import { Key, Settings as SettingsIcon, Book, BookOpen, BarChart3, Eye, EyeOff, Trash2, CheckCircle, Globe, ChevronUp, ChevronDown } from 'lucide-react';
+import { DICTIONARY_SOURCES, moveSourcePref, normalizeSourcePrefs } from '@/lib/dictionary/sources';
+import type { DictionarySourcePref } from '@/types';
+import { ShortcutsSection } from './ShortcutsSection';
+import { BackendSection } from './BackendSection';
+import { VocabularyTab } from './VocabularyTab';
 
-type TabType = 'api-keys' | 'settings' | 'dictionary' | 'stats';
+type TabType = 'api-keys' | 'settings' | 'vocabulary' | 'dictionary' | 'stats';
+const TAB_IDS: readonly TabType[] = ['api-keys', 'settings', 'vocabulary', 'dictionary', 'stats'];
+
+/** Tab named in the URL hash (the popup opens `options.html#vocabulary`). */
+function tabFromHash(): TabType | null {
+  const id = location.hash.slice(1) as TabType;
+  if (!TAB_IDS.includes(id) || (id === 'api-keys' && !ENABLE_AI)) return null;
+  return id;
+}
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<TabType>(ENABLE_AI ? 'api-keys' : 'settings');
+  const [activeTab, setActiveTabState] = useState<TabType>(() => tabFromHash() ?? (ENABLE_AI ? 'api-keys' : 'settings'));
+
+  function setActiveTab(tab: TabType) {
+    setActiveTabState(tab);
+    history.replaceState(null, '', `#${tab}`);
+  }
+
+  useEffect(() => {
+    // Options page already open in a tab and the popup link is followed again.
+    const onHash = () => {
+      const tab = tabFromHash();
+      if (tab) setActiveTabState(tab);
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [apiKeys, setApiKeys] = useState<APIKeys>({});
-  const [dictionary, setDictionary] = useState<string[]>([]);
+  /** Words ignored by the spell check (vocabulary entries with ignoreSpelling). */
+  const [dictionary, setDictionary] = useState<{ id: string; word: string }[]>([]);
   const [stats, setStats] = useState({ checksPerformed: 0, errorsFound: 0, correctionsApplied: 0 });
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
@@ -22,13 +53,14 @@ export default function App() {
 
   useEffect(() => {
     loadData();
+    return watchVocabulary((state) => setDictionary(spellingEntries(state)));
   }, []);
 
   async function loadData() {
     const [loadedSettings, loadedKeys, loadedDictionary, loadedStats] = await Promise.all([
       settingsStorage.getValue(),
       apiKeysStorage.getValue(),
-      dictionaryStorage.getValue(),
+      getVocabulary().then(spellingEntries),
       statsStorage.getValue(),
     ]);
     setSettings(loadedSettings);
@@ -54,22 +86,22 @@ export default function App() {
     setTimeout(() => setSaveStatus('idle'), 2000);
   }
 
-  async function removeFromDictionary(word: string) {
-    const newDictionary = dictionary.filter((w) => w !== word);
-    setDictionary(newDictionary);
-    await dictionaryStorage.setValue(newDictionary);
+  async function removeFromDictionary(id: string) {
+    setDictionary((list) => list.filter((e) => e.id !== id));
+    await unignoreSpelling(id);
   }
 
   const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [
     ...(ENABLE_AI ? [{ id: 'api-keys' as TabType, label: t.tabApiKeys, icon: <Key className="w-4 h-4" /> }] : []),
     { id: 'settings' as TabType, label: t.tabSettings, icon: <SettingsIcon className="w-4 h-4" /> },
+    { id: 'vocabulary' as TabType, label: t.tabVocabulary, icon: <BookOpen className="w-4 h-4" /> },
     { id: 'dictionary' as TabType, label: t.tabDictionary, icon: <Book className="w-4 h-4" /> },
     { id: 'stats' as TabType, label: t.tabStats, icon: <BarChart3 className="w-4 h-4" /> },
   ];
 
   return (
     <div className="min-h-screen bg-parchment-100 text-ink-900 font-sans selection:bg-french-bordeaux selection:text-white">
-      <div className="max-w-4xl mx-auto py-10 px-6">
+      <div className={`${activeTab === 'vocabulary' ? 'max-w-6xl' : 'max-w-4xl'} mx-auto py-10 px-6`}>
         {/* Header */}
         <header className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-border pb-6">
           <div>
@@ -152,6 +184,7 @@ export default function App() {
             {activeTab === 'settings' && (
               <SettingsTab settings={settings} saveSettings={saveSettings} apiKeys={apiKeys} t={t} />
             )}
+            {activeTab === 'vocabulary' && <VocabularyTab t={t} lang={currentUiLang} />}
             {activeTab === 'dictionary' && (
               <DictionaryTab dictionary={dictionary} removeFromDictionary={removeFromDictionary} t={t} />
             )}
@@ -302,7 +335,7 @@ function SettingsTab({
   return (
     <div className="space-y-6 max-w-2xl">
       {!ENABLE_AI && (
-        <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl p-4 text-xs text-ink-800">
+        <div className="bg-ok border border-ok-line rounded-xl p-4 text-xs text-ink-800">
           <p className="font-semibold text-emerald-800 mb-1">{t.offlineBannerTitle}</p>
           <p className="text-ink-700 leading-relaxed">{t.offlineBannerDesc}</p>
         </div>
@@ -324,10 +357,27 @@ function SettingsTab({
         </select>
       </div>
 
+      {/* Light / dark theme (US-15) */}
+      <div>
+        <label htmlFor="theme-select" className="block text-xs font-semibold text-ink-800 uppercase tracking-wider mb-2">
+          {t.themeLabel}
+        </label>
+        <select
+          id="theme-select"
+          value={settings.theme}
+          onChange={(e) => saveSettings({ ...settings, theme: e.target.value as ThemePreference })}
+          className="w-full px-3 py-2 bg-parchment-100 border border-stone-border rounded-lg text-sm text-ink-900 focus:outline-none focus:border-french-bordeaux"
+        >
+          <option value="system">{t.themeSystem}</option>
+          <option value="light">{t.themeLight}</option>
+          <option value="dark">{t.themeDark}</option>
+        </select>
+      </div>
+
       {ENABLE_AI && (
         <>
           {availableProviders.length === 0 && (
-            <div className="bg-[#FAF5EB] border border-[#E8DCB8] rounded-xl p-4 text-xs text-ink-800">
+            <div className="bg-note border border-note-line rounded-xl p-4 text-xs text-ink-800">
               <p className="font-semibold text-french-ochre mb-1">Aucune clé API configurée</p>
               <p>Veuillez renseigner au moins une clé dans l'onglet &laquo; Clés API &raquo; pour activer l'assistant.</p>
             </div>
@@ -469,6 +519,195 @@ function SettingsTab({
           />
         </div>
       )}
+
+      {/* Selection Lookup (US-01) */}
+      <div className="pt-2 border-t border-stone-border">
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <div>
+            <label
+              htmlFor="selection-lookup-enabled"
+              className="block text-xs font-semibold text-ink-800 uppercase tracking-wider"
+            >
+              {t.selectionLookupTitle}
+            </label>
+            <p className="text-[11px] text-ink-500 mt-1">{t.selectionLookupDesc}</p>
+          </div>
+          <input
+            id="selection-lookup-enabled"
+            type="checkbox"
+            checked={settings.selectionLookup.enabled}
+            onChange={(e) =>
+              saveSettings({
+                ...settings,
+                selectionLookup: { ...settings.selectionLookup, enabled: e.target.checked },
+              })
+            }
+            className="mt-1 w-4 h-4 accent-french-bordeaux"
+          />
+        </div>
+
+        {settings.selectionLookup.enabled && (
+          <>
+            <div className="text-[11px] font-semibold text-ink-700 mb-2">{t.lookupTriggerLabel}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {(
+                [
+                  ['button', t.lookupTriggerButton, t.lookupTriggerButtonDesc],
+                  ['instant', t.lookupTriggerInstant, t.lookupTriggerInstantDesc],
+                  ['alt', t.lookupTriggerAlt, t.lookupTriggerAltDesc],
+                ] as const
+              ).map(([trigger, label, desc]) => (
+                <button
+                  key={trigger}
+                  type="button"
+                  onClick={() =>
+                    saveSettings({
+                      ...settings,
+                      selectionLookup: { ...settings.selectionLookup, trigger },
+                    })
+                  }
+                  className={`p-3.5 rounded-xl border text-left transition-all ${
+                    settings.selectionLookup.trigger === trigger
+                      ? 'border-french-bordeaux bg-french-bordeaux/5 text-ink-900 shadow-sm'
+                      : 'border-stone-border bg-parchment-100/60 hover:bg-parchment-200/60 text-ink-600'
+                  }`}
+                >
+                  <div className="text-xs font-semibold">{label}</div>
+                  <div className="text-[11px] text-ink-500 mt-1">{desc}</div>
+                </button>
+              ))}
+            </div>
+
+            <SourcePrefsEditor
+              prefs={settings.selectionLookup.sources}
+              t={t}
+              onChange={(sources) =>
+                saveSettings({
+                  ...settings,
+                  selectionLookup: { ...settings.selectionLookup, sources },
+                })
+              }
+            />
+          </>
+        )}
+      </div>
+
+      {/* Highlight saved words on pages (US-09) */}
+      <div className="pt-2 border-t border-stone-border">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <label htmlFor="vocab-highlight-enabled" className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
+              {t.vocabHighlightTitle}
+            </label>
+            <p className="text-[11px] text-ink-500 mt-1">{t.vocabHighlightDesc}</p>
+            <p className="text-[11px] mt-1.5 flex flex-wrap gap-3 text-ink-700">
+              <span>
+                <span className="px-1 rounded-sm bg-[rgba(52,96,200,0.13)] underline decoration-dotted decoration-[rgba(52,96,200,0.75)]">mot</span>{' '}
+                {t.vocabStatusNew}
+              </span>
+              <span>
+                <span className="px-1 rounded-sm bg-[rgba(234,179,8,0.2)] underline decoration-dotted decoration-[rgba(161,98,7,0.75)]">mot</span>{' '}
+                {t.vocabStatusLearning}
+              </span>
+            </p>
+          </div>
+          <input
+            id="vocab-highlight-enabled"
+            type="checkbox"
+            checked={settings.vocabHighlight}
+            onChange={(e) => saveSettings({ ...settings, vocabHighlight: e.target.checked })}
+            className="mt-1 w-4 h-4 accent-french-bordeaux"
+          />
+        </div>
+      </div>
+
+      {/* Due-word badge (US-10) */}
+      <div className="pt-2 border-t border-stone-border">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <label htmlFor="review-badge-enabled" className="block text-xs font-semibold text-ink-800 uppercase tracking-wider">
+              {t.reviewBadgeSettingTitle}
+            </label>
+            <p className="text-[11px] text-ink-500 mt-1">{t.reviewBadgeSettingDesc}</p>
+          </div>
+          <input
+            id="review-badge-enabled"
+            type="checkbox"
+            checked={settings.reviewBadge}
+            onChange={(e) => saveSettings({ ...settings, reviewBadge: e.target.checked })}
+            className="mt-1 w-4 h-4 accent-french-bordeaux"
+          />
+        </div>
+      </div>
+
+      {/* Grammar backend (US-17) */}
+      <BackendSection settings={settings} saveSettings={saveSettings} t={t} />
+
+      {/* Keyboard shortcuts (US-16) */}
+      <ShortcutsSection t={t} />
+    </div>
+  );
+}
+
+/** US-03: pick the external dictionaries shown on the lookup card and their order. */
+function SourcePrefsEditor({
+  prefs,
+  t,
+  onChange,
+}: {
+  prefs: DictionarySourcePref[];
+  t: ReturnType<typeof getT>;
+  onChange: (prefs: DictionarySourcePref[]) => void;
+}) {
+  const list = normalizeSourcePrefs(prefs);
+  const iconBtn =
+    'p-1 rounded-md text-ink-500 hover:text-ink-900 hover:bg-parchment-200/60 disabled:opacity-30 disabled:hover:bg-transparent';
+  return (
+    <div className="mt-5">
+      <div className="text-[11px] font-semibold text-ink-700">{t.lookupSourcesLabel}</div>
+      <p className="text-[11px] text-ink-500 mt-0.5 mb-2">{t.lookupSourcesDesc}</p>
+      <ul className="rounded-xl border border-stone-border divide-y divide-stone-border bg-parchment-100/60">
+        {list.map((pref, i) => {
+          const source = DICTIONARY_SOURCES[pref.id];
+          const inputId = `lookup-source-${pref.id}`;
+          return (
+            <li key={pref.id} className="flex items-center gap-3 px-3 py-2">
+              <input
+                id={inputId}
+                type="checkbox"
+                checked={pref.enabled}
+                onChange={(e) =>
+                  onChange(list.map((p) => (p.id === pref.id ? { ...p, enabled: e.target.checked } : p)))
+                }
+                className="w-4 h-4 accent-french-bordeaux"
+              />
+              <label htmlFor={inputId} className={`flex-1 text-xs ${pref.enabled ? 'text-ink-900' : 'text-ink-500'}`}>
+                {source.label}
+              </label>
+              <button
+                type="button"
+                className={iconBtn}
+                disabled={i === 0}
+                title={t.moveUp}
+                aria-label={`${t.moveUp}: ${source.label}`}
+                onClick={() => onChange(moveSourcePref(list, i, -1))}
+              >
+                <ChevronUp className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                className={iconBtn}
+                disabled={i === list.length - 1}
+                title={t.moveDown}
+                aria-label={`${t.moveDown}: ${source.label}`}
+                onClick={() => onChange(moveSourcePref(list, i, 1))}
+              >
+                <ChevronDown className="w-4 h-4" />
+              </button>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -478,8 +717,8 @@ function DictionaryTab({
   removeFromDictionary,
   t,
 }: {
-  dictionary: string[];
-  removeFromDictionary: (word: string) => void;
+  dictionary: { id: string; word: string }[];
+  removeFromDictionary: (id: string) => void;
   t: ReturnType<typeof getT>;
 }) {
   return (
@@ -503,11 +742,11 @@ function DictionaryTab({
         </div>
       ) : (
         <div className="divide-y divide-stone-border border border-stone-border rounded-xl bg-parchment-100/40 overflow-hidden">
-          {dictionary.map((word) => (
-            <div key={word} className="flex items-center justify-between px-4 py-3">
+          {dictionary.map(({ id, word }) => (
+            <div key={id} className="flex items-center justify-between px-4 py-3">
               <span className="font-mono text-xs text-ink-800">{word}</span>
               <button
-                onClick={() => removeFromDictionary(word)}
+                onClick={() => removeFromDictionary(id)}
                 className="p-1 text-ink-400 hover:text-french-bordeaux transition-colors"
                 title="Supprimer"
               >
@@ -546,13 +785,13 @@ function StatsTab({
             {t.analyses}
           </div>
         </div>
-        <div className="bg-[#FAF5EB] border border-[#E8DCB8] rounded-xl p-5 text-center">
+        <div className="bg-note border border-note-line rounded-xl p-5 text-center">
           <div className="text-3xl font-mono font-bold text-french-bordeaux">{stats.errorsFound}</div>
           <div className="text-xs font-sans uppercase tracking-wider text-ink-500 mt-1">
             {t.errors}
           </div>
         </div>
-        <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl p-5 text-center">
+        <div className="bg-ok border border-ok-line rounded-xl p-5 text-center">
           <div className="text-3xl font-mono font-bold text-emerald-700">{stats.correctionsApplied}</div>
           <div className="text-xs font-sans uppercase tracking-wider text-ink-500 mt-1">
             {t.corrected}

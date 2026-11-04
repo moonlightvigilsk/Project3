@@ -1,0 +1,27 @@
+== {{langue|fr}} ==
+=== {{S|étymologie}} ===
+: {{ébauche-étym|fr}}
+
+=== {{S|nom de famille|fr}} ===
+'''Maison''' {{pron|me.zɔ̃|mɛ.zɔ̃|fr}}
+# Nom de famille.
+#* {{exemple|lang=fr}}
+
+==== {{S|traductions}} ====
+{{trad-début}}
+* {{T|kab}} : {{trad|kab|axxam|m}}
+{{trad-fin}}
+
+=== {{S|prononciation}} ===
+* {{écouter|||lang=fr|audio=LL-Q150 (fra)-Justforoc-Maison.wav}}
+* {{écouter|France||lang=fr|audio=LL-Q150 (fra)-Adélaïde Calais WMFr-Maison.wav}}
+* {{écouter|Abidjan (Côte d'Ivoire)||lang=fr|audio=LL-Q150 (fra)-Axel toualy-Maison.wav}}
+
+=== {{S|anagrammes}} ===
+{{voir anagrammes|fr}}
+
+=== {{S|voir aussi}} ===
+* {{Wikipédia}}
+* {{Géopatro}}
+* {{Familienaam}}
+* {{Nomdefamille.eu}}

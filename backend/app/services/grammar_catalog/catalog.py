@@ -21,6 +21,8 @@ class GrammarRuleMetadata(BaseModel):
     keywords: List[str] = Field(default_factory=list)
     spacy_pattern: Optional[Dict[str, Any]] = None
     spacy_observation: Optional[str] = None
+    # "Read more" pages shown on the extension's grammar card (US-18): [{title, url}].
+    links: List[Dict[str, str]] = Field(default_factory=list)
 
 
 FRENCH_GRAMMAR_CATALOG: Dict[str, GrammarRuleMetadata] = {

@@ -55,6 +55,8 @@ class PracticeSubmitResponse(BaseModel):
     diff_tokens: List[DiffToken] = Field(default_factory=list)
     rule_check: RuleCheckResult
     llm_unavailable: bool = False
+    # Provider that wrote the feedback ("openai", "gemini", "ollama", "mock"); None when unavailable.
+    llm_provider: Optional[str] = None
     created_at: Optional[str] = None
 
 

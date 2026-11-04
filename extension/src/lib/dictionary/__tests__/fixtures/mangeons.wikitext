@@ -1,0 +1,20 @@
+== {{langue|fr}} ==
+=== {{S|verbe|fr|flexion}} ===
+{{fr-verbe-flexion|manger|ind.p.1p=oui|imp.p.1p=oui}}
+'''mangeons''' {{pron|mɑ̃.ʒɔ̃|fr}}
+# ''Première personne du pluriel du présent de l’indicatif de'' [[manger]].
+#* {{exemple | lang=fr
+ | Oh ! monsieur, nous '''mangeons''' des galettes de sarrasin et des bernicles que je détache des rochers.
+ | source=Honoré de Balzac, ''Un Drame au Bord de la Mer'', 1835}}
+# ''Première personne du pluriel de l’impératif de'' [[manger]].
+
+==== {{S|phrases}} ====
+* (1) [[celui louer devons, de qui le pain mangeons]]
+* (2) [[mangeons les riches]]
+
+=== {{S|prononciation}} ===
+* {{écouter|lang=fr|France (Brétigny-sur-Orge)||audio=LL-Q150 (fra)-Pamputt-mangeons.wav}}
+* {{écouter|lang=fr|France (Cesseras)||audio=LL-Q150 (fra)-Guilhelma-mangeons.wav}}
+
+=== {{S|anagrammes}} ===
+{{voir anagrammes|fr}}

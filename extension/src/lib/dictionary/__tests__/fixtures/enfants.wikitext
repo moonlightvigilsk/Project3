@@ -1,0 +1,21 @@
+== {{langue|fr}} ==
+=== {{S|nom|fr|flexion}} ===
+'''enfants''' {{pron|ɑ̃.fɑ̃|fr}} {{mf}}
+# ''Pluriel d''’{{lien|enfant|fr}}''.''
+#* {{exemple | lang=fr
+ | Le problème avec Christine, ce sont ses '''enfants''' qui, loin de se contenter de lui avoir déformé le ventre à jamais, la suivent partout, tout le temps, meute pleurnicharde, gavée de sucreries et de gagatisme infantile.
+ | source={{w|Raoul Mille}}, ''Overlove'', Éditions Albin Michel, 1982}}
+#* {{exemple | lang=fr
+ | Cheminant vers la rue Saint-Joseph, elle songe avec nostalgie à l’ancienne Suzanne, celle qui s’épivardait dans la rue avec ses '''enfants''' pendant les récréations et qui, parfois, grimpait au pommier en déchirant sa jupe…
+ | source=Anne-Marie Sicotte, ''Les accoucheuses'', tome 1 : ''La Fierté'', Éditions 12/21, 2015, chapitre 3}}
+
+==== {{S|synonymes}} ====
+* [[enfans]] {{avant 1835|nocat}}
+
+=== {{S|prononciation}} ===
+* {{pron|ɑ̃.fɑ̃|fr}}
+** {{écouter|lang=fr|France (Paris)|titre=les enfants|le.z‿ɑ̃.fɑ̃|audio=Fr-enfants.ogg}}
+* {{écouter|lang=fr|Canada (Shawinigan)||audio=LL-Q150 (fra)-DenisdeShawi-enfants.wav}}
+* {{écouter|lang=fr|France||audio=LL-Q150 (fra)-Mecanautes-enfants.wav}}
+* {{écouter|Normandie (France)||lang=fr|audio=LL-Q150 (fra)-Roptat-enfants.wav}}
+

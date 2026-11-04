@@ -1,0 +1,338 @@
+== {{langue|fr}} ==
+=== {{S|étymologie}} ===
+: De ''[[pomme]]'' (dans le sens de « [[fruit]] ») et ''[[terre]]''.
+: « Pomme de terre » est une expression figée, calquée sur le {{étyl|la|fr|malum terrae}}, qui est attestée en français depuis 1488 pour désigner diverses plantes à tubercules ou bulbes<ref name=REY />. Elle a désigné ensuite le [[topinambour]] sous l’influence du {{étyl|nl|fr|mot=aardappel}}, littéralement « pomme de terre ». Par la suite, le topinambour a pris son nom actuel à la suite de l’exhibition à Paris d’Amérindiens de la tribu des Tupis, et le nom "pomme de terre" a été définitivement appliqué à ''[[Solanum tuberosum]]'', tubercule popularisé notamment par Antoine Parmentier à partir de 1773.
+
+=== {{S|nom|fr}} ===
+{{fr-rég|pɔm də tɛʁ|p=pommes de terre}}
+'''pomme de terre''' {{pron|pɔm də tɛʁ|fr}} {{f}}
+[[Image:Patates.jpg|thumb|Un tas de '''pommes de terre'''. (1)]]
+[[File:Deyrolle 421981.jpg|thumb|Plant de '''pommes de terre'''. (2)]]
+[[Image:Potato flowers J2.jpg|thumb|Fleurs de la '''pomme de terre'''. (2)]]
+[[File:Vaccinium vitis-idaea 2006-08-04.jpg|thumb|Des '''pommes de terre''' (3)]]
+# {{info lex|cuisine}} [[rhizome|Rhizome]] [[souterrain]] [[tubérisé]] de forme [[plus ou moins]] [[sphérique]] et [[cabossé]], souvent un peu [[allongé]] et consommé comme légume.
+#* {{exemple | lang=fr
+ | Et quel festin ! De l’oie rôtie, des '''pommes de terre''' bouillies, du pain, du fromage !
+ | source={{w|Émile Zola}}, ''La débâcle''}}
+#* {{exemple | lang=fr
+ | Faites cuire des '''pommes de terre''' à l’eau salée, ôtez la pelure, coupez les en tranches.
+ | source=Marcel Butler, ''La bonne cuisine pour tous, ou L’art de bien vivre à bon marché'', 1885}}
+#* {{exemple | lang=fr
+ | Une soupe aux herbes et à l’eau de haricots, un morceau de veau aux '''pommes de terre''', inondé d’eau rousse en guise de jus, un plat de haricots et des cerises d’une qualité inférieure, le tout servi et mangé dans des assiettes et des plats écornés avec l’argenterie peu sonore et triste du maillechort, était-ce un menu digne de cette jolie femme ?
+ | source=Honoré de Balzac, ''La Cousine Bette'', 1846}}
+#* {{exemple | lang=fr
+ | Les '''pommes de terre''' cuites sous la cendre étaient doublement bonnes, parce qu’elles garnissaient rapidement l’estomac et assommaient la faim, et puis parce que ces '''pommes de terre''' sont, comme nourriture, ce qu’il y a de meilleur marché.
+ | source={{w|Charles-Louis Philippe}}, ''Dans la petite ville'', 1910, réédition Plein Chant, page 103}}
+#* {{exemple | lang=fr
+ | Avec leurs '''pommes de terre''', leurs châtaignes et leur seigle, les paysans du Ségala engraissent de nombreux troupeaux de porcs dont ils tirent beaucoup d'argent.
+ | source={{Citation/Ludovic Naudeau/La France se regarde/1931}}}}
+#* {{exemple | lang=fr
+ | Arsène André avait commencé de laver quelques '''pommes de terres''' qu’il cuirait sans les peler — à la baïenne — à l’étouffée.
+ | source={{Citation/Jean Rogissart/Passantes d’Octobre/1958}}}}
+#*{{exemple|lang=fr|La '''pomme de terre''' n’est pas un légume racine, mais un légume tige, les tubercules souterrains étant des tiges modifiées.|source={{w|Jean-Marie Pelt}}, ''Des légumes'', 2014}}
+#* {{exemple | lang=fr
+ | Elle travaillait à Tourlaville chez un Anglais qui exportait des '''pommes de terre'''.
+ | source=Paul Vialar, ''La Rose de la Mer'', Denoël, 1939, chapitre II}}
+# {{par extension}} {{lexique|agriculture|fr}} [[plante|Plante]] [[herbacé]]e cultivée d’origine [[andin]]e de la famille des [[solanacées]] dont la pomme de terre constitue le tubercule.
+#* {{exemple | lang=fr
+ | Nous sommes redevables à la lutte contre le Doryphore par les insecticides d’avoir pu maintenir la production de la '''pomme de terre''' dans une très grande partie de notre territoire, en dépit de l'invasion doryphorique.
+ | source=René Guy Busnel, ''Études physiologiques sur le ''Leptinotarsa decemlineata'' Say, Paris : libr. E. Le François, 1939, page 1}}
+#* {{exemple | lang=fr
+ | La '''pomme de terre''' est une plante annuelle à racine vivace.
+ | source=Albert Seigneurie, ''Dictionnaire encyclopédique de l’épicerie et des industries annexes''}}
+#* '' La '''pomme de terre''' est cultivée pour ses tubercules, riches en amidon. Ceux-ci sont consommés de différentes manières et subissent parfois des transformations artisanales (par exemple chuno ou moralla dans les Andes) ou industrielles. On en tire de l’amidon, de la fécule, de l’alcool. Différents sous-produits peuvent être utilisés : pulpe, peau… {{source|Cirad/Gret/MAE, Mémento de l’Agronome, 2002, Paris, France, Cirad/Gret/Ministère des Affaires Étrangères, page 854}}
+#* {{exemple | lang=fr
+ | La '''pomme de terre''' commune est une plante herbacée vivace qui mesure entre 0,5 et 1 mètre de haut et présente de jolies petites fleurs.
+ | source=Derek B. Munro, Ernest Small, ''Les légumes du Canada'', 1998}}
+# {{Canada|fr}} [[airelle|Airelle]] rouge, fruit proche de la [[myrtille]]<ref>[https://www.oqlf.gouv.qc.ca/ressources/bibliotheque/dictionnaires/terminologie_fruits/airelle.html Lexique des fruits rouges de l’OQLF]</ref>.
+#*{{exemple|lang=fr|Les gens ont donné à cette airelle les noms de petite '''pomme de terre''', dans le bas du fleuve, de « berri» et de graine rouge aux iles de la Madeleine.|source= Paul-Louis Martin, ''Les fruits du Québec : histoire et traditions des douceurs de la table'', 2002, page 195}}
+==== {{S|variantes}} ====
+* [[pomme de la terre]] {{par plaisanterie|nocat=1}}
+==== {{S|synonymes}} ====
+'''Légume''' :
+* [[morelle tubéreuse]]
+* [[parmentière]]
+* [[patate]] {{familier|nocat=1}} ''ou'' {{Canada|nocat=1}}
+* [[pomme]] (utilisé au pluriel, en cuisine, dans des noms de plats)
+* [[pomme du diable]]
+** ''Chez les Gens de Dieu, l’ignorance est plutôt un mérite qu’un défaut : on n’y aime pas, en général, ceux qui savent lire. Dans la secte, le peuple est chez lui ; il s’y retrouve tout entier dans ses vieilles chansons, ses vieilles croyances et ses vieilles coutumes, avec sa vénération pour les muets et les faibles d’esprit ; enfin avec son horreur pour les usages occidentaux, pour le tabac, pour la pomme de terre qui est “la '''pomme du diable'''“.'' {{source|Robert Hertz, ''Mélanges de sociologie religieuse et folklore'', Paris, Félix Alcan, 1928, page 242}}
+* [[treuffe]] {{Bourgogne|nocat=1}}
+* [[🥔]]
+* [[cartoufle]]
+
+==== {{S|dérivés}} ====
+{{(}}
+* [[alternariose de la pomme de terre]]
+* [[altise de la pomme de terre]]
+* [[charançon andin de la pomme de terre]]
+* [[charbon de la pomme de terre]]
+* [[coccinelle de la pomme de terre]]
+* [[fourchette à pomme de terre]]
+* [[jaunisse nanisante de la pomme de terre]]
+* [[maladie vermiculaire de la pomme de terre]]
+* [[mosaïque aucuba de la pomme de terre]]
+* [[mosaïque de la pomme de terre sauvage]]
+* [[mosaïque déformante de la pomme de terre]]
+* [[mosaïque jaune de la pomme de terre]]
+* [[mouche mineuse de la pomme de terre]]
+* [[nématode blanc de la pomme de terre]]
+* [[nématode doré de la pomme de terre]]
+* [[pique à pomme de terre]]
+* [[Pomme de Terre]] (nom propre)
+* [[pomme de terre-céleri]]
+* [[pomme de terre d’Afrique]]
+* [[pomme de terre de conservation]]
+* [[pomme de terre de Livingstone]]
+* [[pomme de terre de Madagascar]]
+* [[pomme de terre du Soudan]]
+* [[pomme de terre en robe de chambre]]
+* [[pomme de terre en robe des champs]]
+* [[pomme de terre grenaille]]
+* [[pomme de terre nouvelle]]
+* [[pourriture rose de la pomme de terre]]
+* [[psylle de la pomme de terre]]
+* [[puceron vert et rose de la pomme de terre]]
+* [[punaise de la pomme de terre]]
+* [[rouille commune de la pomme de terre]]
+* [[rouille péruvienne de la pomme de terre]]
+* [[teigne de la pomme de terre]]
+* [[teigne guatémaltèque de la pomme de terre]]
+* [[virus andin latent de la pomme de terre]]
+* [[virus de la fasciation de la pomme de terre]]
+* [[virus de la jaunisse nanisante de la pomme de terre]]
+* [[virus de l’anneau noir de la pomme de terre]]
+* [[virus de la marbrure de la pomme de terre des Andes]]
+* [[virus de la mosaïque aucuba de la pomme de terre]]
+* [[virus de la mosaïque de la pomme de terre sauvage]]
+* [[virus de la mosaïque déformante de la pomme de terre]]
+* [[virus de la mosaïque jaune de la pomme de terre]]
+* [[virus des nervures jaunes de la pomme de terre]]
+* [[virus du jaunissement de la pomme de terre]]
+* [[virus latent de la pomme de terre]]
+* [[virus A de la pomme de terre]]
+* [[virus M de la pomme de terre]]
+* [[virus S de la pomme de terre]]
+* [[virus T de la pomme de terre]]
+* [[virus V de la pomme de terre]]
+* [[virus X de la pomme de terre]]
+* [[virus Y de la pomme de terre]]
+{{)}}
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|légume|tubercule (botanique)|patate|frite|solanacées|plantes industrielles|plantes cultivées|racines et tubercules alimentaires}}
+;Préparations et plats :
+* [[chips]]
+* [[gratin dauphinois]]
+* [[pomme de terre en robe des champs]]
+* [[pommes frites]]
+* [[frites]]
+;Produits dérivés :
+* [[fécule]]
+
+==== {{S|hyperonymes}} ====
+* [[pomme]]
+* [[tubercule]]
+* [[solanacées]]
+* [[légume-tige]]
+* [[légume]]
+* [[féculent]]
+==== {{S|hyponymes}} ====
+;variétés et cultivars :
+* [[belle de Fontenay]]
+* [[bintje]]
+* [[bonnotte]]
+* [[bonnotte de Noirmoutier]]
+* [[ozette]]
+* [[ratte]]
+* [[Roseval]]
+* [[vitelotte]]
+;Types commerciaux ou culinaires de pommes de terre :
+* [[pomme de terre de conservation]]
+* [[pomme de terre grenaille]]
+* [[pomme de terre nouvelle]]
+==== {{S|traductions}} ====
+{{trad-début|Légume}}
+* {{T|conv}} : ''{{trad+|conv|Solanum tuberosum}}''
+* {{T|abx}} : {{trad|abx|patatas}}
+* {{T|af}} : {{trad+|af|aartappel}}
+* {{T|sq}} : {{trad+|sq|patate}}
+* {{T|gsw-fr}} : {{trad|gsw-fr|grumbeer}}, {{trad|gsw-fr|ardepfel}}
+* {{T|de}} : {{trad+|de|Kartoffel|f}}, {{trad+|de|Erdapfel|m}} {{Autriche|nocat=1}}
+* {{T|am}} : {{trad-|am|ድንች|m|tr=dənnəčč}}
+* {{T|en}} : {{trad+|en|potato}}, {{trad+|en|spud}}
+* {{T|ar}} : {{trad+|ar|بطاطا|f|dif=بَطَاطَا|tr=baṭāṭā}}, {{trad-|ar|بطاطس|m|tr=baṭāṭis|dif=بَطَاطِس}}
+* {{T|arz}} : {{trad|arz|بطاطس|tr=baṭāṭis}}
+* {{T|an}} : {{trad-|an|trunfa}}
+* {{T|aii}} : {{trad|aii|ܟܪܬܘܦܐ|m|tr=kirtawpā|dif=ܟܸܪܬܲܘܦܵܐ}}
+* {{T|hy}} : {{trad+|hy|կարտոֆիլ|tr=kartofil}}
+* {{T|as}} : {{trad-|as|আলু|tr=alu}}
+* {{T|ast}} : {{trad+|ast|pataca}}
+* {{T|ay}} : {{trad-|ay|chʼoqe}}
+* {{T|ba}} : {{trad|ba|картуф}}, {{trad|ba|бәрәңге}}
+* {{T|eu}} : {{trad-|eu|lursagar}}, {{trad+|eu|patata}}
+* {{T|bem}} : {{trad|bem|ifyumbu}}
+* {{T|bn}} : {{trad+|bn|আলু|tr=alu}}
+* {{T|be}} : {{trad+|be|бульба|f|tr=búlʹba}}
+* {{T|my}} : {{trad+|my|အာလူး|tr=alu:}}
+* {{T|br}} : {{trad+|br|aval-douar|m}}, {{trad+|br|patatezenn|f}}
+* {{T|bg}} : {{trad+|bg|картоф|tr=kartof|m}}
+* {{T|ca}} : {{trad+|ca|patata}}, {{trad+|ca|creïlla}}
+* {{T|ceb}} : {{trad|ceb|patatas}}
+* {{T|ch}} : {{trad-|ch|batatas}}
+* {{T|ccp}} : {{trad|ccp|𑄃𑄣𑄪|tr=ālu}}
+* {{T|shy}} : {{trad+|shy|baṭaṭa}}
+* {{T|zh}} : {{trad+|zh|土豆|tr=tǔdòu|tradi=土豆}}
+* {{T|ko}} : {{trad+|ko|감자|tr=gamja}}
+* {{T|kw}} : {{trad-|kw|aval-doer}}, {{trad-|kw|patata}}
+* {{T|co}} : {{trad+|co|pomu|m}}
+* {{T|ht}} : {{trad|ht|pòmdetè}} (''aussi'' {{trad|ht|ponmditè}})
+* {{T|hr}} : {{trad+|hr|krumpir|m}}
+* {{T|da}} : {{trad+|da|kartoffel}}
+* {{T|tfn}} : {{trad|tfn|galduxa}}
+* {{T|xsl}} : {{trad|xsl|nehsheh}}
+* {{T|es}} : {{trad+|es|patata|f}} {{Espagne|nocat=1}}, {{trad+|es|papa|f}} {{Amérique latine|nocat=1}}
+* {{T|eo}} : {{trad+|eo|terpomo}}
+* {{T|et}} : {{trad+|et|kartul}}
+* {{T|fo}} : {{trad+|fo|epli}}
+* {{T|fi}} : {{trad+|fi|peruna}}
+* {{T|dgr}} : {{trad|dgr|nıhse}}, {{trad|dgr|nıhshe}}
+* {{T|ksh}} : {{trad|ksh|Äädappel}}
+* {{T|fur}} : {{trad|fur|patate|f}}
+* {{T|fy}} : {{trad-|fy|ierappel}} (''aussi'' {{trad-|fy|rjappel}})
+* {{T|gd}} : {{trad-|gd|buntàta|m}}
+* {{T|ga}} : {{trad+|ga|práta|f}}, {{trad+|ga|fata|m}}
+* {{T|gag}} : {{trad|gag|kartofi}}
+* {{T|gl}} : {{trad+|gl|pataca}}
+* {{T|gallo}} : {{trad|gallo|patache}}
+* {{T|cy}} : {{trad+|cy|taten}}
+* {{T|ka}} : {{trad-|ka|კარტოფილი|tr=kartop’ili}}
+* {{T|el}} : {{trad+|el|πατάτα|tr=patáta}}
+* {{T|gu}} : {{trad-|gu|બટાટો|m|tr=baṭāṭo}}
+* {{T|hdn}} : {{trad|hdn|sgúusiid}} dialecte de Kaigani
+* {{T|ha}} : {{trad-|ha|dankalin Turawa}}
+* {{T|hi}} : {{trad+|hi|आलू|R=ālū|m}}
+* {{T|hu}} : {{trad+|hu|burgonya}}, {{trad+|hu|krumpli}}
+* {{T|hrx}} : {{trad|hrx|Grummbeer|f}}, {{trad|hrx|Kartoffel|f}}
+* {{T|sah}} : {{trad|sah|хортуоппуй}}
+* {{T|io}} : {{trad+|io|terpomo}}
+* {{T|izh}} : {{trad|izh|maamuna}}, {{trad|izh|maaomena}}
+* {{T|is}} : {{trad+|is|kartafla}}
+* {{T|it}} : {{trad+|it|patata|f}}
+* {{T|ja}} : {{trad+|ja|じゃがいも|tr=jagaimo}}
+* {{T|jje}} : {{trad|jje|지슬}}
+* {{T|kab}} : {{trad|kab|lvaṭaṭa}}
+* {{T|kgp}} : {{trad|kgp|pén'ó}}
+* {{T|krc}} : {{trad|krc|гардош}}, {{trad|krc|картоф}}
+* {{T|kk}} : {{trad+|kk|картоп|tr=kartop}}
+* {{T|km}} : {{trad+|km|ដំឡូង|tr=dɑmloung}}
+* {{T|kg}} : {{trad|kg|mbala}}
+* {{T|rw}} : {{trad-|rw|ikirayi}}
+* {{T|ky}} : {{trad+|ky|картөшкө|tr=kartöşkö}}
+* {{T|avk}} : {{trad|avk|vraze}} (légume), {{trad|avk|werne}} (plante)
+* {{T|kum}} : {{trad|kum|картоп}}
+* {{T|koy}} : {{trad|koy|bedeedes}}
+* {{T|ku}} : {{trad-|ku|petete}}, {{trad+|ku|kartol}}, {{trad+|ku|qompîr}}
+* {{T|lo}} : {{trad+|lo|ມັນຝະລັ່ງ|tr=man fa lang|tradi=ມັນຝຣັ່ງ}}
+* {{T|lv}} : {{trad+|lv|kartupelis}}
+* {{T|ln}} : {{trad-|ln|mbálá}}
+* {{T|lt}} : {{trad+|lt|bulvė}}
+* {{T|lb}} : {{trad+|lb|Gromper|f}}
+* {{T|mk}} : {{trad-|mk|компир|tr=kompir}}
+* {{T|ms}} : {{trad+|ms|kentang|tradi=کنتڠ}}
+* {{T|mt}} : {{trad-|mt|patata}}
+* {{T|gv}} : {{trad-|gv|praase}}
+* {{T|mi}} : {{trad+|mi|rīwai}}
+* {{T|mr}} : {{trad-|mr|बटाटा|m|tr=baṭāṭā}}
+* {{T|crg}} : {{trad|crg|paataak}}
+* {{T|mmr}} : {{trad|mmr|yangx yib}}
+* {{T|moh}} : {{trad|moh|ohnennà:ta}}
+* {{T|mn}} : {{trad+|mn|төмс|R=töms|tradi=ᠲᠥᠮᠦᠰᠦ}}
+* {{T|mlv}} : {{trad|mlv|bomdete}}
+* {{T|nl}} : {{trad+|nl|aardappel|m}}, {{trad+|nl|patat|m}}, {{trad+|nl|pieper}}
+* {{T|nog}} : {{trad|nog|ералма}}
+* {{T|normand}} : {{trad|normand|pouneterre}}, {{trad|normand|pounéterre}}, {{trad|normand|poume dé terre}}, {{trad|normand|patate}}
+* {{T|no}} : {{trad+|no|potet}}
+* {{T|oc}} : {{trad+|oc|patana}}; {{trad+|oc|trufa}}, {{trad-|oc|perilha}}, {{trad-|oc|tartifle}}, {{trad-|oc|mandòrra}}, {{trad-|oc|poma de terra}}
+* {{T|ryu}} : {{trad+|ryu|っんむ}}
+* {{T|or}} : {{trad-|or|ଆଳୁ|tr=āḷu}}
+* {{T|ug}} : {{trad-|ug|بەرەڭگە|tr=berengge}}, {{trad-|ug|ياڭيۇ|tr=yangyu}}
+* {{T|pap}} : {{trad|pap|batata}}
+* {{T|pa}} : {{trad+|pa|ਆਲੂ|m|tr=ālū}}
+* {{T|fa}} : {{trad+|fa|سیب زمینی|tr=sibzamini}}
+* {{T|pcd}} : {{trad|pcd|peun’tierre}}, {{trad|pcd|pétote}}, {{trad|pcd|peimme-tierre}}, {{trad|pcd|pennetière}}, {{trad|pcd|pomme-tierre}}, {{trad|pcd|truche}}, {{trad|pcd|crompire}}
+* {{T|myp}} : {{trad|myp|báagaháí}}
+* {{T|pl}} : {{trad+|pl|ziemniak|m}}, {{trad+|pl|kartofel|m}}
+* {{T|pt}} : {{trad+|pt|batata|f}}, {{trad+|pt|batatinha}}
+* {{T|qu}} : {{trad-|qu|papa}}, {{trad-|qu|amkha}}
+* {{T|rhg}} : {{trad|rhg|alu}}, {{trad|rhg|aalu}}
+* {{T|rm}} : {{trad-|rm|tartuffel}}
+* {{T|ro}} : {{trad+|ro|cartof}}
+* {{T|ru}} : {{trad+|ru|картофель|tr=kartofel’}}, {{trad+|ru|картошка|tr=kartoška|f}}, {{trad+|ru|земляное яблоко|tr=zemlânoe âbloko|n}}
+* {{T|rue}} : {{trad|rue|бандурка|f|tr=bandúrka}}
+* {{T|rsk}} : {{trad|rsk|кромпля|f|tr=kromplja}}
+* {{T|se}} : {{trad|se|buđet}}, {{trad|se|bohtás}}, {{trad|se|buđeita}}
+* {{T|sm}} : {{trad-|sm|pakeka}}
+* {{T|sr}} : {{trad+|sr|кромпир|R=krompir|m}}
+* {{T|sn}} : {{trad-|sn|mbatatisi}}
+* {{T|scn}} : {{trad+|scn|patata}}
+* {{T|sk}} : {{trad+|sk|zemiak}}
+* {{T|sl}} : {{trad+|sl|krompir|m}}
+* {{T|solrésol}} : {{trad|solrésol|domidorefa}}, {{trad|solrésol|d'omidorefa}}
+* {{T|hsb}} : {{trad-|hsb|běrna|f}}
+* {{T|nso}} : {{trad|nso|tapola}}
+* {{T|srn}} : {{trad|srn|patata}}
+* {{T|sv}} : {{trad+|sv|potatis|c}}
+* {{T|sw}} : {{trad+|sw|kiazi}}
+* {{T|ss}} : {{trad-|ss|li-tábhane}}
+* {{T|tg}} : {{trad+|tg|себзаминӣ|tr=sebzamini}}
+* {{T|tl}} : {{trad-|tl|patátas}}
+* {{T|crh}} : {{trad|crh|qartop}}
+* {{T|tt}} : {{trad-|tt|bäräñge}}, {{trad+|tt|бәрәңге}}
+* {{T|cs}} : {{trad+|cs|brambor}}, {{trad+|cs|erteple}}
+* {{T|cv}} : {{trad|cv|çĕр улми}}
+* {{T|tet}} : {{trad|tet|fehuk-ropa}}
+* {{T|th}} : {{trad+|th|มันฝรั่ง|tr=man-fà-ràng}}
+* {{T|bo}} : {{trad-|bo|ཞོ་ཁོག|tr=zho khog}}, {{trad-|bo|ཞོག་གོག|tr=zhog gog}}
+* {{T|kim}} : {{trad|kim|һортооӄа}}, {{trad|kim|һортоопӄа}}
+* {{T|to}} : {{trad-|to|pateta}}
+* {{T|tourangeau}} : {{trad|tourangeau|topine}}
+* {{T|tri}} : {{trad|tri|napi}}
+* {{T|tr}} : {{trad+|tr|patates}}
+* {{T|tk}} : {{trad-|tk|kartoşka}}
+* {{T|uk}} : {{trad+|uk|картопля|R=kartoplya}}
+* {{T|uum}} : {{trad|uum|картоплӱ}}
+* {{T|vi}} : {{trad+|vi|khoai tây}}, {{trad-|vi|khoai lang tây}}
+* {{T|vo}} : {{trad+|vo|pötet}}
+* {{T|vot}} : {{trad|vot|maamuna}}
+* {{T|wa}} : {{trad+|wa|crompire|f}}, {{trad+|wa|canada|m}}, {{trad+|wa|petote|f}}, {{trad+|wa|truke|f}}
+* {{T|zu}} : {{trad+|zu|ilizambane}}, {{trad+|zu|izambane}}
+{{trad-fin}}
+
+==== {{S|dérivés autres langues}} ====
+* {{L|mlv}} : {{lien|bomdete|mlv}}
+
+=== {{S|prononciation}} ===
+* {{pron|pɔm də tɛʁ|fr}}
+* {{écouter||pɔm də tɛʁ|lang=fr|audio=Fr-la pomme de terre.ogg}}
+* {{écouter|lang=fr|France (Massy)|audio=LL-Q150 (fra)-X-Javier-pomme de terre.wav}}
+* {{écouter|lang=fr|France|audio=LL-Q150 (fra)-Fhala.K-pomme de terre.wav}}
+* {{écouter|lang=fr|France (Paris)|audio=LL-Q150 (fra)-GrandCelinien-pomme de terre.wav}}
+* {{écouter|lang=fr||audio=LL-Q150 (fra)-Justforoc-pomme de terre.wav}}
+* {{écouter|France (Paris)|pɔm də tɛʁ|audio=Fr-pomme de terre.ogg|lang=fr}}
+* {{écouter|lang=fr|France (Vosges)||audio=LL-Q150 (fra)-LoquaxFR-pomme de terre.wav}}
+* {{écouter|lang=fr|France (Vosges)||audio=LL-Q150 (fra)-Poslovitch-pomme de terre.wav}}
+* {{écouter|Perpignan (France)|pɔm də tɛʁ|lang=fr|audio=LL-Q150 (fra)-Jean-Claude B. (BiblioCanet66)-pomme de terre.wav}}
+* {{écouter|Canet-en-Roussillon (France)|pɔm də tɛʁ|lang=fr|audio=LL-Q150 (fra)-Damian B. (BiblioCanet66)-pomme de terre.wav}}
+* {{écouter|Somain (France)||lang=fr|audio=LL-Q150 (fra)-Jérémy-Günther-Heinz Jähnick-pomme de terre.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-pomme de terre.wav}}
+* {{écouter|Paris (France)||lang=fr|audio=LL-Q150 (fra)-C. (Hildepont)-pomme de terre.wav}}
+
+=== {{S|voir aussi}} ===
+* {{WP}}
+* {{WP|mouche mineuse de la pomme de terre}}
+
+=== {{S|références}} ===
+<references><ref name=REY >''Le Robert, dictionnaire historique de la langue française'' sous la direction d’{{w|Alain Rey}}, éditions Le Robert, Paris 1991, {{ISBN|2-85036-187-9}}, p. 1574.</ref></references>
+
+[[Catégorie:Légumes en français]]
+[[Catégorie:Pommes de terre en français|*]]

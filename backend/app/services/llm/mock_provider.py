@@ -91,14 +91,21 @@ class MockLLMProvider(LLMClient):
         elif not rule_check.pattern_matched:
             is_correct = False
             uses_construct = False
-            comment = "Câu chưa sử dụng cấu trúc tương lai gần (aller + infinitif)."
-            corrected_sentence = f"{sentence.rstrip('.')} faire un voyage."
+            is_aller = target_rule_id.lower().strip() in ("aller_infinitif", "futur_proche")
+            if is_aller:
+                comment = "Câu chưa sử dụng cấu trúc tương lai gần (aller + infinitif)."
+                corrected_sentence = f"{sentence.rstrip('.')} faire un voyage."
+                explanation = "Cấu trúc 'aller + infinitif' yêu cầu một động từ nguyên mẫu hành động theo sau trợ từ 'aller'."
+            else:
+                comment = f"Câu chưa sử dụng cấu trúc {target_rule_name}."
+                corrected_sentence = None
+                explanation = f"Không tìm thấy cấu trúc {target_rule_name} trong câu."
             errors.append(
                 PracticeErrorDetail(
                     span=sentence,
                     type="missing_construct",
-                    explanation_vi="Cấu trúc 'aller + infinitif' yêu cầu một động từ nguyên mẫu hành động theo sau trợ từ 'aller'.",
-                    suggestion=corrected_sentence,
+                    explanation_vi=explanation,
+                    suggestion=corrected_sentence or target_rule_name,
                 )
             )
 

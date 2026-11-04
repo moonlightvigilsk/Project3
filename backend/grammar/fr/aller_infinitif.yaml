@@ -6,6 +6,11 @@ formula: "Sujet + aller (présent de l'indicatif) + verbe à l'infinitif"
 level: "A1-A2"
 category: "Temps du verbe"
 
+# "Read more" links of the extension's grammar card (US-18); trusted sites only.
+links:
+  - title: "Wiktionnaire : futur proche"
+    url: "https://fr.wiktionary.org/wiki/futur_proche"
+
 spacy_observation: |
   Quan sát thực tế trên mô hình spaCy 'fr_core_news_md':
   1. Câu positive:

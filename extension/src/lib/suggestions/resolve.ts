@@ -1,4 +1,5 @@
 import type { GrammarSuggestion } from '@/types';
+import { replacementFor } from './case';
 
 /**
  * Normalizes text to handle apostrophes, quotes, unicode NFC form, and line breaks.
@@ -27,7 +28,8 @@ function buildFlexibleRegex(str: string): RegExp {
   let pattern = escapeRegex(normalized).replace(/'/g, "['’‘ʻ`]");
   // Replace spaces with flexible whitespace
   pattern = pattern.replace(/\s+/g, '\\s+');
-  return new RegExp(pattern, 'g');
+  // Case-insensitive (US-12): "tu as fais" from a rule or an AI must find "Tu as fais".
+  return new RegExp(pattern, 'giu');
 }
 
 /**
@@ -51,12 +53,19 @@ export function resolveSuggestions(
   const resolved: GrammarSuggestion[] = [];
 
   for (const raw of rawSuggestions) {
-    if (!raw.original || raw.original.trim() === '') {
+    if (!raw.original) {
+      continue;
+    }
+    // Whitespace-only originals (double space) are kept only at their exact position:
+    // searching the text for "  " elsewhere would underline an unrelated place.
+    const whitespaceOnly = raw.original.trim() === '';
+    if (whitespaceOnly && text.substring(raw.startIndex, raw.endIndex) !== raw.original) {
       continue;
     }
 
-    // Skip suggestions where original text equals replacement
-    if (raw.original.trim() === raw.replacement.trim()) {
+    // Skip suggestions where original text equals replacement. Compared as is: a change
+    // of spaces only (" ," -> ",", "  " -> " ") is a real punctuation correction.
+    if (raw.original === raw.replacement) {
       continue;
     }
 
@@ -149,9 +158,13 @@ export function resolveSuggestions(
       continue;
     }
 
+    // US-12: keep the capitals of the corrected text ("Tu as fais" -> "Tu as fait").
+    const replacement = replacementFor(resolvedOriginal, raw.replacement);
+    if (replacement === resolvedOriginal) continue;
     resolved.push({
       ...raw,
       original: resolvedOriginal,
+      replacement,
       startIndex: finalStart,
       endIndex: finalEnd,
     });

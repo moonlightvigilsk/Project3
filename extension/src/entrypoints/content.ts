@@ -5,13 +5,30 @@ import {
   isEditableElement,
   getTargetEditableElement,
   getTextFromElement,
-  setTextInElement,
+  getContenteditableRange,
   applyReplacementToElement,
   getSuggestionColor,
   getSuggestionLabel,
 } from "@/lib/utils";
+import { getTextareaCharacterRects } from "@/lib/text-rects";
+import { SelectionLookupController } from "@/lib/selection/selection-lookup";
+import { clearContextHighlight, highlightContext } from "@/lib/selection/context-highlight";
+import type { LookupResponse } from "@/lib/dictionary/types";
+import { NO_OFFSCREEN } from "@/lib/audio-messages";
+import { CONTEXT_MENU_LOOKUP } from "@/lib/selection/messages";
 import type { GrammarSuggestion, GrammarCheckResult, Settings } from "@/types";
 import { DEFAULT_SETTINGS } from "@/types";
+import { buildTextModel, offsetOfPosition, type TextModel } from "@/lib/editable-text";
+import { VocabHighlighter, isHighlightSupported } from "@/lib/vocab-highlight/highlighter";
+import { getVocabulary, watchVocabulary } from "@/lib/vocabulary/client";
+import { savedEntries } from "@/lib/vocabulary/model";
+import { OVERLAY_THEME_CSS, setThemeAttribute } from "@/lib/theme";
+import { captureFocusOrigin, containsFocus, deepActiveElement, focusInto, trapFocus, type FocusOrigin } from "@/lib/focus";
+import { COMMANDS, RUN_COMMAND, type AssistantCommandReply } from "@/lib/commands";
+import { nextSuggestion, suggestionAtCaret } from "@/lib/suggestions/navigation";
+import { GRAMMAR_RULE, type GrammarRuleReply } from "@/lib/grammar/rule";
+import { PRACTICE_SUBMIT, type PracticeReply } from "@/lib/grammar/practice";
+import { ANALYZE_GRAMMAR, CONTEXT_MENU_ANALYZE, OPEN_OPTIONS, type AnalyzeGrammarReply } from "@/lib/grammar/types";
 
 export default defineContentScript({
   matches: ["<all_urls>"],
@@ -32,6 +49,9 @@ export default defineContentScript({
     let currentRequestId = 0;
     let unwatchSettings: (() => void) | null = null;
     let popoverCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+    let selectionLookup: SelectionLookupController | null = null;
+    /** Where the user dragged the status button, per text field (see makeStatusButtonDraggable). */
+    const statusButtonOffsets = new WeakMap<HTMLElement, { dx: number; dy: number }>();
 
     // Load initial settings
     try {
@@ -48,11 +68,50 @@ export default defineContentScript({
           if (!settings.enabled) {
             cleanup();
           }
+          if (!settings.enabled || !settings.selectionLookup.enabled) {
+            selectionLookup?.hideAll();
+          } else {
+            selectionLookup?.refreshSettings();
+          }
+          syncVocabHighlight();
+          if (overlayContainer) setThemeAttribute(overlayContainer, settings.theme);
         }
       });
     } catch (error) {
       console.error("Failed to watch settings:", error);
     }
+
+    // US-09: highlight saved words (new / learning) on the page, when enabled in the options.
+    const vocabHighlighter = isHighlightSupported() ? new VocabHighlighter(document) : null;
+    let unwatchVocabHighlight: (() => void) | null = null;
+
+    function syncVocabHighlight() {
+      if (!vocabHighlighter) return;
+      const on = settings.enabled && settings.vocabHighlight;
+      if (on && !unwatchVocabHighlight) {
+        let changed = false;
+        unwatchVocabHighlight = watchVocabulary((state) => {
+          changed = true;
+          vocabHighlighter.update(savedEntries(state));
+        });
+        void getVocabulary()
+          .then((state) => {
+            // Skipped when stopped meanwhile, or when a newer notebook already arrived.
+            if (unwatchVocabHighlight && !changed) vocabHighlighter.update(savedEntries(state));
+          })
+          .catch(() => undefined);
+      } else if (!on) {
+        stopVocabHighlight();
+      }
+    }
+
+    function stopVocabHighlight() {
+      unwatchVocabHighlight?.();
+      unwatchVocabHighlight = null;
+      vocabHighlighter?.stop();
+    }
+
+    syncVocabHighlight();
 
     // TextareaObserver for dynamic element detection & removal
     class TextareaObserver {
@@ -85,6 +144,75 @@ export default defineContentScript({
 
     const textareaObserver = new TextareaObserver();
     textareaObserver.start();
+
+    // US-01: lookup button/card when the user selects a word or short phrase
+    selectionLookup = new SelectionLookupController({
+      getShadowRoot: () => createOverlayContainer().shadowRoot!,
+      getHost: () => overlayContainer,
+      getSettings: () => settings,
+      isSuppressed: () => !!currentPopover || !!suggestionPanel,
+      lookup: async (text) => {
+        const reply = await browser.runtime.sendMessage({
+          type: "LOOKUP_WORD",
+          payload: { text },
+        });
+        if (reply?.success && reply.response) return reply.response as LookupResponse;
+        throw new Error(reply?.error ?? "Lookup failed");
+      },
+      playAudio: async (url) => {
+        const reply = await browser.runtime.sendMessage({ type: "PLAY_AUDIO", payload: { url } });
+        if (reply?.success) return;
+        // No offscreen documents (Firefox): play here; the page's CSP may still block it.
+        if (reply?.error === NO_OFFSCREEN) {
+          await new Promise<void>((resolve, reject) => {
+            const audio = new Audio(url);
+            audio.addEventListener("ended", () => resolve());
+            audio.addEventListener("error", () => reject(new Error("audio error")));
+            audio.play().catch(reject);
+          });
+          return;
+        }
+        throw new Error(reply?.error ?? "Audio playback failed");
+      },
+      askAbout: (sentence) => {
+        if (sentence.range) highlightContext(sentence.range);
+        void browser.runtime
+          .sendMessage({
+            type: "OPEN_CHAT",
+            payload: { sentence: sentence.text, url: location.href, title: document.title },
+          })
+          .catch((error: unknown) => console.warn("TextChecker: could not open the chat panel", error));
+      },
+      // US-17: grammar structures of a sentence (backend /api/grammar/analyze via the background).
+      analyze: async (sentence) => {
+        const reply = (await browser.runtime.sendMessage({
+          type: ANALYZE_GRAMMAR,
+          payload: { sentence },
+        })) as { success?: boolean; reply?: AnalyzeGrammarReply; error?: string } | undefined;
+        if (reply?.success && reply.reply) return reply.reply;
+        throw new Error(reply?.error ?? "Analysis failed");
+      },
+      openSettings: () => {
+        void browser.runtime.sendMessage({ type: OPEN_OPTIONS }).catch(() => {});
+      },
+      // US-18: grammar card of one rule (backend /api/grammar/rules/{id} via the background).
+      ruleDetail: async (ruleId) => {
+        const reply = (await browser.runtime.sendMessage({ type: GRAMMAR_RULE, payload: { ruleId } })) as
+          | { success?: boolean; reply?: GrammarRuleReply; error?: string }
+          | undefined;
+        if (reply?.success && reply.reply) return reply.reply;
+        throw new Error(reply?.error ?? "Grammar card failed");
+      },
+      // US-19: grade a sentence (backend /api/practice/submit via the background, which keeps the history).
+      practice: async (req) => {
+        const reply = (await browser.runtime.sendMessage({ type: PRACTICE_SUBMIT, payload: req })) as
+          | { success?: boolean; reply?: PracticeReply; error?: string }
+          | undefined;
+        if (reply?.success && reply.reply) return reply.reply;
+        throw new Error(reply?.error ?? "Practice failed");
+      },
+    });
+    selectionLookup.start();
 
     // Google Docs Handler - special support for Google Docs canvas-based editor
     class GoogleDocsHandler {
@@ -301,37 +429,44 @@ export default defineContentScript({
         align-items: center;
         gap: 6px;
         padding: 5px 10px;
-        background: #FDFCF9;
-        border: 1px solid #E7E5E4;
+        background: var(--tc-surface);
+        border: 1px solid var(--tc-border);
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(28, 25, 23, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         cursor: pointer;
         pointer-events: auto;
         font-size: 12px;
         font-family: 'JetBrains Mono', monospace;
-        color: #292524;
-        transition: all 0.2s;
+        color: var(--tc-text-2);
+        /* Not left/top: the button must jump to its spot and follow drags without lag. */
+        transition: box-shadow 0.2s, background 0.2s, border-color 0.2s;
         z-index: 2147483646;
       }
 
+      .tc-status-btn.tc-dragging {
+        cursor: grabbing;
+        transition: none;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+      }
+
       .tc-status-btn:hover {
-        box-shadow: 0 4px 14px rgba(28, 25, 23, 0.12);
-        border-color: #D6D3D1;
-        background: #FAF8F5;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        border-color: var(--tc-border-strong);
+        background: var(--tc-surface-2);
       }
 
       .tc-status-btn.tc-loading {
-        color: #78716C;
+        color: var(--tc-muted);
       }
 
       .tc-status-btn.tc-has-errors {
-        border-color: #F87171;
-        background: #FFF5F5;
+        border-color: var(--tc-danger-border);
+        background: var(--tc-danger-bg);
       }
 
       .tc-status-btn.tc-no-errors {
-        border-color: #86EFAC;
-        background: #F0FDF4;
+        border-color: var(--tc-ok-border);
+        background: var(--tc-ok-bg);
       }
 
       .tc-status-icon {
@@ -350,8 +485,8 @@ export default defineContentScript({
       .tc-spinner {
         width: 14px;
         height: 14px;
-        border: 2px solid #E8E3DA;
-        border-top-color: #800020;
+        border: 2px solid var(--tc-border-strong);
+        border-top-color: var(--tc-accent);
         border-radius: 50%;
         animation: tc-spin 0.8s linear infinite;
       }
@@ -361,8 +496,8 @@ export default defineContentScript({
       }
 
       .tc-error-count {
-        background: #800020;
-        color: #FFFFFF;
+        background: var(--tc-accent);
+        color: var(--tc-surface);
         font-size: 11px;
         font-weight: 600;
         font-family: 'JetBrains Mono', monospace;
@@ -375,10 +510,10 @@ export default defineContentScript({
       /* Suggestion Panel */
       .tc-panel {
         position: fixed;
-        background: #FDFCF9;
-        border: 1px solid #E7E5E4;
+        background: var(--tc-surface);
+        border: 1px solid var(--tc-border);
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(28, 25, 23, 0.12), 0 0 0 1px rgba(28, 25, 23, 0.04);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
         width: 360px;
         max-height: 420px;
         overflow: hidden;
@@ -397,15 +532,15 @@ export default defineContentScript({
         align-items: center;
         justify-content: space-between;
         padding: 10px 14px;
-        border-bottom: 1px solid #E7E5E4;
-        background: #FAF8F5;
+        border-bottom: 1px solid var(--tc-border);
+        background: var(--tc-surface-2);
       }
 
       .tc-panel-title {
         font-family: 'Lora', Georgia, serif;
         font-weight: 700;
         font-size: 14px;
-        color: #1C1917;
+        color: var(--tc-text);
         display: flex;
         align-items: center;
         gap: 8px;
@@ -415,7 +550,7 @@ export default defineContentScript({
       .tc-panel-title svg {
         width: 16px;
         height: 16px;
-        color: #800020;
+        color: var(--tc-accent);
       }
 
       .tc-panel-close {
@@ -423,7 +558,7 @@ export default defineContentScript({
         border: none;
         cursor: pointer;
         padding: 4px;
-        color: #78716C;
+        color: var(--tc-muted);
         border-radius: 4px;
         display: flex;
         align-items: center;
@@ -432,20 +567,20 @@ export default defineContentScript({
       }
 
       .tc-panel-close:hover {
-        background: #F2EFE9;
-        color: #1C1917;
+        background: var(--tc-surface-3);
+        color: var(--tc-text);
       }
 
       .tc-panel-body {
         max-height: 350px;
         overflow-y: auto;
-        background: #FDFCF9;
+        background: var(--tc-surface);
       }
 
       .tc-panel-empty {
         padding: 32px 16px;
         text-align: center;
-        color: #78716C;
+        color: var(--tc-muted);
         font-family: 'Lora', Georgia, serif;
       }
 
@@ -457,13 +592,13 @@ export default defineContentScript({
       /* Individual suggestion card in panel */
       .tc-suggestion-card {
         padding: 12px 14px;
-        border-bottom: 1px solid #F2EFE9;
+        border-bottom: 1px solid var(--tc-surface-3);
         cursor: pointer;
         transition: background 0.15s;
       }
 
       .tc-suggestion-card:hover {
-        background: #FAF8F5;
+        background: var(--tc-surface-2);
       }
 
       .tc-suggestion-card:last-child {
@@ -496,23 +631,23 @@ export default defineContentScript({
       }
 
       .tc-original {
-        color: #800020;
+        color: var(--tc-accent);
         text-decoration: line-through;
         font-family: 'Lora', Georgia, serif;
       }
 
       .tc-arrow {
-        color: #A8A29E;
+        color: var(--tc-faint);
       }
 
       .tc-replacement {
-        color: #15803D;
+        color: var(--tc-success);
         font-weight: 600;
         font-family: 'Lora', Georgia, serif;
       }
 
       .tc-explanation {
-        color: #57534E;
+        color: var(--tc-text-3);
         font-size: 12px;
         margin-top: 4px;
         line-height: 1.45;
@@ -536,24 +671,24 @@ export default defineContentScript({
       }
 
       .tc-btn-primary {
-        background: #1C1917;
-        color: #FAF8F5;
-        border-color: #1C1917;
+        background: var(--tc-text);
+        color: var(--tc-surface-2);
+        border-color: var(--tc-text);
       }
 
       .tc-btn-primary:hover {
-        background: #292524;
+        background: var(--tc-text-2);
       }
 
       .tc-btn-secondary {
-        background: #F2EFE9;
-        color: #44403C;
-        border-color: #E8E3DA;
+        background: var(--tc-surface-3);
+        color: var(--tc-text-2);
+        border-color: var(--tc-border-strong);
       }
 
       .tc-btn-secondary:hover {
-        background: #E8E3DA;
-        color: #1C1917;
+        background: var(--tc-border-strong);
+        color: var(--tc-text);
       }
 
       .tc-btn-sm {
@@ -561,13 +696,21 @@ export default defineContentScript({
         font-size: 11px;
       }
 
+      /* Keyboard focus (US-16) */
+      .tc-btn:focus-visible,
+      .tc-panel-close:focus-visible,
+      .tc-status-btn:focus-visible {
+        outline: 2px solid var(--tc-accent);
+        outline-offset: 2px;
+      }
+
       /* Inline Popover (shown on underline click) */
       .tc-popover {
         position: fixed;
-        background: #FDFCF9;
-        border: 1px solid #E7E5E4;
+        background: var(--tc-surface);
+        border: 1px solid var(--tc-border);
         border-radius: 10px;
-        box-shadow: 0 8px 24px rgba(28, 25, 23, 0.14), 0 0 0 1px rgba(28, 25, 23, 0.04);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.04);
         padding: 12px;
         min-width: 280px;
         max-width: 380px;
@@ -601,15 +744,15 @@ export default defineContentScript({
 
       .tc-btn-text {
         background: none;
-        color: #78716C;
+        color: var(--tc-muted);
         padding: 5px 8px;
         flex: 0 !important;
         border: none;
       }
 
       .tc-btn-text:hover {
-        color: #1C1917;
-        background: #F2EFE9;
+        color: var(--tc-text);
+        background: var(--tc-surface-3);
       }
     `;
 
@@ -623,10 +766,11 @@ export default defineContentScript({
       overlayContainer.id = "textchecker-overlay";
       overlayContainer.style.cssText =
         "position: fixed; top: 0; left: 0; width: 0; height: 0; pointer-events: none; z-index: 2147483647;";
+      setThemeAttribute(overlayContainer, settings.theme);
 
       const shadow = overlayContainer.attachShadow({ mode: "open" });
       const style = document.createElement("style");
-      style.textContent = STYLES;
+      style.textContent = OVERLAY_THEME_CSS + STYLES;
       shadow.appendChild(style);
       document.body.appendChild(overlayContainer);
 
@@ -710,11 +854,8 @@ export default defineContentScript({
           : "tc-no-errors"
       }`;
 
-      // Position at bottom-right of the element
-      const btnLeft = Math.min(rect.right - 80, window.innerWidth - 90);
-      const btnTop = Math.min(rect.bottom - 32, window.innerHeight - 40);
-
-      statusButton.style.cssText = `left: ${btnLeft}px; top: ${btnTop}px;`;
+      // Bottom-right of the element, shifted by wherever the user dragged it
+      statusButton.style.cssText = "left: -9999px; top: -9999px;";
 
       if (state === "loading") {
         statusButton.innerHTML = `
@@ -722,20 +863,21 @@ export default defineContentScript({
         `;
       } else if (state === "errors") {
         statusButton.innerHTML = `
-          <div class="tc-status-icon" style="color: #ef4444;">${ICONS.alert}</div>
+          <div class="tc-status-icon" style="color: var(--tc-danger-icon);">${ICONS.alert}</div>
           <span class="tc-error-count">${errorCount}</span>
         `;
-        statusButton.title = t.issuesFound(errorCount);
+        statusButton.title = `${t.issuesFound(errorCount)}\n${t.statusDragHint}`;
       } else if (state === "error") {
         statusButton.innerHTML = `
-          <div class="tc-status-icon" style="color: #ef4444;">${ICONS.alert}</div>
-          <span style="color: #dc2626; font-size: 11px; font-weight: 600;">${t.errorState}</span>
+          <div class="tc-status-icon" style="color: var(--tc-danger-icon);">${ICONS.alert}</div>
+          <span style="color: var(--tc-danger); font-size: 11px; font-weight: 600;">${t.errorState}</span>
         `;
-        statusButton.title = t.errorState;
+        statusButton.title = `${t.errorState}\n${t.statusDragHint}`;
       } else {
+        statusButton.title = t.statusDragHint;
         statusButton.innerHTML = `
-          <div class="tc-status-icon" style="color: #22c55e;">${ICONS.check}</div>
-          <span style="color: #16a34a;">${t.allGood}</span>
+          <div class="tc-status-icon" style="color: var(--tc-success-icon);">${ICONS.check}</div>
+          <span style="color: var(--tc-success);">${t.allGood}</span>
         `;
       }
 
@@ -745,15 +887,92 @@ export default defineContentScript({
         e.stopPropagation();
       });
 
-      statusButton.addEventListener("click", (e) => {
+      const btn = statusButton;
+      const dragged = makeStatusButtonDraggable(btn);
+
+      btn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (dragged()) return; // the press ended a drag, not a click
         if (state === "errors" && currentSuggestions.length > 0) {
           toggleSuggestionPanel();
         }
       });
 
-      shadow.appendChild(statusButton);
+      // US-16: the status button is a real button for keyboard and screen reader users.
+      btn.setAttribute("role", "button");
+      btn.tabIndex = 0;
+      btn.setAttribute("aria-label", (btn.title || t.allGood).split("\n")[0]);
+      btn.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (state === "errors" && currentSuggestions.length > 0) {
+          if (suggestionPanel) hideSuggestionPanel();
+          else showSuggestionPanel({ focus: true });
+        }
+      });
+
+      btn.addEventListener("dblclick", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (activeElement) statusButtonOffsets.delete(activeElement);
+        updateStatusButtonPosition();
+      });
+
+      shadow.appendChild(btn);
+      updateStatusButtonPosition();
+    }
+
+    /**
+     * Lets the user drag the status button away from text it covers. The offset is kept
+     * per field (relative to its default bottom-right spot) so the button follows the
+     * field when it scrolls or resizes, and survives the button being re-rendered.
+     */
+    function makeStatusButtonDraggable(btn: HTMLDivElement): () => boolean {
+      const DRAG_THRESHOLD = 4;
+      let start: { x: number; y: number; left: number; top: number } | null = null;
+      let moved = false;
+
+      btn.addEventListener("pointerdown", (e) => {
+        if (e.button !== 0) return;
+        moved = false;
+        start = { x: e.clientX, y: e.clientY, left: btn.offsetLeft, top: btn.offsetTop };
+        btn.setPointerCapture(e.pointerId);
+      });
+
+      btn.addEventListener("pointermove", (e) => {
+        if (!start) return;
+        const dx = e.clientX - start.x;
+        const dy = e.clientY - start.y;
+        if (!moved && Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+        if (!moved) {
+          moved = true;
+          btn.classList.add("tc-dragging");
+          hideSuggestionPanel();
+        }
+        const pos = clampStatusButton(btn, start.left + dx, start.top + dy);
+        btn.style.left = `${pos.left}px`;
+        btn.style.top = `${pos.top}px`;
+      });
+
+      const end = (e: PointerEvent) => {
+        if (!start) return;
+        start = null;
+        if (btn.hasPointerCapture(e.pointerId)) btn.releasePointerCapture(e.pointerId);
+        btn.classList.remove("tc-dragging");
+        if (moved && activeElement) {
+          const base = defaultStatusButtonPosition(activeElement.getBoundingClientRect());
+          statusButtonOffsets.set(activeElement, {
+            dx: btn.offsetLeft - base.left,
+            dy: btn.offsetTop - base.top,
+          });
+        }
+      };
+      btn.addEventListener("pointerup", end);
+      btn.addEventListener("pointercancel", end);
+
+      return () => moved;
     }
 
     function hideStatusButton() {
@@ -774,8 +993,12 @@ export default defineContentScript({
       }
     }
 
-    function showSuggestionPanel() {
+    let releasePanelTrap: (() => void) | null = null;
+    let panelOrigin: FocusOrigin | null = null;
+
+    function showSuggestionPanel(options: { focus?: boolean } = {}) {
       if (!activeElement || currentSuggestions.length === 0) return;
+      selectionLookup?.hideAll();
 
       const uiLang = settings.uiLanguage || "vi";
       const t = getT(uiLang);
@@ -786,12 +1009,16 @@ export default defineContentScript({
       const container = createOverlayContainer();
       const shadow = container.shadowRoot!;
 
-      const rect = activeElement.getBoundingClientRect();
+      // Anchor to the status button once the user has dragged it away, so the panel
+      // opens next to it instead of covering it; otherwise under the field as before.
+      const moved = statusButton && statusButtonOffsets.has(activeElement);
+      const rect = moved ? statusButton!.getBoundingClientRect() : activeElement.getBoundingClientRect();
       suggestionPanel = document.createElement("div");
       suggestionPanel.className = "tc-panel";
+      suggestionPanel.setAttribute("role", "dialog");
 
       // Position panel
-      let left = rect.right - 370;
+      let left = moved ? Math.min(rect.left, window.innerWidth - 370) : rect.right - 370;
       let top = rect.bottom + 8;
 
       if (left < 10) left = 10;
@@ -809,7 +1036,7 @@ export default defineContentScript({
             ${ICONS.pencil}
             <span>${t.issuesFound(errorCount)}</span>
           </div>
-          <button class="tc-panel-close" data-action="close-panel">${
+          <button class="tc-panel-close" data-action="close-panel" title="${escapeHtml(t.close)}" aria-label="${escapeHtml(t.close)}">${
             ICONS.close
           }</button>
         </div>
@@ -871,7 +1098,7 @@ export default defineContentScript({
         if (!suggestion) return;
 
         if (action === "apply") {
-          applySuggestion(suggestion);
+          await applySuggestion(suggestion);
           updatePanelAfterChange();
         } else if (action === "ignore") {
           ignoreSuggestion(suggestion);
@@ -895,6 +1122,12 @@ export default defineContentScript({
       });
 
       shadow.appendChild(suggestionPanel);
+      suggestionPanel.setAttribute("aria-label", t.issuesFound(errorCount));
+      releasePanelTrap = trapFocus(suggestionPanel, { onEscape: () => hideSuggestionPanel() });
+      if (options.focus) {
+        panelOrigin = captureFocusOrigin(overlayContainer);
+        focusInto(suggestionPanel, suggestionPanel.querySelector<HTMLElement>('[data-action="apply"]'));
+      }
 
       // Close panel when clicking outside
       setTimeout(() => {
@@ -919,6 +1152,11 @@ export default defineContentScript({
     }
 
     function hideSuggestionPanel() {
+      releasePanelTrap?.();
+      releasePanelTrap = null;
+      const origin = panelOrigin;
+      panelOrigin = null;
+      if (origin && containsFocus(suggestionPanel)) origin.restore();
       if (suggestionPanel?.parentNode) {
         suggestionPanel.remove();
       }
@@ -927,13 +1165,15 @@ export default defineContentScript({
     }
 
     function updatePanelAfterChange() {
+      // A panel used from the keyboard keeps focus after re-rendering.
+      const keyboard = containsFocus(suggestionPanel);
       if (currentSuggestions.length === 0) {
         hideSuggestionPanel();
         showStatusButton("clean");
       } else {
         // Re-render panel
         hideSuggestionPanel();
-        showSuggestionPanel();
+        showSuggestionPanel({ focus: keyboard });
         showStatusButton("errors", currentSuggestions.length);
       }
       renderUnderlines();
@@ -953,7 +1193,8 @@ export default defineContentScript({
     function getCharacterRects(
       element: HTMLElement,
       startIndex: number,
-      endIndex: number
+      endIndex: number,
+      model?: TextModel
     ): DOMRect[] {
       const tagName = element.tagName.toLowerCase();
 
@@ -965,181 +1206,35 @@ export default defineContentScript({
         );
       }
 
-      return getContenteditableCharacterRects(element, startIndex, endIndex);
-    }
-
-    function getTextareaCharacterRects(
-      element: HTMLTextAreaElement | HTMLInputElement,
-      startIndex: number,
-      endIndex: number
-    ): DOMRect[] {
-      const text = element.value;
-      if (startIndex < 0 || endIndex > text.length || startIndex >= endIndex) {
-        return [];
-      }
-
-      const isInput = element.tagName.toLowerCase() === "input";
-      const computed = window.getComputedStyle(element);
-      const elemRect = element.getBoundingClientRect();
-
-      const mirror = document.createElement("div");
-      mirror.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        visibility: hidden;
-        pointer-events: none;
-        z-index: -9999;
-        box-sizing: ${computed.boxSizing};
-        font-family: ${computed.fontFamily};
-        font-size: ${computed.fontSize};
-        font-weight: ${computed.fontWeight};
-        font-style: ${computed.fontStyle};
-        line-height: ${computed.lineHeight};
-        letter-spacing: ${computed.letterSpacing};
-        word-spacing: ${computed.wordSpacing};
-        text-transform: ${computed.textTransform};
-        text-indent: ${computed.textIndent};
-        tab-size: ${computed.tabSize};
-        padding-top: ${computed.paddingTop};
-        padding-right: ${computed.paddingRight};
-        padding-bottom: ${computed.paddingBottom};
-        padding-left: ${computed.paddingLeft};
-        border-top-width: ${computed.borderTopWidth};
-        border-right-width: ${computed.borderRightWidth};
-        border-bottom-width: ${computed.borderBottomWidth};
-        border-left-width: ${computed.borderLeftWidth};
-        border-style: solid;
-        white-space: ${isInput ? "pre" : computed.whiteSpace};
-        word-wrap: ${isInput ? "normal" : computed.wordWrap};
-        word-break: ${isInput ? "normal" : computed.wordBreak};
-        overflow-wrap: ${isInput ? "normal" : computed.overflowWrap};
-        width: ${element.clientWidth}px;
-        height: auto;
-        overflow: hidden;
-      `;
-
-      const textNode = document.createTextNode(text);
-      mirror.appendChild(textNode);
-      document.body.appendChild(mirror);
-
-      const mirrorRect = mirror.getBoundingClientRect();
-      const range = document.createRange();
-      range.setStart(textNode, startIndex);
-      range.setEnd(textNode, endIndex);
-      const clientRects = Array.from(range.getClientRects());
-      document.body.removeChild(mirror);
-
-      const borderLeft = parseFloat(computed.borderLeftWidth) || 0;
-      const borderTop = parseFloat(computed.borderTopWidth) || 0;
-
-      const visibleTop = elemRect.top + borderTop;
-      const visibleBottom = visibleTop + element.clientHeight;
-      const visibleLeft = elemRect.left + borderLeft;
-      const visibleRight = visibleLeft + element.clientWidth;
-
-      const finalRects: DOMRect[] = [];
-
-      for (const r of clientRects) {
-        const relX = r.left - mirrorRect.left;
-        const relY = r.top - mirrorRect.top;
-
-        const actualLeft = elemRect.left + borderLeft + relX - element.scrollLeft;
-        const actualTop = elemRect.top + borderTop + relY - element.scrollTop;
-        const actualWidth = r.width;
-        const actualHeight = r.height;
-
-        // Clip rects outside visible scroll boundary
-        if (
-          actualTop + actualHeight < visibleTop ||
-          actualTop > visibleBottom ||
-          actualLeft + actualWidth < visibleLeft ||
-          actualLeft > visibleRight
-        ) {
-          continue;
-        }
-
-        finalRects.push(new DOMRect(actualLeft, actualTop, actualWidth, actualHeight));
-      }
-
-      return finalRects;
-    }
-
-    function getContenteditableCharacterRects(
-      element: HTMLElement,
-      startIndex: number,
-      endIndex: number
-    ): DOMRect[] {
-      const range = document.createRange();
-      let currentIndex = 0;
-      let startNode: Node | null = null;
-      let startOffset = 0;
-      let endNode: Node | null = null;
-      let endOffset = 0;
-
-      const walker = document.createTreeWalker(
-        element,
-        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
-        {
-          acceptNode(node) {
-            if (node.nodeType === Node.TEXT_NODE) {
-              return NodeFilter.FILTER_ACCEPT;
-            }
-            if (node.nodeName === "BR") {
-              return NodeFilter.FILTER_ACCEPT;
-            }
-            return NodeFilter.FILTER_SKIP;
-          },
-        }
-      );
-
-      let node: Node | null;
-      while ((node = walker.nextNode())) {
-        if (node.nodeName === "BR") {
-          currentIndex += 1;
-          continue;
-        }
-
-        const textNode = node as Text;
-        const nodeLength = textNode.length;
-
-        if (!startNode && currentIndex + nodeLength > startIndex) {
-          startNode = textNode;
-          startOffset = Math.max(0, startIndex - currentIndex);
-        }
-
-        if (!endNode && currentIndex + nodeLength >= endIndex) {
-          endNode = textNode;
-          endOffset = Math.min(nodeLength, endIndex - currentIndex);
-          break;
-        }
-
-        currentIndex += nodeLength;
-      }
-
-      if (!startNode || !endNode) return [];
-
-      try {
-        range.setStart(startNode, startOffset);
-        range.setEnd(endNode, endOffset);
-        return Array.from(range.getClientRects());
-      } catch {
-        return [];
-      }
+      // contenteditable: offsets of the shared text model (US-11), the one the checked text came from.
+      const range = getContenteditableRange(element, startIndex, endIndex, model);
+      return range ? Array.from(range.getClientRects()) : [];
     }
 
     // Inline popover (shown on underline click)
     let currentPopover: HTMLDivElement | null = null;
+    /** Suggestion shown in the popover (the shortcut moves to the next one, US-16). */
+    let popoverSuggestion: GrammarSuggestion | null = null;
+    let releasePopoverTrap: (() => void) | null = null;
+    /** Where focus was before the popover took it from the keyboard; restored on close. */
+    let popoverOrigin: FocusOrigin | null = null;
 
-    function showPopover(suggestion: GrammarSuggestion, anchorRect: DOMRect, boundElement: HTMLElement | null = activeElement) {
+    function showPopover(
+      suggestion: GrammarSuggestion,
+      anchorRect: DOMRect,
+      boundElement: HTMLElement | null = activeElement,
+      options: { focus?: boolean } = {}
+    ) {
       hidePopover();
       hideSuggestionPanel();
+      selectionLookup?.hideAll();
 
       const container = createOverlayContainer();
       const shadow = container.shadowRoot!;
 
       currentPopover = document.createElement("div");
       currentPopover.className = "tc-popover";
+      currentPopover.setAttribute("role", "dialog");
 
       // Position
       const viewportHeight = window.innerHeight;
@@ -1200,8 +1295,8 @@ export default defineContentScript({
         const action = btn?.dataset.action || target.dataset.action;
 
         if (action === "apply") {
-          applySuggestion(suggestion, boundElement);
           hidePopover();
+          await applySuggestion(suggestion, boundElement);
           updateStatusAfterChange();
         } else if (action === "ignore") {
           ignoreSuggestion(suggestion);
@@ -1216,6 +1311,14 @@ export default defineContentScript({
       });
 
       shadow.appendChild(currentPopover);
+      currentPopover.setAttribute("aria-label", `${label}: ${suggestion.original} → ${suggestion.replacement}`);
+      popoverSuggestion = suggestion;
+      // US-16: Tab stays on the popover's buttons, Esc closes it.
+      releasePopoverTrap = trapFocus(currentPopover, { onEscape: () => hidePopover() });
+      if (options.focus) {
+        popoverOrigin = captureFocusOrigin(overlayContainer);
+        focusInto(currentPopover, currentPopover.querySelector<HTMLElement>('[data-action="apply"]'));
+      }
 
       // Close on outside click - with delay to prevent immediate close
       if (popoverCloseTimeout) clearTimeout(popoverCloseTimeout);
@@ -1258,10 +1361,18 @@ export default defineContentScript({
         true
       );
 
+      releasePopoverTrap?.();
+      releasePopoverTrap = null;
+      // Focus goes back to the text field (caret where it was) when the popover had it.
+      const origin = popoverOrigin;
+      popoverOrigin = null;
+      if (origin && containsFocus(currentPopover)) origin.restore();
+
       if (currentPopover?.parentNode) {
         currentPopover.remove();
       }
       currentPopover = null;
+      popoverSuggestion = null;
     }
 
     function updateStatusAfterChange() {
@@ -1279,24 +1390,36 @@ export default defineContentScript({
       return div.innerHTML;
     }
 
-    function applySuggestion(suggestion: GrammarSuggestion, targetOverride: HTMLElement | null = null) {
+    async function applySuggestion(
+      suggestion: GrammarSuggestion,
+      targetOverride: HTMLElement | null = null
+    ): Promise<boolean> {
       const targetEl = targetOverride || activeElement;
-      if (!targetEl) return;
+      if (!targetEl) return false;
 
-      applyReplacementToElement(
-        targetEl,
-        suggestion.startIndex,
-        suggestion.endIndex,
-        suggestion.original,
-        suggestion.replacement
-      );
+      let ok = false;
+      try {
+        ok = await applyReplacementToElement(
+          targetEl,
+          suggestion.startIndex,
+          suggestion.endIndex,
+          suggestion.original,
+          suggestion.replacement
+        );
+      } catch (error) {
+        console.error("[TextChecker] Apply failed:", error);
+      }
+      if (!ok) {
+        console.warn("[TextChecker] Could not apply suggestion:", suggestion);
+        return false;
+      }
 
       const lengthDiff =
         suggestion.replacement.length - suggestion.original.length;
       currentSuggestions = currentSuggestions
         .filter((s) => s.id !== suggestion.id)
         .map((s) => {
-          if (s.startIndex > suggestion.endIndex) {
+          if (s.startIndex >= suggestion.endIndex) {
             return {
               ...s,
               startIndex: s.startIndex + lengthDiff,
@@ -1309,6 +1432,7 @@ export default defineContentScript({
       browser.runtime
         .sendMessage({ type: "CORRECTION_APPLIED" })
         .catch(() => {});
+      return true;
     }
 
     function ignoreSuggestion(suggestion: GrammarSuggestion) {
@@ -1317,12 +1441,20 @@ export default defineContentScript({
       );
     }
 
+    /**
+     * "+ Add to dictionary" on a spelling error: saves the word with ignoreSpelling
+     * (US-05/06) and drops its other occurrences in the current results at once.
+     */
     async function addToDictionary(word: string) {
       try {
         await browser.runtime.sendMessage({
           type: "ADD_TO_DICTIONARY",
           payload: { word },
         });
+        const key = word.trim().toLowerCase();
+        currentSuggestions = currentSuggestions.filter(
+          (s) => s.type !== "spelling" || s.original.trim().toLowerCase() !== key
+        );
       } catch (error) {
         console.error("Failed to add to dictionary:", error);
       }
@@ -1336,11 +1468,16 @@ export default defineContentScript({
 
       if (!activeElement || currentSuggestions.length === 0) return;
 
+      // One text model for all underlines of a contenteditable (built once per render).
+      const tag = activeElement.tagName.toLowerCase();
+      const model = tag === "textarea" || tag === "input" ? undefined : buildTextModel(activeElement);
+
       currentSuggestions.forEach((suggestion) => {
         const rects = getCharacterRects(
           activeElement!,
           suggestion.startIndex,
-          suggestion.endIndex
+          suggestion.endIndex,
+          model
         );
 
         rects.forEach((rect) => {
@@ -1372,13 +1509,31 @@ export default defineContentScript({
     }
 
     // Event handlers
+    function defaultStatusButtonPosition(rect: DOMRect) {
+      return {
+        left: Math.min(rect.right - 80, window.innerWidth - 90),
+        top: Math.min(rect.bottom - 32, window.innerHeight - 40),
+      };
+    }
+
+    /** Keeps the whole button inside the viewport. */
+    function clampStatusButton(btn: HTMLElement, left: number, top: number) {
+      const margin = 4;
+      const maxLeft = window.innerWidth - (btn.offsetWidth || 80) - margin;
+      const maxTop = window.innerHeight - (btn.offsetHeight || 28) - margin;
+      return {
+        left: Math.max(margin, Math.min(left, maxLeft)),
+        top: Math.max(margin, Math.min(top, maxTop)),
+      };
+    }
+
     function updateStatusButtonPosition() {
       if (statusButton && activeElement) {
-        const rect = activeElement.getBoundingClientRect();
-        const btnLeft = Math.min(rect.right - 80, window.innerWidth - 90);
-        const btnTop = Math.min(rect.bottom - 32, window.innerHeight - 40);
-        statusButton.style.left = `${btnLeft}px`;
-        statusButton.style.top = `${btnTop}px`;
+        const base = defaultStatusButtonPosition(activeElement.getBoundingClientRect());
+        const offset = statusButtonOffsets.get(activeElement) ?? { dx: 0, dy: 0 };
+        const pos = clampStatusButton(statusButton, base.left + offset.dx, base.top + offset.dy);
+        statusButton.style.left = `${pos.left}px`;
+        statusButton.style.top = `${pos.top}px`;
       }
     }
 
@@ -1403,7 +1558,7 @@ export default defineContentScript({
       attachElementObservers(element);
 
       if (settings.checkMode === "realtime") {
-        const text = getTextFromElement(element);
+        const text = getTextFromElement(target);
         if (text.trim().length > 0) {
           debouncedCheck(text);
         }
@@ -1444,7 +1599,7 @@ export default defineContentScript({
       hidePopover();
 
       if (settings.checkMode === "realtime") {
-        const text = getTextFromElement(element);
+        const text = getTextFromElement(target);
         if (text.trim().length > 0) {
           debouncedCheck(text);
         } else {
@@ -1486,31 +1641,140 @@ export default defineContentScript({
       }
     }, settings.realtimeDelay);
 
+    /** Checks the focused field now (shortcut / manual mode); resolves when results are shown. */
+    async function runManualCheck(): Promise<void> {
+      if (!activeElement) return;
+      const text = getTextFromElement(activeElement);
+      if (text.trim().length === 0) return;
+      showStatusButton("loading");
+      try {
+        const result = await checkGrammarRequest(text, true);
+        if (result) {
+          currentSuggestions = result.suggestions;
+          renderUnderlines();
+          if (currentSuggestions.length > 0) {
+            showStatusButton("errors", currentSuggestions.length);
+          } else {
+            showStatusButton("clean");
+          }
+        }
+      } catch {
+        showStatusButton("error");
+      }
+    }
+
+    /** Caret offset in the field's checked text (input/textarea value, or the shared text model). */
+    function caretOffset(el: HTMLElement): number | null {
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return el.selectionStart;
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) return null;
+      const range = sel.getRangeAt(0);
+      if (!el.contains(range.startContainer)) return null;
+      return offsetOfPosition(buildTextModel(el), range.startContainer, range.startOffset);
+    }
+
+    /** Opens the popover of one suggestion with focus on "Apply" (keyboard flow, US-16). */
+    function openSuggestionFromKeyboard(index: number) {
+      const el = activeElement;
+      const suggestion = currentSuggestions[index];
+      if (!el || !suggestion) return;
+      const rects = getCharacterRects(el, suggestion.startIndex, suggestion.endIndex);
+      const anchor = rects.find((r) => r.width > 0 || r.height > 0) ?? el.getBoundingClientRect();
+      showPopover(suggestion, anchor, el, { focus: true });
+    }
+
+    /**
+     * Shortcut "check grammar" (US-16). In a text field: check it and open the error at the
+     * caret; each further press opens the next error. Elsewhere: analyze the grammar of the
+     * selected sentence, or of the sentence around the caret (US-17).
+     */
+    async function grammarFromKeyboard() {
+      if (googleDocsHandler.isGoogleDocs()) {
+        googleDocsHandler.triggerManualCheck();
+        return;
+      }
+      // Popover already open (focused or not): next error.
+      if (currentPopover && popoverSuggestion && currentSuggestions.length > 0) {
+        openSuggestionFromKeyboard(nextSuggestion(currentSuggestions, popoverSuggestion));
+        return;
+      }
+      const focused = deepActiveElement();
+      const ownUi = !!overlayContainer && (focused === overlayContainer || !!overlayContainer.shadowRoot?.contains(focused));
+      const field = focused instanceof HTMLElement && !ownUi ? getTargetEditableElement(focused) || focused : null;
+      if (field && isEditableElement(field)) {
+        if (!settings.enabled) return;
+        activeElement = field;
+        attachElementObservers(field);
+        const caret = caretOffset(field);
+        await runManualCheck();
+        if (activeElement === field && currentSuggestions.length > 0) {
+          openSuggestionFromKeyboard(suggestionAtCaret(currentSuggestions, caret));
+        }
+        return;
+      }
+      selectionLookup?.analyzeFromCommand();
+    }
+
+    // Esc closes the grammar popover/panel opened with the mouse (focus still in the field).
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key !== "Escape" || (!currentPopover && !suggestionPanel)) return;
+        if (overlayContainer && e.composedPath().includes(overlayContainer)) return; // trapFocus handles it
+        e.preventDefault();
+        e.stopPropagation();
+        hidePopover();
+        hideSuggestionPanel();
+      },
+      true
+    );
+
     // Message listener for keyboard shortcut
-    browser.runtime.onMessage.addListener((message) => {
+    browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+      if (message.type === RUN_COMMAND) {
+        // The background sends to every frame of the tab: only the focused one acts.
+        if (!document.hasFocus()) return;
+        const command = (message.payload as { command?: string } | undefined)?.command;
+        if (command === COMMANDS.lookup) {
+          selectionLookup?.lookupFromCommand();
+          sendResponse({ handled: true });
+        } else if (command === COMMANDS.grammar) {
+          void grammarFromKeyboard();
+          sendResponse({ handled: true });
+        } else if (command === COMMANDS.assistant) {
+          const sentence = selectionLookup?.selectedSentence() ?? null;
+          if (sentence?.range) highlightContext(sentence.range);
+          const reply: AssistantCommandReply = {
+            handled: true,
+            context: sentence ? { sentence: sentence.text, url: location.href, title: document.title } : null,
+          };
+          sendResponse(reply);
+        }
+        return;
+      }
+      if (message.type === CONTEXT_MENU_ANALYZE) {
+        const { text } = message.payload as { text: string };
+        if (!selectionLookup) return;
+        selectionLookup.analyzeFromContextMenu(text);
+        sendResponse({ handled: true });
+        return;
+      }
+      if (message.type === CONTEXT_MENU_LOOKUP) {
+        const { text, save } = message.payload as { text: string; save: boolean };
+        if (!selectionLookup) return;
+        selectionLookup.openFromContextMenu(text, save);
+        sendResponse({ handled: true });
+        return;
+      }
+      if (message.type === "CLEAR_CHAT_HIGHLIGHT") {
+        clearContextHighlight();
+        return;
+      }
       if (message.type === "TRIGGER_CHECK") {
         if (googleDocsHandler.isGoogleDocs()) {
           googleDocsHandler.triggerManualCheck();
-        } else if (activeElement) {
-          const text = getTextFromElement(activeElement);
-          if (text.trim().length > 0) {
-            showStatusButton("loading");
-            checkGrammarRequest(text, true)
-              .then((result) => {
-                if (result) {
-                  currentSuggestions = result.suggestions;
-                  renderUnderlines();
-                  if (currentSuggestions.length > 0) {
-                    showStatusButton("errors", currentSuggestions.length);
-                  } else {
-                    showStatusButton("clean");
-                  }
-                }
-              })
-              .catch(() => {
-                showStatusButton("error");
-              });
-          }
+        } else {
+          void runManualCheck();
         }
       }
     });
@@ -1568,6 +1832,8 @@ export default defineContentScript({
     ctx.onInvalidated(() => {
       textareaObserver.stop();
       googleDocsHandler.stop();
+      selectionLookup?.stop();
+      stopVocabHighlight();
       cleanup();
       if (unwatchSettings) unwatchSettings();
     });

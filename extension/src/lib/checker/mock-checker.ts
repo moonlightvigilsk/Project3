@@ -99,6 +99,22 @@ const MOCK_RULES: RuleDefinition[] = [
   },
 ];
 
+const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/**
+ * Case-insensitive regex of a rule (US-12). A text rule matches whole words only
+ * ("mangé" is not found inside "mangées"), accented letters counting as letters.
+ */
+export function ruleRegex(pattern: string | RegExp): RegExp {
+  if (typeof pattern !== 'string') {
+    const flags = new Set(pattern.flags.split(''));
+    flags.add('g');
+    flags.add('i');
+    return new RegExp(pattern.source, [...flags].join(''));
+  }
+  return new RegExp(`(?<![\\p{L}\\p{N}_])${escapeRegex(pattern)}(?![\\p{L}\\p{N}_])`, 'giu');
+}
+
 export class MockChecker implements GrammarChecker {
   async check(text: string, opts: GrammarCheckerOptions): Promise<GrammarCheckResult> {
     if (!text || !text.trim()) {
@@ -114,56 +130,25 @@ export class MockChecker implements GrammarChecker {
     let counter = 0;
 
     for (const rule of MOCK_RULES) {
-      if (typeof rule.pattern === 'string') {
-        const needle = rule.pattern;
-        let searchIndex = 0;
+      // Every rule matches whatever the case ("Tu as fais", "TU AS FAIS"); the replacement
+      // takes the case of the matched text in resolveSuggestions (US-12).
+      const regex = ruleRegex(rule.pattern);
+      const offset = rule.deliberateOffset ?? 0;
+      let match: RegExpExecArray | null;
 
-        while (searchIndex < text.length) {
-          const foundPos = text.indexOf(needle, searchIndex);
-          if (foundPos === -1) break;
-
-          const exactStart = foundPos;
-          const exactEnd = foundPos + needle.length;
-          const offset = rule.deliberateOffset ?? 0;
-
-          const reportedStart = Math.max(0, exactStart + offset);
-          const reportedEnd = Math.min(text.length, exactEnd + offset);
-
-          rawSuggestions.push({
-            id: `mock-${Date.now()}-${counter++}`,
-            original: needle,
-            replacement: rule.replacement,
-            explanation: rule.explanation,
-            type: rule.type,
-            startIndex: reportedStart,
-            endIndex: reportedEnd,
-          });
-
-          searchIndex = foundPos + needle.length;
-        }
-      } else {
-        const regex = new RegExp(rule.pattern.source, rule.pattern.flags);
-        let match: RegExpExecArray | null;
-
-        while ((match = regex.exec(text)) !== null) {
-          const original = match[0];
-          const startIndex = match.index;
-          const endIndex = startIndex + original.length;
-
-          if (match.index === regex.lastIndex) {
-            regex.lastIndex++;
-          }
-
-          rawSuggestions.push({
-            id: `mock-${Date.now()}-${counter++}`,
-            original,
-            replacement: rule.replacement,
-            explanation: rule.explanation,
-            type: rule.type,
-            startIndex,
-            endIndex,
-          });
-        }
+      while ((match = regex.exec(text)) !== null) {
+        const original = match[0];
+        if (match.index === regex.lastIndex) regex.lastIndex++;
+        if (!original) continue;
+        rawSuggestions.push({
+          id: `mock-${Date.now()}-${counter++}`,
+          original,
+          replacement: rule.replacement,
+          explanation: rule.explanation,
+          type: rule.type,
+          startIndex: Math.max(0, match.index + offset),
+          endIndex: Math.min(text.length, match.index + original.length + offset),
+        });
       }
     }
 

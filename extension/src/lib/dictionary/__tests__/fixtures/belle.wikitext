@@ -1,0 +1,205 @@
+== {{langue|fr}} ==
+=== {{S|étymologie}} ===
+: {{siècle|lang=fr|?}} Du féminin de l’adjectif ''[[beau]]''.
+
+=== {{S|nom|fr}} ===
+{{fr-rég|bɛl}}
+'''belle''' {{pron|bɛl|fr}} {{f}}
+# {{en particulier}} [[femme|Femme]] qui a de la [[beauté]], de l’[[agrément]], et, d’une [[manière]] [[général]]e, une femme. — {{note}} parfois {{ironique|lang=fr}}
+#* {{exemple|lang=fr
+|Souvent m’esbats,	et mon cœur est marri :<br
+/>Je vis en deuil 	et en grand’ déplaisance,<br
+/>Toutes les fois 	qu’il me vient souvenance<br
+/>De la '''belle''' 		qui vers moi a failli.
+|source=''[[s:Souvent m’ébats et mon cœur est marri|Souvent m’ébats, et mon cœur est marri]]'' {{siècle|XV}} dans ''La chanson française du {{siècle2|XV}} au {{siècle2|XX}} siècle'', Jean Gillequin - Renaissance du livre, Paris, 1910, page 37
+}}
+#* {{exemple|lang=fr
+|J’admire les discours que tenoit cette '''belle''',<br
+/>Quand, tout ravy de l’écouter,<br
+/>Je fus quelque temps à douter<br
+/>Si quelque Dieu parloit en elle.
+|source=Chanson anonyme recueillie par {{w|Valentin Conrart}} dans ''Recueil Conrart [[in-4º]]'', Tome X, {{siècle2|17}} siècle, page 212
+|lien=https://gallica.bnf.fr/ark:/12148/btv1b55013899t/f218.item
+}}
+#* {{exemple | lang=fr
+ | Un grand jeune blondin, que je me souviens de n’avoir point vu durant l’éclipse de la '''belle''', rentra en catimini.
+ | source={{w|Restif de la Bretonne}}, ''Le Paysan et la paysanne pervertis'', 1775-1784}}
+#* {{exemple | lang=fr
+ | Non, non, la constance n’est bonne que pour des ridicules ; toutes les '''belles''' ont droit de nous charmer, et l’avantage d’être rencontrée la première ne doit pas dérober aux autres les justes prétentions qu’elles ont toutes sur nos cœurs.
+ | source={{w|Molière}}, ''{{w|Dom Juan ou le Festin de pierre}}'', acte I, scène 2, 1665}}
+#* ''Il était aux pieds de sa '''belle''''' : De sa [[maîtresse]].
+#* {{exemple | lang=fr | La '''belle''' ne se doutait guère du tour qu’on lui jouait.}}
+#* ''Faire la '''belle''''' : Se [[rengorger]], se [[pavaner]], [[laisser]] [[voir]] qu’on se [[croire|croit]] belle.
+# {{lexique|jeux|fr}} [[partie|Partie]] qui doit décider de l’[[avantage]] entre [[deux]] [[joueur]]s ayant eu jusque-là des [[chance]]s [[égal]]es.
+#* {{exemple|lang=fr
+ | Nous sommes manche à manche, baron, nous jouerons la '''belle''' quand vous voudrez.
+ | source={{w|Honoré de Balzac}}, ''{{w|La Cousine Bette}}'', 1846}}
+#* {{exemple | lang=fr
+ | […], des joueurs de flipper qui tiltaient, et qui poussaient des grognements, en bousculant fiévreusement le flipper, des joueurs de baby qui rejouaient la '''belle''', pour la centième fois.
+ | source=Louis Nicoletto, ''Une petite Mouche noire'', TheBookEdition, page 52}}
+# {{lexique|marine|fr}} {{vieilli|fr}} {{désuet|fr}} [[embelle|Embelle]].
+# {{argot|fr}} La [[liberté]], pour le prisonnier.
+#* ''Malgré tout, je ne cessais de penser à la '''Belle'''.<br
+/>… Quelle '''Belle''' ?<br
+/>— La liberté, pardi ! C’est ainsi qu’on la nomme là-bas.''<br
+/>{{source|{{w|Albert Londres}}, ''L’Homme qui s’évada'', Les éditions de France, 1928, page 38}}
+# {{Louisiane}} [[petite amie|Petite amie]].
+
+==== {{S|dérivés}} ====
+{{(|colonnes=3}}
+* [[belle-d’onze-heures]] {{info lex|botanique}}
+* [[belle-d’un-jour]] {{info lex|botanique}}
+* [[Belle au bois dormant]]
+* [[belle-de-jour]] {{info lex|botanique}}
+* [[belle-de-nuit]] {{info lex|botanique}}
+* [[belle société]]
+* [[faire la belle]]
+** [[se faire la belle]]
+* [[faire sa belle]]
+{{)}}
+
+==== {{S|phrases}} ====
+* [[ma belle]]
+** [[ma chère belle]]
+** [[ma toute belle]]
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|dames}}
+
+==== {{S|traductions}} ====
+{{trad-début}}
+* {{T|en}} : {{trad+|en|belle}}, {{trad+|en|damsel}}
+* {{T|es}} : {{trad+|es|precioso}}
+* {{T|it}} : {{trad+|it|bella}}
+* {{T|ja}} : {{trad+|ja|美女|tr=bijo}}, {{trad+|ja|美人|tr=bijin}}
+* {{T|pcd}} : {{trad|pcd|bellotte}}, {{trad|pcd|bielle}}
+* {{T|pl}} : {{trad+|pl|piękność}}, {{trad+|pl|krasawica}}
+* {{T|ro}} : {{trad+|ro|frumoasă|f}}
+* {{T|ru}} : {{trad+|ru|красавица|tr=krasavica}}
+* {{T|cs}} : {{trad+|cs|krasavice}}
+* {{T|uk}} : {{trad-|uk|красуня|tr=krasunja}}
+{{trad-fin}}
+
+=== {{S|adjectif|fr|flexion}} ===
+{{fr-accord-eau|b|b}}
+{{fr-inv|inv_titre=Masc. sing. devant<br>
+une voyelle ou un h muet|s=bel|pron=bɛl}}
+'''belle''' {{pron|bɛl|fr}}
+# ''Féminin singulier de'' [[beau]].
+#* {{exemple | lang=fr
+ | Il connaissait Zaheira : elle était toute jeune et robuste, '''belle'''.
+ | source={{w|Out-el-Kouloub}}, ''Zaheira'', dans ''Trois contes de l’Amour et de la Mort'', 1940}}
+#* {{exemple|lang=fr|Cette Marie Chazottes avait vingt ans, vingt-deux ans. Difficile aussi de savoir comment elle était, car ici on vous dit : « C’est une '''belle''' femme » pour « une grosse femme ». '''Belle''' ? Il faut de gros mollets, de grosses cuisses, une grosse poitrine et se bouger assez vite ; alors c’est beau. Sinon, on considère que c’est du temps perdu. On ira jusqu’à dire : « Elle est pas mal », ou : « Elle est jolie », mais on ne dira jamais : « Elle est '''belle'''. »|source={{w|Jean Giono}}, ''{{w|Un roi sans divertissement}}'', 1947}}
+#* {{exemple | lang=fr
+ | Depuis l’apparition de son livre sur la ''Lingvo internacia'', au mois de septembre dernier, M. Einstein a reçu quantité de lettres semblables de tous les pays : de Russie, de Pologne, de Lithuanie, de Suède, de Norvège, de Danemark, d’Angleterre, de Hollande, d’Autriche, d’Italie, d’Amérique, et toutes témoignent de l’enthousiasme que leurs auteurs ont éprouvé à l’étude de la langue du docteur Esperanto, admirant sa '''belle''' sonorité (ressemblant en cela à la langue italienne) et sa facilité extraordinaire d’assimilation.
+ | source={{w|Léopold Einstein}}, ''[[s:Volapük et Lingvo Internacia|Volapük et Lingvo Internacia]]'', 1889}}
+
+==== {{S|dérivés}} ====
+{{(|colonnes=3}}
+* [[à belles dents]]
+* [[à belles mains]]
+* [[à la belle étoile]]
+** [[coucher à la belle étoile]]
+** [[dormir à la belle étoile]]
+* [[avoir les belles manières]]
+* [[avoir une belle plume]]
+* [[beau cul belle gueule]] ''d’où'' [[BCBG]]
+* {{cf|belle-|lang=fr}}
+** [[belle-dabe]]
+** [[belle-doche]], [[belledoche]]
+** [[belle-famille]]
+** [[belle-fille]]
+** [[belle-grand-mère]], [[belle-grand’mère]]
+** [[belle-maman]]
+** [[belle-mère]]
+*** [[belle mère]] {{info lex|botanique}}
+*** [[cheveu de belle-mère]] {{info lex|botanique}}
+*** [[coussin de belle-mère]] {{info lex|botanique|zoologie}}
+*** [[ex-belle-mère]]
+*** [[langue de belle-mère]]
+*** [[soie belle-mère]]
+** [[belle-nièce]]
+** [[belle-parenté]]
+** [[belle-petite-fille]]
+** [[belle-sœur]], [[belle-soeur]]
+** [[belle-tante]]
+* [[belle-à-voir]]
+* [[belle âme]]
+* [[belle-angevine]]
+* [[belle-angélique]] {{Québec|nocat=1}}{{info lex|botanique}}
+* [[belle-dame]] {{info lex|botanique}}
+* [[belle-étoile]] {{info lex|botanique}}
+* [[belle-face]] {{info lex|hippologie}}
+* [[belle-fleur]] {{info lex|botanique}}
+* [[belle gosse]]
+* [[belle heurette]]
+* [[belle infidèle]]
+* [[belle journée]]
+* [[belle lurette]]
+* [[belle main]] (main droite)
+* [[belle page]]
+* [[belle personne]]
+* [[belle plante]]
+* [[Belle Poule]]
+* [[Belle Province]] ''(le Québec)'', [[belle province]]
+* [[belle-pucelle]]
+* [[belle saison]]
+* [[bellement]]
+* [[belles-lettres]], [[belles lettres]]
+* [[belles paroles]]
+* [[de la belle manière]]
+* [[de la plus belle eau]]
+* [[de plus belle]]
+** [[recommencer de plus belle]]
+* [[échappée belle]]
+* [[en belle vue]]
+* [[faire belle jambe]]
+* [[faire la part belle]]
+* [[faire une belle jambe]]
+* [[herbe à la belle fille]]
+* [[l’avoir belle]]
+* [[l’avoir échappé belle]]
+* [[l’avoir manqué belle]]
+* [[l’échapper belle]]
+* [[la belle affaire]]
+* [[la belle endormie]]
+* [[la sauver belle]]
+* [[prétendre en belle tête]]
+* [[tir en-belle]]
+{{)}}
+
+==== {{S|phrases}} ====
+{{(}}
+* [[déplorer que la mariée soit trop belle]]
+* [[elle est belle]]
+* [[il n’y a pas de belle prison]]
+* [[la plus belle avenue du monde]]
+* [[la plus belle conquête de l’homme]] ''(le cheval)''
+* [[la plus belle fille du monde ne peut donner que ce qu’elle a]]
+* [[mourir de sa belle mort]]
+* [[oh, la belle bleue]]
+* [[se plaindre que la mariée est trop belle]]
+* [[sois belle et tais-toi]]
+{{)}}
+
+==== {{S|traductions}} ====
+→ Voir les traductions de [[beau#fr-adj-1|beau]].
+
+=== {{S|prononciation}} ===
+* {{pron-rimes|bɛl|fr}}
+* {{écouter|lang=fr|France (Lyon)|audio=LL-Q150 (fra)-Ltrlg-belle.wav}}
+* {{écouter|lang=fr|France (Vosges)||audio=LL-Q150 (fra)-LoquaxFR-belle.wav}}
+* {{écouter|lang=fr|Canada (Shawinigan)||audio=LL-Q150 (fra)-DenisdeShawi-belle.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-belle.wav}}
+
+==== {{S|homophones|fr}} ====
+* [[bel]]
+* [[bèle]]
+* [[bêle]], [[bêlent]], [[bêles]] (formes du verbe ''[[bêler]]'')
+
+=== {{S|anagrammes}} ===
+{{voir anagrammes|fr}}
+
+== {{langue|de}} ==
+=== {{S|nom|xx}} ===
+# Should be ignored.

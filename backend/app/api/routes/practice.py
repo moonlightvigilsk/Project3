@@ -159,6 +159,7 @@ async def submit_practice_sentence(
         diff_tokens=diff_tokens,
         rule_check=rule_check,
         llm_unavailable=llm_unavailable,
+        llm_provider=None if llm_unavailable else provider.provider_name,
         created_at=created_at_str,
     )
 

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Lexical</title>
+  <style>
+    body { font: 18px Georgia, serif; padding: 30px; }
+    #editor { border: 1px solid #ccc; min-height: 200px; padding: 10px; width: 640px; }
+    p { margin: 0 0 12px; }
+  </style>
+</head>
+<body>
+  <div id="editor" contenteditable="true"></div>
+  <!-- Lexical from a CDN (needs network). Rich text plugin: one <p> per paragraph. -->
+  <script type="module">
+    import { createEditor, $getRoot } from 'https://esm.sh/lexical@0.17.1';
+    import { registerRichText } from 'https://esm.sh/@lexical/rich-text@0.17.1?deps=lexical@0.17.1';
+    const editor = createEditor({ namespace: 'e2e', onError: (e) => console.error(e) });
+    editor.setRootElement(document.getElementById('editor'));
+    registerRichText(editor);
+    window.lexicalText = () => editor.getEditorState().read(() => $getRoot().getTextContent());
+    window.lexicalReady = true;
+  </script>
+</body>
+</html>

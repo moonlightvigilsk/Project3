@@ -1,0 +1,681 @@
+== {{langue|fr}} ==
+=== {{S|étymologie}} ===
+: {{date|lang=fr|vers 980}} Du {{étyl|frm|fr|maison}}, de l’{{étyl|fro|fr|maison}}, issu du {{étyl|la|fr|mot=mansio|dif=mānsiō, -ōnem|sens=fait de séjourner ; lieu de séjour}}{{R|TLFi}}{{R|Littré}}. Le mot a subi le même processus de [[métonymie]] que ''{{lien|habitation|fr}}'' dérivant de l’action d’habiter vers le séjour comme endroit.
+
+=== {{S|nom|fr}} ===
+{{fr-rég|mɛ.zɔ̃|pron2=me.zɔ̃}}
+[[Image:Holiday Camp.jpg|thumb|Une '''maison''' (1) de [[vacance]]s en [[Allemagne]].]]
+'''maison''' {{pron|me.zɔ̃|fr}} ou {{pron|mɛ.zɔ̃|fr}} {{f}}
+# {{édifices|fr}} [[bâtiment|Bâtiment]] servant de [[logis]], d’habitation, de demeure.
+#*{{exemple|lang=fr|Les '''maisons''' peuvent brûler, les fortunes sombrer, les pères revenir de voyage, les empires crouler, le choléra ravager la cité, l’amour d’une jeune fille poursuit son vol, comme la nature sa marche.|source={{Citation/Honoré de Balzac/Modeste Mignon/1855}}}}
+#*{{exemple|lang=fr|Ils avaient une '''maison''' à eux. ''[…]'' Oh ! une vraie cabane ! couverte de chaume, bâtie en pisé, fermée par des volets qui claquaient au vent.|source={{w|Émile-Ambroise Thirion}}, ''La Politique au village'', Fischbacher, 1896, page 324}}
+#*{{exemple|lang=fr|Cheikh Gaafar possédait une '''maison''', toute neuve, en bordure des champs, à l’écart du village. C’était une '''maison''' en briques, entourée d’un jardin, avec de grandes fenêtres et des balcons. Une vraie '''maison''' d’homme riche.|source={{w|Out-el-Kouloub}}, « Zaheira », dans ''Trois contes de l’Amour et de la Mort'', 1940}}
+#*{{exemple|lang=fr|Pas de fermes isolées, rien que des bourgs formés de '''maisons''' les plus dissemblables, qu’une lézarde de géraniums essaye en vain d’appareiller.|source={{w|Jean Giraudoux}}, ''Retour d’Alsace - Août 1914'', 1916}}
+#*{{exemple|lang=fr|J’avais laissé Reykjavik, un grand village ; les '''maisons''' en bois étaient toiturées de tôle ondulée ; les plus importantes s’enorgueillissaient d’un étage surmontant l’entresol.|source={{w|Jean-Baptiste Charcot}}, ''Dans la mer du Groenland'', 1928}}
+#* {{exemple|lang=fr|À la campagne, les '''maisons''' très éloignées les unes des autres, et en général rudimentairement installées, rendent difficiles et souvent inefficaces les soins médicaux.|source={{Citation/Ludovic Naudeau/La France se regarde/1931}}}}
+# [[ménage#fr|Ménage]], [[foyer]] ; tout ce qui a rapport aux affaires domestiques (qu’il s’agisse réellement d’une maison ou d’une autre forme d’habitation).
+#* {{exemple|lang=fr|C’était elle qui assumait dans la '''maison''' les travaux de l’homme que sa vieillesse lui eût rendus difficiles. Combien de ménagères auraient, d’elles-mêmes, pris cette initiative généreuse !|source={{w|Louis Pergaud}}, « {{ws|La Vengeance du père Jourgeot}} », dans ''{{w|Les Rustiques, nouvelles villageoises}}'', 1921}}
+#* {{exemple | lang=fr|Toutes les clés de la '''maison''', des armoires et des coffres, cliquetaient autour de sa taille en un trousseau noué à sa ceinture.|source={{Citation/Jean Rogissart/Hurtebise aux griottes/1954|22–23}}}}
+#* {{exemple|lang=fr|Quitter la '''maison''' paternelle ou maternelle.}}
+#* {{exemple|lang=fr|Faire ses devoirs à la '''maison'''.}}
+# {{par métonymie|fr}} [[maisonnée#fr|Maisonnée]], [[famille]].
+#* {{exemple|lang=fr|Toute la '''maison''' dormait encore.|source={{w|Léon Tolstoï}}, ''Souvenirs'', 1851-1857, traduction d’Ardève Barine, édition 1922, page 199}}
+#*{{exemple|lang=fr|Mais à Mervale les dix '''maisons''', comme dix vieilles filles revêches, continueraient à s’épier, à s’envier, à s’enfoncer de plus en plus secrètes et solitaires, chaque mois davantage.|source={{Citation/Jean Rogissart/Mervale/1937|16}}}}
+#* {{exemple|lang=fr|Pendant les trois semaines précédant le Carême 1667, la '''maison''' de la princesse Palatine aura ainsi englouti 200 unités vendues par le marchand de volailles, dont une quinzaine de chapons et autant de chapons gras.|source=Jérôme Fehrenbach, ''La princesse Palatine : L’égérie de la Fronde'', Éditions du Cerf, 2016}}
+# {{figuré|fr}} [[lignée|Lignée]] ; [[famille]], en parlant des familles [[noble]]s et [[illustre]]s.
+#*{{exemple|lang=fr|La {{w|'''maison''' de Habsbourg}}.}}
+#*{{exemple|lang=fr|L’armée et la flotte furent remplies de nobles qui n’avaient vu ni un camp ni la mer depuis vingt-cinq ans ; on refit la '''maison''' du roi telle qu’elle était sous Louis XVI.|source={{w|Théophile Lavallée}}, ''Histoire des français : depuis le temps des Gaulois jusqu’en 1830'', volume 4, Paris : J. Hetzel & Paulin, 1841, {{3e|édition}}, page 535}}
+#* {{exemple|lang=fr|Pour lui faire épouser l’héritier d’une des plus illustres '''maisons''' de France, la marquise avait tout sacrifié.|source={{Citation/Honoré de Balzac/La Femme de trente ans/1855}}}}
+#* {{exemple|lang=fr|Souvent même, forcée de reculer devant la pression française devenue trop forte, la '''maison''' de Savoie a dû chercher en Allemagne son point d’appui et a trouvé un refuge dans la '''maison''' de Habsbourg.|source=« {{ws|La Maison de Savoie, ses origines et sa politique}} », ''{{w|Revue des deux Mondes}}'', deuxième période, tome 66 : novembre et décembre 1866}}
+#* {{exemple|lang=fr|Dans les seuls évêchés de Dol, Saint-Malo et Saint-Brieuc, quatorze feudataires dont les revenus nobles propres allaient de 1500 à 40 livres monnaie appartenaient à la '''maison''' du vicomte de Rohan.|source=Michel Nassiet, ''Parenté, noblesse et états dynastiques: XV{{e}}-XVI{{e}} siècles'', Éditions de l’École des hautes études en sciences sociales, 2000, page 121}}
+# Entreprise ayant une identité bien définie, souvent présentée comme prestigieuse.
+#* {{exemple|lang=fr|Les expéditeurs sont à leur poste ; les courtiers des grandes '''maisons''' étrangères sont sur pied. Sans beaucoup de bruit, des cours s’établissent, des transactions s’effectuent, des chargements s’accomplissent.|source={{Citation/Ludovic Naudeau/La France se regarde/1931}}}}
+#*{{exemple|lang=fr|Offrir cinq cents flacons de vinaigre des quatre-voleurs comme produit désinfectant au bureau de bienfaisance du XI{{e}} arrondissement, c’est un acte généreux ; faire savoir qu’il provient de la '''maison''' Maille, Robillard, Segond et Cie, cela devient de la réclame.|source={{w|Ange-Pierre Leca}}, ''Et le choléra s’abattit sur Paris - 1832'', Albin Michel, 1982, page 199}}
+#* {{exemple | lang=fr|1929 : Delteil devient représentant en blanquette de Limoux, plus précisément de la bien nommée '''maison''' Génie.|source=''Joseph Delteil'', Les dossiers H, L’Âge d’Homme, 1998, page 353}}
+#* {{exemple | lang=fr|D’une dissidence à l’autre, Touly s’émeut également de ce que Mme Messier, épouse du plénipotentiaire PDG de Vivendi, puisse toucher quelques subsides de l’auguste '''maison'''.|source=Renaud Lecadre, « À l’eau de rosse », dans ''{{w|Libération}}'' du jeudi 23 septembre 2010}}
+# Commerce, boutique.
+#* {{exemple | lang=fr
+ | Il est rare qu'un attroupement s'installe devant une '''maison''' de joaillerie. Pourtant, malgré l'heure matinale, une file d'attente s'est formée le 11 septembre 2024, avenue Montaigne, devant Tiffany & Co.| source=''Le Point'' n° 2722, 3 octobre 2024, page 136}}
+# {{en particulier}} [[maison d’édition#fr|Maison d’édition]].
+#* {{exemple|lang=fr|« '''Maison''' trop sérieuse, trop austère et rigoureuse, essence de la vertu littéraire, trop bien pour moi. » C’est avec cette cascade d’épithètes définitives que Jean Echenoz a expliqué pourquoi, en 1979, il n’avait pas envoyé son premier manuscrit aux Ḗditions de Minuit.|source=David Caviglioli, « [https://www.nouvelobs.com/rentree-2012/20120823.OBS0255/julia-deck-la-revelation-de-minuit.html Julia Deck, la révélation de Minuit] », ''{{w|Le Nouvel Obs}}'', 13 septembre 2012}}
+# {{lexique|histoire|religion|fr}} [[établissement#fr|Établissement]] d’une [[communauté]] [[religieuse]].
+#* {{exemple|lang=fr|Les '''maisons''' provinciales d’un ordre.}}
+#* {{exemple|lang=fr|'''Maison''' de chartreux (Chartreuse), de capucins, de clarisses…}}
+# {{lexique|astrologie|fr}} Un des [[fuseau]]x obtenus après division du ciel par les [[astrologue]]s afin d’établir un [[thème astral]].
+#* {{exemple|lang=fr|Lettré, théologien, juriste et philosophe, il est le type parfait, très rare aujourd’hui, du savant arabe : véritable encyclopédie vivante de la science d’il y a un demi-millénaire. Il croit fermement aux horoscopes, à l’influence des planètes et des constellations, des « douze '''maisons''' » du soleil, à la pierre philosophale et à la possibilité de transformer les métaux vils en métaux précieux.|source={{w|Frédéric Weisgerber}}, ''Trois mois de campagne au Maroc : étude géographique de la région parcourue'', Paris : Ernest Leroux, 1904, page 122}}
+#* {{exemple|lang=fr|Le pôle nord de l’écliptique se trouve à 23°5' du pôle nord céleste. Les points de la Terre qui sont situés sur le cercle polaire ont leur zénith à 23°5' du pôle céleste. Donc, au cours du mouvement diurne, le pôle de l’écliptique passe chaque jour au zénith de tous ces lieux terrestres. Alors, l’écliptique coïncide avec l’horizon et ne traverse plus aucune '''maison'''. Il n’y a plus d’horoscope pour les malheureux qui naissent à ce moment-là.|source=Paul Couderc, ''L’Astrologie'', 1974}}
+# {{argot|fr}} [[maison close#fr|Maison close]] ; [[lupanar]].
+#* {{exemple | lang=fr
+ | J’ai été en '''maison''', répondit Véra, jusqu’à ce que Cramoisi, mon second homme, m’en ait sortie pour m’affranchir des taules et des taulières.
+ | source={{Citation/Francis Carco/Images cachées/1928}}}}
+#* {{exemple | lang=fr
+ | Le soir du crime, Pedro a prétendu avoir passé la soirée dans une '''maison''' spécialisée : chez Mme Arthur.
+ | source=Jo Barnais, ''{{w|Mort aux ténors (roman)|Mort aux ténors}}'', ch. IX, {{w|Série noire}}, {{w|Gallimard}}, 1956, page 88}}
+#* {{exemple | lang=fr
+ | Il était maquereau dans le civil et sa femme préférée était en '''maison''' à Bordeaux.
+ | source={{w|Romain Gary}}, ''La promesse de l'aube'', Folio}}
+# {{argot|fr}} {{péjoratif|fr}} [[maison poulaga|Maison poulaga]], [[police]].
+#*{{exemple|lang=fr|Quand on a une fortune de trente millions, on est toujours honorable… ''[…]'' On n’a aucun intérêt à commettre un crime, parce que, avec son argent, on peut avoir tout ce qu’un crime pourrait vous donner, et avec moins de risques. Croyez-moi, mes enfants, depuis bientôt trente ans que je suis de la '''maison''', j’en ai vu de tous poils et de toutes couleurs, et je sais ce que je dis.|source={{w|Régis Messac}}, ''Cinis in cinerem'' [1936], éditions de la Grange Batelière, 2022, p. 148}}
+# {{lexique|droit féodal|fr}} [[redevance|Redevance]] sur le transport des vins par voie [[fluvial]]e.
+# {{lexique|curling|fr}} [[cible|Cible]] circulaire dessinée sur la [[glace]] ; là où la [[pierre]] doit être lancée.
+#* {{exemple | lang=fr
+ | Vient ensuite l’essence du curling, le curl, cette manière imperceptible d’imprimer une rotation à la pierre pour que celle-ci décrive une courbe l’amenant tranquillement, ou vigoureusement, c’est selon, jusqu’à la '''maison''', le nom de la cible dont le centre s’appelle le tee ou le dolly.
+ | source=Jean-Baptiste Duchenne, ''[https://www.telerama.fr/sortir/non,-le-curling-nest-pas-le-pire-sport-du-monde-et-je-vous-le-prouve,n6483494.php Non, le curling n’est pas le pire sport du monde (et je vous le prouve)]'', telerama.fr, 27 octobre 2019}}
+
+==== {{S|variantes}} ====
+* [[maisonne]] {{Missouri|nocat=1}}
+
+==== {{S|diminutifs}} ====
+* {{lien|maisonette|fr}}
+* {{lien|maisounette|fr}}
+
+==== {{S|synonymes}} ====
+{{(|Bâtiment d’habitation|1}}
+* [[appartement]], [[appart]]
+* [[baraque]] {{familier|nocat=1}}
+* [[bercail]]
+* [[bicoque]] {{familier|nocat=1}}
+* [[demeure]]
+* [[domicile]]
+* [[cambuse]] {{argot|nocat=1}}
+* [[foyer]]
+* [[habitation]]
+* [[logement]]
+* [[logis]]
+* [[maise]] {{argot|nocat=1}}
+* [[résidence]]
+{{)}}
+
+==== {{S|dérivés}} ====
+{{(|colonnes=3}}
+* [[à la maison]]
+* [[aux frais de la maison]]
+* [[avoir un grand train de maison]]
+* [[brule-maison]] {{ortho1990}}
+* [[brûle-maison]]
+* [[casser maison]]
+* [[cadeau de la maison]]
+* [[de maison en maison]]
+* [[devoir à la maison]]
+* [[Église de maison]]
+* [[elfe de maison]]
+* [[être de bonne maison]]
+* [[être de la maison]]
+* [[faire les honneurs de sa maison]]
+* [[faire maison nette]]
+* [[faire maison neuve]]
+* [[fait maison]]
+* [[garder la maison]]
+* [[gens de maison]]
+* [[grande maison]]
+* [[gros comme une maison]] {{familier|nocat=1}}
+* [[homme de maison]]
+* [[linge de maison]]
+* [[maison à colombage]], [[maison à colombages]]
+* [[maison à gros numéro]]
+* [[maison à pans de bois]]
+* [[maison-atelier]]
+* [[maison autonome]]
+* [[Maison Blanche]]
+* [[Maison Bleue]]
+* [[maison bourgeoise]]
+* [[maison-cage]]
+* [[maison centrale]]
+* [[maison-cercueil]]
+* [[maison close]]
+* [[maison-clou]]
+* [[maison commune]]
+* [[maison corne en coin]]
+* [[maison curiale]]
+* [[maison d’abattage]]
+* [[maison d’aliénés]] {{vieilli|nocat=1}}
+* [[maison d’arrêt]]
+* [[maison d’arrivée]]
+* [[maison d’édition]]
+* [[maison d’éducation]]
+* [[maison d’habitation]]
+* [[maison d’hôte]]
+* [[maison de bouteille]] {{vieilli|nocat=1}}
+* [[maison de campagne]]
+* [[maison de capitaine]]
+* [[maison de commerce]]
+* [[maison de commission]]
+* [[maison de correction]]
+* [[maison de cour]] {{Louisiane|nocat=1}}
+* [[maison de cure]]
+* [[maison de départ]]
+* [[maison de détention]]
+* [[maison de Dieu]]
+* [[maison de famille]]
+* [[maison de force]]
+* [[maison de fous]]
+* [[maison de garde-barrière]]
+* [[maison de Hobbit]]
+* [[maison de jeu]]
+* [[maison de joie]]
+* [[maison de la culture]]
+* [[Maison de la Légion d’honneur]]
+* [[maison de la presse]]
+* [[maison de maitre]] {{ortho1990}}
+* [[maison de maître]]
+* [[maison de Molière]]
+* [[maison de naissance]]
+* [[maison de passage]]
+* [[maison de passe]]
+* [[maison de plaisance]]
+* [[maison de plaisir]]
+* [[maison de poupée]]
+* [[maison de rendez-vous]]
+* [[maison de refuge]]
+* [[maison de repos]]
+* [[maison de retraite]]
+* [[maison de santé]]
+* [[maison de suite]] {{vieilli|nocat=1}}
+* [[maison de thé]]
+* [[maison de tolérance]]
+* [[maison des champs]]
+* [[maison des jeunes et de la culture]] ([[MJC]])
+* [[maison du bon Dieu]]
+* [[Maison du peuple]]
+* [[maison du roi]]
+* [[maison du Seigneur]]
+* [[maison éclusière]]
+* [[maison en bande]]
+* [[maison forestière]]
+* [[maison forte]]
+* [[maison fortifiée]]
+* [[maison funéraire]]
+* [[maison garnie]]
+* [[maison hantée]]
+* [[maison individuelle]]
+* [[maison je t’arquepince]]
+* [[maison j’t’arquinche]]
+* [[maison mère]]
+* [[maison meublée]]
+* [[maison mobile]]
+* [[maison passive]]
+* [[maison Phœnix]]
+* [[maison plurifamiliale]]
+* [[maison pontière]]
+* [[maison poulaga]], [[maison Poulaga]]
+* [[maison poulardin]]
+* [[maison publique]]
+* [[Maison Rose]]
+* [[maison solaire]]
+* [[maison-tour]]
+* [[maison unifamiliale]]
+* [[maisonnée]]
+* [[maisonner]]
+* [[maisonnette]]
+* [[maisons des illustres]]
+* [[maitre de maison]] {{ortho1990}}
+* [[maître de maison]]
+* [[maitresse de maison]] {{ortho1990}}
+* [[maîtresse de maison]]
+* [[martinet des maisons]]
+* [[micromaison]], [[micro-maison]]
+* [[nègre de maison]]
+* [[par-dessus les maisons]]
+* [[parler de la corde dans la maison d’un pendu]]
+* [[parler de la corde dans la maison du pendu]]
+* [[pâté de maisons]]
+* [[petite maison]]
+* [[Petites-Maisons]]
+* [[relever sa maison]]
+* [[train de maison]]
+* [[vide-maison]]
+{{)}}
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|astrologie|étiquette (emballage)|logement|ville|sang|télétravail|confinement|sommeil|petit-déjeuner|drag|vie quotidienne|parenté|divination|parfumerie|bâtiment|habitation|immobilier}}
+* [[⌂]] (maison, symbole technique, U+2302)
+* [[🏘]] (plusieurs maisons, U+1F3D8)
+* [[🏚]] (maison en ruine, U+1F3DA)
+* [[🏠]] (maison, U+1F3E0)
+* [[🏡]] (maison avec jardin, U+1F3E1)
+* {{voir thésaurus|fr|boutique|maison}}
+
+==== {{S|hyperonymes}} ====
+* {{l|bâtiment|fr}}
+** {{l|logement|fr}}, {{l|logis|fr}}
+
+==== {{S|phrases}} ====
+* [[maison vide, le diable y entre]]
+* [[on ne lance pas de pierre quand on vit dans une maison de verre]]
+
+==== {{S|dérivés autres langues}} ====
+* {{L|lou}} : {{l|lamézon|lou}}
+
+==== {{S|traductions}} ====
+{{trad-début|Bâtiment servant de logis, d’habitation, de demeure|1}}
+* {{T|aas}} : {{trad|aas|morok}}, {{trad|aas|morók}}
+* {{T|af}} : {{trad+|af|huis}}
+* {{T|agn}} : {{trad|agn|balay}}
+* {{T|akz}} : {{trad|akz|chokka}}, {{trad|akz|iisa}}
+* {{T|sq}} : {{trad+|sq|shtëpi}}
+* {{T|ale}} : {{trad|ale|ulax̂}}
+* {{T|de}} : {{trad+|de|Haus|n}}
+* {{T|alt}} : {{trad|alt|тура}}
+* {{T|zgh}} : {{trad|zgh|ⵜⵉⴳⵎⵎⵉ}}
+* {{T|am}} : {{trad-|am|ቤት|m|tr=bet}}
+* {{T|angevin}} : {{trad|angevin|méeson}}
+* {{T|en}} : {{trad+|en|house}}
+* {{T|ar}} : {{trad+|ar|بيت|R=bayt}}, {{trad+|ar|دار|R=dār}}, {{trad+|ar|منزل|R=manzil}}
+* {{T|hy}} : {{trad+|hy|տուն|tr=tun}}
+* {{T|rup}} : {{trad|rup|casã}}
+* {{T|atj}} : {{trad|atj|mikwam}}
+* {{T|az}} : {{trad+|az|ev}}
+* {{T|ba}} : {{trad|ba|өй}}, {{trad|ba|йорт}}
+* {{T|ksf}} : {{trad|ksf|𐌷𐌿𐍃|R=mim|n}}
+* {{T|bm}} : {{trad-|bm|so}}
+* {{T|eu}} : {{trad+|eu|etxe}}
+* {{T|bn}} : {{trad+|bn|ঘর|tr=ghôr}}
+* {{T|be}} : {{trad+|be|дом|tr=dom}}
+* {{T|bkd}} : {{trad|bkd|balay}}
+* {{T|bdg}} : {{trad|bdg|bali}}
+* {{T|br}} : {{trad+|br|ti}}
+* {{T|bg}} : {{trad+|bg|къща|tr=kǎšta}}
+* {{T|cad}} : {{trad|cad|kiwát}}
+* {{T|cak}} : {{trad|cak|jay}}
+* {{T|ca}} : {{trad+|ca|casa|f}}
+* {{T|proto-celtique}} : {{trad|proto-celtique|Reconstruction:proto-celtique/*tegos|dif=*tegos}}
+* {{T|shy}} : {{trad+|shy|axxam}}, {{trad+|shy|taddarṭ}}
+* {{T|ctc}} : {{trad|ctc|mvn’}}
+* {{T|zh}} : {{trad+|zh|房子|R=fángzi}}
+* {{T|shi}} : {{trad|shi|ⵜⵉⴳⵎⵎⵉ}}
+* {{T|cjs}} : {{trad|cjs|ӱг}}, {{trad|cjs|ӱй}}, {{trad|cjs|эм}}
+* {{T|ko}} : {{trad+|ko|집|tr=jip}}
+* {{T|kw}} : {{trad-|kw|chi}}
+* {{T|co}} : {{trad+|co|casa}}
+* {{T|créole dominiquais}} : {{trad|créole dominiquais|kaz}}, {{trad|créole dominiquais|kay}}
+* {{T|gcf}} : {{trad|gcf|kaz}}
+* {{T|ht}} : {{trad|ht|kay}}
+* {{T|lou}} : {{trad|lou|lamézon}}
+* {{T|gcf-mq}} : {{trad|gcf-mq|kay}}
+* {{T|rcf}} : {{trad|rcf|case}}
+* {{T|acf}} : {{trad|acf|kay}}, {{trad|acf|kaz}}
+* {{T|trf}} : {{trad|trf|kay}}, {{trad|trf|kaz}}
+* {{T|hr}} : {{trad+|hr|kuća}}
+* {{T|dlm}} : {{trad|dlm|cuosa}}
+* {{T|dmr}} : {{trad|dmr|haʋiˈal}}, {{trad|dmr|haniˈal}}
+* {{T|da}} : {{trad+|da|hus}}
+* {{T|sce}} : {{trad|sce|gie}}
+* {{T|dua}} : {{trad|dua|n’dabo}}
+* {{T|myv}} : {{trad|myv|кудо|tr=kudo}}
+* {{T|es}} : {{trad+|es|casa|f}}
+* {{T|eo}} : {{trad+|eo|domo}}
+* {{T|et}} : {{trad+|et|maja}}
+* {{T|eto}} : {{trad|eto|n’da}}, {{trad|eto|nda}}
+* {{T|ewo}} : {{trad|ewo|n’da}}, {{trad|ewo|nda}}
+* {{T|uve}} : {{trad|uve|fale}}
+* {{T|fo}} : {{trad+|fo|hús}}
+* {{T|fi}} : {{trad+|fi|talo}}
+* {{T|vls}} : {{trad|vls|uus}}
+* {{T|fc}} : {{trad|fc|mâson|f}}
+* {{T|fy}} : {{trad+|fy|hûs}}
+* {{T|frr}} : {{trad|frr|hüs}}
+* {{T|fud}} : {{trad|fud|fale}}
+* {{T|gd}} : {{trad+|gd|taigh}}
+* {{T|ga}} : {{trad+|ga|teach}}
+* {{T|gag}} : {{trad|gag|ev}}
+* {{T|gl}} : {{trad+|gl|casa}}
+* {{T|gallo}} : {{trad|gallo|otë}}
+* {{T|cy}} : {{trad+|cy|tŷ}}
+* {{T|ka}} : {{trad+|ka|სახლი|tr=saxli}}
+* {{T|got}} : {{trad|got|𐌷𐌿𐍃|R=hus|n}}
+* {{T|el}} : {{trad+|el|σπίτι|R=spíti|n}}
+* {{T|grc}} : {{trad|grc|οἶκος|m|tr=oîkos}}
+* {{T|gu}} : {{trad+|gu|ઘર|R=ghar}}
+* {{T|ha}} : {{trad-|ha|gida}}
+* {{T|haw}} : {{trad|haw|hale}}
+* {{T|he}} : {{trad+|he|בית}}
+* {{T|hil}} : {{trad|hil|balay}}
+* {{T|hi}} : {{trad+|hi|मकान|R=makāna|m}}
+* {{T|hu}} : {{trad+|hu|ház}}
+* {{T|sah}} : {{trad|sah|дьиэ}}
+* {{T|idi}} : {{trad|idi|mae}}
+* {{T|idiom neutral}} : {{trad|idiom neutral|dom}}
+* {{T|io}} : {{trad+|io|domo}}
+* {{T|ifa}} : {{trad|ifa|bale}}
+* {{T|id}} : {{trad+|id|rumah}}
+* {{T|ia}} : {{trad+|ia|casa}}
+* {{T|iu}} : {{trad-|iu|ᐃᒡᓗ|tr=iglu}}, {{trad-|iu|iglu}}, {{trad-|iu|ᐃᓪᓗ|tr=illu}}, {{trad-|iu|illu}}
+* {{T|is}} : {{trad+|is|hús}}
+* {{T|it}} : {{trad+|it|casa}}
+* {{T|ja}} : {{trad+|ja|家|tr=ie}}, {{trad+|ja|家屋|tr=kaoku}}
+* {{T|chn}} : {{trad|chn|house}}
+* {{T|kbp}} : {{trad|kbp|ɖɛɣa}}
+* {{T|kab}} : {{trad|kab|axxam|m}}, {{trad|kab|axxam}}
+* {{T|csb}} : {{trad-|csb|dóm}}
+* {{T|kgp}} : {{trad|kgp|ẽmã}}
+* {{T|klg}} : {{trad|klg|balay}}
+* {{T|car}} : {{trad|car|auto}}
+* {{T|kne}} : {{trad|kne|beey}}
+* {{T|krc}} : {{trad|krc|юй}}
+* {{T|kk}} : {{trad+|kk|үй|tr=üy}}
+* {{T|kjh}} : {{trad|kjh|тура}}, {{trad|kjh|иб}}
+* {{T|ebu}} : {{trad|ebu|nyumba}}
+* {{T|ki}} : {{trad|ki|nyũmba}}
+* {{T|kqr}} : {{trad|kqr|walai}}
+* {{T|ky}} : {{trad+|ky|үй|tr=ùj}}
+* {{T|rn}} : {{trad-|rn|inzu}}
+* {{T|kog}} : {{trad|kog|húxa}}, {{trad|kog|huwí}}
+* {{T|kv}} : {{trad|kv|керка|tr=kerka}}
+* {{T|avk}} : {{trad|avk|mona}}
+* {{T|kum}} : {{trad|kum|уьй}}
+* {{T|koy}} : {{trad|koy|yeh}}
+* {{T|lac}} : {{trad|lac|nʌj}}
+* {{T|lld}} : {{trad|lld|cësa}}
+* {{T|la}} : {{trad+|la|domum}}, {{trad+|la|casa}}, {{trad+|la|aedes}}
+* {{T|leq}} : {{trad|leq|ada}}
+* {{T|lep}} : {{trad|lep|ᰜᰧᰶ}}
+* {{T|lv}} : {{trad+|lv|māja}}
+* {{T|ln}} : {{trad-|ln|ndáko}}
+* {{T|lt}} : {{trad+|lt|namas}}
+* {{T|lorrain}} : {{trad|lorrain|mâson|f}}, {{trad|lorrain|mâhon|f}}, {{trad|lorrain|mwajon|f}}, {{trad|lorrain|mwohhon|f}}
+* {{T|lua}} : {{trad|lua|nzumbu}}
+* {{T|lb}} : {{trad+|lb|Haus|m}}
+* {{T|xld}} : {{trad|xld|𐤬𐤭𐤦𐤡|tr=bira}}
+* {{T|mk}} : {{trad+|mk|куќа|tr=kuka}}
+* {{T|mad}} : {{trad-|mad|bengko}}, {{trad-|mad|بۤڠكَعَوْ}}, {{trad-|mad|ꦧꦼꦁꦏꦺꦴ}}
+* {{T|ms}} : {{trad+|ms|rumah}}, {{trad+|ms|balai}}
+* {{T|ml}} : {{trad+|ml|വീട്|tr=vīṭ}}, {{trad+|ml|ഗൃഹം|tr=gr̥haṃ}}
+* {{T|mg}} : {{trad+|mg|trano}}
+* {{T|mt}} : {{trad+|mt|dar}}, {{trad-|mt|bejt}}
+* {{T|gv}} : {{trad-|gv|thie}}
+* {{T|mbb}} : {{trad|mbb|baley}}
+* {{T|mbt}} : {{trad|mbt|baley}}
+* {{T|mbs}} : {{trad|mbs|balay}}
+* {{T|mi}} : {{trad+|mi|whare}}
+* {{T|mhr}} : {{trad|mhr|пӧрт|tr=pört}}
+* {{T|mas}} : {{trad|mas|ɛnk-ají}}
+* {{T|mvb}} : {{trad|mvb|biŋˀ}}
+* {{T|vmz}} : {{trad|vmz|niya}}
+* {{T|byv}} : {{trad|byv|mba’a}}
+* {{T|crg}} : {{trad|crg|mayzoon}}, {{trad|crg|mayzoon}}
+* {{T|moh}} : {{trad|moh|kanónhsa}}
+* {{T|mye}} : {{trad|mye|nago}}
+* {{T|nl}} : {{trad+|nl|huis|n}}
+* {{T|yrk}} : {{trad|yrk|хaрăд}}
+* {{T|ne}} : {{trad+|ne|घर|tr=ghara}}
+* {{T|niv}} : {{trad|niv|тыф}}
+* {{T|nog}} : {{trad|nog|уьй}}
+* {{T|normand}} : {{trad|normand|maisoun|f}} (Cotentin), {{trad|normand|maisonne|f}} (Cauchois), {{trad|normand|maîson|f}} (Jersey), {{trad|normand|maisaon|f}} (Guernesey)
+* {{T|non}} : {{trad|non|bo}}, {{trad|non|bú}}
+* {{T|no}} : {{trad+|no|hus|n}}
+* {{T|oc}} : {{trad+|oc|ostal}}, {{trad+|oc|ostau}}, {{trad+|oc|maison}}, {{trad+|oc|fogal}}, {{trad+|oc|fogier}}, {{trad-|oc|maisonassa}}, {{trad-|oc|ostalàs}}
+* {{T|ryu}} : {{trad|ryu|家}}, {{trad|ryu|屋}}, {{trad|ryu|やー|tr=yaa}}
+* {{T|os}} : {{trad|os|хæдзар|tr=xæʒar}}
+* {{T|udm}} : {{trad|udm|корка|tr=korka}}
+* {{T|ur}} : {{trad-|ur|گھر|tr=ghar}}
+* {{T|uz}} : {{trad+|uz|hovli}}, {{trad+|uz|uy}}
+* {{T|ps}} : {{trad-|ps|كور|tr=kor}}, {{trad+|ps|كوټه|tr=kotta}}
+* {{T|pau}} : {{trad|pau|blai}}
+* {{T|pln}} : {{trad|pln|posá}}, {{trad|pln|kasa}}
+* {{T|pa}} : {{trad-|pa|ਮਕਾਨ|R=makāna}}
+* {{T|fa}} : {{trad+|fa|خانه|R=khâné}}, {{trad+|fa|منزل|tr=manzel}}
+* {{T|phn}} : {{trad|phn|𐤁𐤕|tr=bt}}
+* {{T|pcd}} : {{trad|pcd|barraque}}, {{trad|pcd|cahute}}, {{trad|pcd|cambusse}}, {{trad|pcd|majon}}, {{trad|pcd|mason}}, {{trad|pcd|moaison}}
+* {{T|myp}} : {{trad|myp|kaiíi}}
+* {{T|pl}} : {{trad+|pl|dom}}
+* {{T|pt}} : {{trad+|pt|casa|f}}
+* {{T|qu}} : {{trad+|qu|wasi}}
+* {{T|rm}} : {{trad-|rm|chasa}}
+* {{T|rom}} : {{trad|rom|kher}}
+* {{T|ro}} : {{trad+|ro|casă|f}}
+* {{T|ru}} : {{trad+|ru|дом|tr=dom|m}}
+* {{T|se}} : {{trad|se|viessu}}, {{trad|se|dállu}}, {{trad|se|stohpu}}
+* {{T|sm}} : {{trad+|sm|fale}}
+* {{T|sg}} : {{trad+|sg|da}}
+* {{T|sa}} : {{trad-|sa|दमस|tr=damas|f}}
+* {{T|sc}} : {{trad-|sc|domo}}
+* {{T|sr}} : {{trad+|sr|кућа|tr=kuća}}
+* {{T|swb}} : {{trad|swb|pa}}, {{trad|swb|ɗago|tr=dago}}, {{trad|swb|dari}}, {{trad|swb|nyumba}}
+* {{T|zdj}} : {{trad|zdj|djumba}} (vieilli), {{trad|zdj|ɗaho|tr=daho}}
+* {{T|scn}} : {{trad+|scn|casa}}, {{trad-|scn|steri}}
+* {{T|sk}} : {{trad+|sk|dom}}
+* {{T|sl}} : {{trad+|sl|hiša}}
+* {{T|solrésol}} : {{trad|solrésol|remifala}}, {{trad|solrésol|r'emifala}}
+* {{T|dsb}} : {{trad|dsb|dom}}
+* {{T|gallo}} : {{trad|gallo|ôtë}}
+* {{T|hsb}} : {{trad-|hsb|dom}}
+* {{T|mkv}} : {{trad|mkv|ima}}
+* {{T|sv}} : {{trad+|sv|hus}}
+* {{T|sw}} : {{trad+|sw|nyumba}}
+* {{T|tg}} : {{trad+|tg|хона|tr=xona}}
+* {{T|tl}} : {{trad+|tl|bahay}}, {{trad-|tl|tahanan}}
+* {{T|ty}} : {{trad|ty|fare}}
+* {{T|ta}} : {{trad+|ta|வீடு|tr=vīṭu}}
+* {{T|txx}} : {{trad|txx|baloi}}
+* {{T|crh}} : {{trad|crh|üy}}, {{trad|crh|ev}}
+* {{T|tt}} : {{trad+|tt|йорт}}, {{trad+|tt|өй}}
+* {{T|cs}} : {{trad+|cs|dům}}
+* {{T|ce}} : {{trad|ce|цӏенош|tr=c̣ienoš}}, {{trad|ce|хӏусам|tr=husam}}
+* {{T|cv}} : {{trad|cv|çурт}}, {{trad|cv|пӳрт}}
+* {{T|te}} : {{trad+|te|ఇల్లు|tr=illu}}
+* {{T|th}} : {{trad+|th|บ้าน|tr=bâan}}
+* {{T|ti}} : {{trad+|ti|ቤት|tr=bet}}
+* {{T|kim}} : {{trad|kim|өғ}}
+* {{T|to}} : {{trad-|to|fale}}
+* {{T|tourangeau}} : {{trad|tourangeau|houstiau}}, {{trad|tourangeau|maigeon}}
+* {{T|tyv}} : {{trad|tyv|бажың}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|véshukh}}
+* {{T|tpw}} : {{trad|tpw|oca}}
+* {{T|tr}} : {{trad+|tr|ev}}
+* {{T|tk}} : {{trad-|tk|öý}}
+* {{T|tru}} : {{trad|tru|bayto}}
+* {{T|tmi}} : {{trad|tmi|ima}}
+* {{T|uk}} : {{trad-|uk|дім|m|tr=dim}}, {{trad+|uk|хата|f|tr=xata}}
+* {{T|uum}} : {{trad|uum|эв}}
+* {{T|bvy}} : {{trad|bvy|bayáy}}
+* {{T|vi}} : {{trad+|vi|nhà}}
+* {{T|wls}} : {{trad|wls|fale}}
+* {{T|wa}} : {{trad+|wa|måjhon|f}}
+* {{T|gdr}} : {{trad|gdr|met}}
+* {{T|woe}} : {{trad|woe|imw}}
+* {{T|xh}} : {{trad-|xh|umzi}}
+* {{T|yi}} : {{trad+|yi|הויז|tr=hoyz}}
+* {{T|yoi}} : {{trad|yoi|家}}, {{trad|yoi|だー}}, {{trad|yoi|だ}}
+* {{T|yo}} : {{trad-|yo|ilé}}
+* {{T|esu}} : {{trad|esu|ena}}
+* {{T|zun}} : {{trad|zun|kʼakwe}}
+{{trad-fin}}
+
+{{trad-début|Foyer|2}}
+* {{T|af}} : {{trad+|af|tuiste}}
+* {{T|de}} : {{trad+|de|Heim|n}}
+* {{T|en}} : {{trad+|en|home}}
+* {{T|rup}} : {{trad|rup|casã}}
+* {{T|bm}} : {{trad-|bm|so}}
+* {{T|eu}} : {{trad+|eu|etxe}}
+* {{T|br}} : {{trad+|br|kêr|f}}
+* {{T|zh}} : {{trad+|zh|家|tr=jiā}}
+* {{T|ko}} : {{trad+|ko|집|tr=jip}}
+* {{T|lou}} : {{trad|lou|lamézon}}
+* {{T|dmr}} : {{trad|dmr|haʋiˈal}}, {{trad|dmr|haniˈal}}
+* {{T|da}} : {{trad-|da|husstand|c}}, {{trad+|da|hjem|n}}
+* {{T|es}} : {{trad+|es|casa|f}}
+* {{T|eo}} : {{trad+|eo|hejmo}}
+* {{T|fi}} : {{trad+|fi|koti}}
+* {{T|fc}} : {{trad|fc|hôtâ|m}}, {{trad|fc|mâson|f}}
+* {{T|got}}&nbsp;: {{trad|got|𐌷𐌰𐌹𐌼𐍃|R=háims|f}}
+* {{T|el}} : {{trad+|el|οίκος|R=íkos|m}}
+* {{T|ha}} : {{trad-|ha|gida}}
+* {{T|io}} : {{trad+|io|hemo}}
+* {{T|ja}} : {{trad+|ja|家|tr=ie}}, {{trad+|ja|うち|tr=uchi}}, {{trad+|ja|家庭|tr=katei}}
+* {{T|rn}} : {{trad-|rn|urugo}}, {{trad-|rn|umuryango}}
+* {{T|avk}} : {{trad|avk|ebava}}
+* {{T|lv}} : {{trad+|lv|māja}}
+* {{T|lt}} : {{trad+|lt|namai}}
+* {{T|mye}} : {{trad|mye|nago}}
+* {{T|nl}} : {{trad+|nl|thuis}}
+* {{T|no}} : {{trad+|no|hjem|n}}
+* {{T|ryu}} : {{trad|ryu|家}}, {{trad|ryu|屋}}, {{trad|ryu|やー|tr=yaa}}
+* {{T|pln}} : {{trad|pln|posá}}, {{trad|pln|kasa}}
+* {{T|pt}} : {{trad+|pt|lar|m}}
+* {{T|zdj}} : {{trad|zdj|ɗaho}}
+* {{T|ses}} : {{trad|ses|hugu}}
+* {{T|ta}} : {{trad+|ta|இல்லம்|R=illam}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|véshukh}} ({{p}} [[véshuyal]])
+* {{T|vi}} : {{trad+|vi|nhà}}
+{{trad-fin}}
+
+{{trad-début|Maisonnée|3}}
+* {{T|de}} : {{trad+|de|Haus}}
+* {{T|en}} : {{trad+|en|house}}
+* {{T|en}} : {{trad+|en|household}}
+* {{T|br}} : {{trad+|br|tiegezh}}
+* {{T|da}} : {{trad+|da|familie|c}}, {{trad+|da|hus|n}}
+* {{T|avk}} : {{trad|avk|yasaxo}}
+* {{T|ryu}} : {{trad|ryu|家}}, {{trad|ryu|屋}}, {{trad|ryu|やー|tr=yaa}}
+* {{T|swb}} : {{trad|swb|muraɓa}}
+{{trad-fin}}
+
+{{trad-début|Lignée, famille|4}}
+* {{T|en}} : {{trad+|en|house}}
+* {{T|br}} : {{trad-|br|lignez}}
+* {{T|co}} : {{trad+|co|casata}}
+* {{T|da}} : {{trad+|da|hus|n}}, {{trad-|da|slægt}}
+* {{T|es}} : {{trad+|es|linaje|m}}
+* {{T|it}} : {{trad+|it|casa}}
+* {{T|nl}} : {{trad+|nl|geslacht|n}}
+* {{T|ryu}} : {{trad|ryu|氏}}, {{trad|ryu|しー|tr=shii}}, {{trad|ryu|うじ|tr=uji}}
+* {{T|pl}} : {{trad+|pl|dom}}
+* {{T|wa}} : {{trad+|wa|måjhon|f}}
+{{trad-fin}}
+
+{{trad-début|Entreprise, commerce|5}}
+* {{T|en}} : {{trad+|en|outfit}}
+* {{T|br}} : {{trad+|br|stal}}
+* {{T|da}} : {{trad+|da|hus|n}}
+* {{T|es}} : {{trad+|es|casa|f}}
+* {{T|it}} : {{trad+|it|casa}}
+* {{T|mye}} : {{trad|mye|nago}}
+* {{T|ru}} : {{trad+|ru|предприятие|tr=predpriâtie|n}}
+* {{T|wa}} : {{trad+|wa|måjhon|f}}
+{{trad-fin}}
+
+{{trad-début|Fuseau astrologique|7}}
+* {{T|de}} : {{trad+|de|Haus|n}}
+* {{T|en}} : {{trad+|en|house}}
+* {{T|fi}} : {{trad+|fi|huone}}
+{{trad-fin}}
+
+===== {{S|traductions à trier}} =====
+{{trad-début}}
+* {{T|abx|trier}} : {{trad|abx|rumaʼ}}
+* {{T|af|trier}} : {{trad+|af|huis}}, {{trad-|af|kooi}}
+* {{T|en|trier}} : {{trad+|en|family}}, {{trad+|en|household}}, {{trad+|en|building}}
+* {{T|ang|trier}} : {{trad+|ang|ærn}}, {{trad-|ang|hus}}
+* {{T|be|trier}} : {{trad+|be|хата|tr=khata}}
+* {{T|bug|trier}} : {{trad|bug|ᨅᨚᨒ}}
+* {{T|bg|trier}} : {{trad+|bg|къща|f|tr=kashta}}, {{trad+|bg|дом|m|tr=dom}}
+* {{T|ca|trier}} : {{trad+|ca|casa}}
+* {{T|fo|trier}} : {{trad+|fo|hús}}
+* {{T|fi|trier}} : {{trad+|fi|talo}}
+* {{T|gd|trier}} : {{trad+|gd|taigh}}
+* {{T|gwi|trier}} : {{trad|gwi|zheh}}
+* {{T|hbo|trier}} : {{trad|hbo|בית|dif=בַּיִת|m}}
+* {{T|hi|trier}} : {{trad+|hi|घर|m}}, {{trad+|hi|इमारत|f}}, {{trad+|hi|भवन|m}} (2), {{trad+|hi|कंपनी|f}} (3)
+* {{T|io|trier}} : {{trad+|io|domo}}, {{trad+|io|hemo}}
+* {{T|id|trier}} : {{trad+|id|rumah}}
+* {{T|iu|trier}} : {{trad-|iu|ᐃᒡᓗ|R=[[iglu]]}}
+* {{T|rw|trier}} : {{trad-|rw|zu}} (inzu)
+* {{T|la|trier}} : {{trad+|la|aedes}}, {{trad+|la|domus}} (1)
+* {{T|mak|trier}} : {{trad|mak|ᨅᨒ}}
+* {{T|yua|trier}} : {{trad|yua|nah}}
+* {{T|nl|trier}} : {{trad+|nl|huis}}, {{trad+|nl|pand}}, {{trad+|nl|familie}}
+* {{T|non}} : {{trad|non|inni|n}}
+* {{T|pap|trier}} : {{trad|pap|kas}}
+* {{T|pt|trier}} : {{trad+|pt|habitação}}, {{trad+|pt|vivenda}}
+* {{T|ro|trier}} : {{trad+|ro|casă}}
+* {{T|sr|trier}} : {{trad+|sr|kuća}}
+* {{T|sl|trier}} : {{trad+|sl|hiša}}
+* {{T|srn|trier}} : {{trad|srn|oso}}
+* {{T|sw|trier}} : {{trad+|sw|nyumba}}
+* {{T|ta|trier}} : {{trad+|ta|வீடு|R=vîdu}}
+* {{T|taa|trier}} : {{trad|taa|yex}}
+* {{T|tr|trier}} : {{trad+|tr|ev}}, {{trad+|tr|mesken}}
+* {{T|uk}} : {{trad+|uk|будинок}}
+* {{T|wo|trier}} : {{trad-|wo|keur g-}}
+* {{T|zu|trier}} : {{trad+|zu|indlu}}
+{{trad-fin}}
+
+=== {{S|adjectif|fr}} ===
+{{fr-inv|mɛ.zɔ̃|mf=oui|sp=oui}}
+'''maison''' {{pron|mɛ.zɔ̃|fr}} {{mf}}
+# {{familier|fr}} Qui [[fabriquer|est fabriqué]] [[à la maison]].
+#* {{exemple | lang=fr
+ | Pour confectionner un exfoliant '''maison''', mélangez de l’huile d’olive et une poignée de sel de mer. Utilisez cette préparation comme gommage pour le corps.
+ | source=Julie Frédérique, ''L’huile d’olive, c’est malin : Tous les secrets de cet ingrédient magique'', Leduc.S Éditions, 2010, page 53}}
+#* {{exemple|Ce professeur de mathématiques explique ainsi : « C’est simple, lorsque les élèves me rendent un devoir '''maison''', je leur dis ‘sortez une feuille, devoir sur table maintenant’ et je leur repose les mêmes questions que dans le devoir maison, explique le professeur de mathématiques. Cette technique est très efficace. S’ils ont tous 19 au devoir maison et 4 au devoir sur table, c’est qu’ils ont triché."
+|source=Geeko Le Soir, 24/10/2024
+|lang=fr}}
+# {{familier|fr}} Qui [[confectionner|est confectionné]] par le commerçant lui-même.
+#* {{exemple | lang=fr
+ | Il ne la trouvera pas si fameuse, la choucroute de madame Bornand. Est-elle '''maison''', au moins ?
+ | source={{w|Philippe Delerm}}, ''Il avait plu tout le dimanche'', Mercure de France, 1998, page 22}}
+# {{par extension|fr}} Relatif à sa propre ville, sa région, son pays.
+#* {{exemple | lang=fr
+ | L’économie allemande, estiment-ils, ne souffre pas seulement des vents contraires à l’extérieur mais aussi de problèmes '''maison''', liés au manque de réformes depuis le début de l’ère Merkel.
+ | source={{Lien web |prénom=Cécile |nom=Boutelet |url=https://www.lemonde.fr/economie/article/2019/01/15/la-croissance-allemande-a-fortement-decelere-en-2018_5409304_3234.html |titre=L’économie de l’Allemagne montre ses limites structurelles |éditeur=''Le Monde'' |en ligne le=15 janvier 2019}}}}
+
+==== {{S|synonymes}} ====
+* [[domestique]]
+* [[fait maison]]
+
+==== {{S|dérivés}} ====
+* [[syndicat maison]]
+
+==== {{S|traductions}} ====
+{{trad-début|Fait à la maison|1}}
+* {{T|de}} : {{trad+|de|hausgemacht}}
+* {{T|en}} : {{trad+|en|homemade}}
+* {{T|es}} : {{trad+|es|casero}}
+* {{T|ja}} : {{trad+|ja|自家製|tr=jikasei}}
+* {{T|ru}} : {{trad+|ru|домашний|tr=domašnij}}
+* {{T|cs}} : {{trad+|cs|domácí}}
+{{trad-fin}}
+
+=== {{S|prononciation}} ===
+* {{pron-rimes|me.zɔ̃|fr}}
+* {{pron|mɛzɔ̃|mezɔ̃|fr}}
+* Français méridional : {{pron|me.ˈzɔŋ|fr}}
+* Canada : {{pron|mɛː.zõ|mɛ.zɔ̃|fr}}
+* {{écouter|lang=fr|Ouest (France)|yn mɛ.zɔ̃|titre=une maison|audio=Fr-une maison-fr-ouest.ogg}}
+* {{écouter|lang=fr|Montréal (Canada)|mɛː.zõ|audio=LL-Q150 (fra)-Marie D Martel-maison.wav}}
+* {{écouter|lang=fr|Muntzenheim (France)|mezɔ̃|audio=LL-Q150 (fra)-0x010C-maison.wav}}
+* {{écouter|lang=fr|Paris (France)|mezɔ̃|audio=LL-Q150 (fra)-Aemines1-maison.wav}}
+* {{écouter|lang=fr|Paris (France)|mezɔ̃|audio=LL-Q150 (fra)-Aemines6-maison.wav}}
+* {{écouter|lang=fr|Vosges (France)|mezɔ̃|audio=LL-Q150 (fra)-LoquaxFR-maison.wav}}
+* {{écouter|lang=fr|Lyon (France)|mɛzɔ̃|audio=LL-Q150 (fra)-WikiLucas00-maison.wav}}
+* {{écouter|Paris (France)||lang=fr|audio=LL-Q150 (fra)-Althea81-maison.wav}}
+* {{écouter|Millau (France)||lang=fr|audio=LL-Q150 (fra)-Antochkat-maison.wav}}
+* {{écouter|Somain (France)||lang=fr|audio=LL-Q150 (fra)-Jérémy-Günther-Heinz Jähnick-maison.wav}}
+* {{écouter|Marne (France)||lang=fr|audio=LL-Q150 (fra)-Marinolophus-maison.wav}}
+* {{écouter|Cabestany (France)||lang=fr|audio=LL-Q150 (fra)-Lilie B. (BiblioCanet66)-maison.wav}}
+* {{écouter|Canet-en-Roussillon (France)||lang=fr|audio=LL-Q150 (fra)-Mathias G. (BiblioCanet66)-maison.wav}}
+* {{écouter|France||lang=fr|audio=LL-Q150 (fra)-Adélaïde Calais WMFr-maison.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-maison.wav}}
+
+==== {{S|homophones|fr}} ====
+* [[Maisons]]
+
+=== {{S|anagrammes}} ===
+{{voir anagrammes|fr}}
+
+=== {{S|voir aussi}} ===
+* {{Wikipédia}}
+* {{Le Dico des Ados}}
+
+=== {{S|références}} ===
+* {{R:DAF8}}
+{{Références}}
+{{Bonne entrée|français}}
+[[Catégorie:Vie domestique en français]]
+[[Catégorie:Lexique en français du foyer]]
+[[Catégorie:Lexique en occitan du foyer]]
+
+== {{langue|fro}} ==
+=== {{S|nom|xx}} ===
+# Should be ignored.

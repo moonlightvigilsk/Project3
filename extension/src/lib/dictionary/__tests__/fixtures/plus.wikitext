@@ -1,0 +1,415 @@
+== {{langue|fr}} ==
+=== {{S|étymologie}} ===
+: Du {{étyl|la|fr|mot=plus}}. {{supplétion|lang=fr|beaucoup}}.
+
+=== {{S|adverbe|fr|num=1}} ===
+{{fr-inv|ply|pron2=plys}}
+'''plus''' {{pron|ply|fr}} ''ou'' {{pron|plys|fr}} {{invariable|fr}}, {{adverbe de quantité|fr}}
+# {{comparatif de|beaucoup|fr|adv}}. On peut l’utiliser avec ''[[que]]''. ({{pron|plys|fr}})
+#* {{exemple | lang=fr | Ne m’en dites pas '''plus'''. — Vous n’offrez pas assez, donnez quelque chose de '''plus'''.}}
+# {{adj-indéf-avec-de}} {{comparatif de|beaucoup|fr|adv}} de. [[davantage|Davantage]] de. On peut l’utiliser avec ''[[que]]''. ({{pron|plys|fr}})
+#* {{exemple | lang=fr | Il y a '''plus''' de gens qu’hier.}}
+# {{term|Avec un adjectif ou un adverbe}} Indique le [[comparatif]] d’un adjectif ou d’un adverbe. [[davantage|Davantage]]. On peut l’utiliser avec ''[[que]]''. ({{pron|ply|fr}})
+#* {{exemple|lang=fr|— Je n’ai à recueillir que l’héritage de mon père, qui, je le crains, sera '''plus''' que léger.|source={{w|Hector Malot}}, ''Un mariage sous le Second Empire'', 1873}}
+#* {{exemple | lang=fr
+ | Si vous préparez la crème anglaise la veille, elle n'en sera que '''plus''' parfumée et '''plus''' savoureuse.
+ | source=Valérie Lhomme, ''Soupes & veloutés'', Larousse, 2011}}
+# {{term|Avec ''[[le#fr-art-déf|le]]''}} ''[[superlatif|Superlatif]] de'' [[beaucoup]], comme un adverbe pour le verbe. Le premier en quantité ou en intensité. ({{pron|plys|fr}})
+#* {{exemple | lang=fr | Les livres que j’ai le '''plus''' aimés.}}
+# {{term|Avec un [[déterminant]] défini comme ''[[le#fr-art-déf|le]]'', ''[[mon#fr-adj-pos|mon]]'', etc., et avec un adjectif ou un adverbe}} Indique le [[superlatif]] d’un adjectif ou d’un adverbe. Le premier en cette qualité, ou au pluriel, du premier à un certain rang. ({{pron|ply|fr}}) {{usage}} L’adverbe prend toujours la forme au masculin singulier ''le plus''.
+#* {{exemple | lang=fr
+ | La porcelaine, cette matière céramique la '''plus''' parfaite, résulte de la liaison à une température très élevée, de l’infusible kaolin et du fusible feldspath, en une masse homogène.
+ | source=''Le Siècle du rococo : art et civilisation du <small>XVIII</small>{{e|ème}} siècle'', Residenzmuseum München, H. Rinn, 1858, page 223}}
+#* {{exemple | lang=fr
+ | L’ortie de Chine ou Bœhmérie, nommée ''mai'' et ''tchou-ma'' par les Chinois et ''cay-gai'' par les Annamites, est, après le coton, la plante textile la '''plus''' cultivée dans toute l’Indo-Chine.
+ | source=D{{e|r}} Thorel, « ''Agriculture et horticulture de l'Indo-Chine'' », dans ''Voyage d'exploration en Indo-Chine : effectué pendant les années 1866, 1867 et 1868 par une commission française présidée par M. le Capitaine de frégate, Doudart de Lagrée […]'', tome 2, France : Commission d'exploration du Mékong & Paris : Librairie Hachette, 1873, page 409}}
+#* {{exemple | lang=fr | Il est l’homme le '''plus''' grand du monde.}}
+#* {{exemple | lang=fr | Ma '''plus''' belle histoire d’amour.}}
+#* {{exemple | lang=fr | Les trois pays les '''plus''' peuplés du monde sont la Chine, l’Inde et les États-Unis.}}
+#* {{exemple | lang=fr | Paris est l’une des '''plus''' belles villes du monde.}}
+#* {{exemple | lang=fr | Elle court le '''plus''' vite de ma classe.}}
+# ([[plus…, plus]], [[plus…, moins]]) Employé avec répétition, ou en corrélation avec ''[[moins]]'' pour indiquer une relation [[proportionnel]]le. ({{pron|ply|fr}})
+#* L’usage classique permet de rejeter ''plus'' ou ''moins'' après le groupe verbal du second membre : ''Enfin '''plus''' vous m’aimez, je vous aimerais moins.'' {{source|Abbé Claude Boyer, ''Aristodème'', acte II, scène 4 ; Toussainct Quinet, Paris, 1649, page 30}}
+#* Dans cet emploi, une tournure littéraire est d’inverser le sujet dans le second membre : '''''Plus''' votre rang vous distingue des autres, '''plus''' devez-vous vous en approcher ; '''plus''' devez-vous, pour user de cette expression, vous humaniser ; '''plus''' devez-vous avoir de douceur, de modération, de charité.'' {{source|Louis Bourdaloue, ''Sermon sur l’ambition, deuxième partie'', in ''Chefs-d’œuvre oratoires de Bourdaloue'', Garnier-Frères libraires-éditeurs, Paris, s. d., page 317}}
+#* {{exemple | lang=fr
+ | Bon, bon ! répondit le roi avec son sourire fauve, '''plus''' il y en aura, '''plus''' nous serons contents ; amenez, amenez, Henri.
+ | source={{Citation/Alexandre Dumas/La Reine Margot/1886|I|III}}}}
+#* {{exemple | lang=fr
+ | Puis, en grosses lettres, cette phrase : « '''Plus''' il y aura d'acheteurs de blé, meuniers ou négociants, '''plus''' les agriculteurs vendront le leur facilement et cher. » <br>Il est hors de contestation que, si des éléments de concurrence nouveaux devaient surgir, le cultivateur y trouverait son compte.
+ | source=''Annales de la [[Chambre des députés]] : Débats parlementaires'', Paris : Imprimerie du journal officiel, 1921, page 1002}}
+#* {{exemple | lang=fr
+ | J’étais écœurée de son attitude, elle jouait les étonnées et essayait de me persuader que c'était Jojo qui avait tapé ce courrier. Elle devait se payer ma tête, mais '''plus''' elle essayait de me persuader, '''plus''' elle s'enfonçait, […].
+ | source=Catherine Podgorski, ''Charlatan, Scélérat, Menteur! Je vous présente mon employeur'', Éditions Publibook, 2001, page 68}}
+
+==== {{S|synonymes}} ====
+* [[davantage]]
+* [[-issime]] ''(superlatif)''
+
+==== {{S|antonymes}} ====
+* [[moins]]
+
+==== {{S|dérivés}} ====
+{{(|colonnes=4}}
+* [[au plus]]
+* [[bien plus]]
+* [[d’autant plus]]
+* [[de plus]]
+* [[de plus en plus]]
+* [[en plus de]]
+* [[faire le loup plus grand qu’il n’est]]
+* [[le plus possible]]
+* [[ni plus ni moins]]
+* [[non plus]]
+* [[on ne peut plus]]
+* [[pas plus que]]
+* [[pas plus tard que]]
+* [[plus à même]]
+* [[plus d’un]]
+* [[plus longtemps]]
+* [[plus offrant]]
+* [[plus ou moins]]
+* [[plus plus]]
+* [[plus-pétition]]
+* [[plus que]]
+* [[plus souvent qu’à son tour]]
+* [[plus souvent qu’autrement]]
+* [[plus tôt que plus tard]]
+* [[plus-value]]
+* [[plus vrai que nature]]
+* [[plussoyer]]
+* [[qui plus est]]
+* [[rien de plus rien de moins]]
+* [[sans plus]]
+* [[tant et plus]]
+* [[tant plus]]
+* [[tout au plus]]
+{{)}}
+
+==== {{S|phrases}} ====
+* [[le plus tôt sera le mieux]]
+* [[plus c’est gros, plus ça passe]]
+* [[plus jamais ça]]
+
+==== {{S|traductions}} ====
+{{trad-début|Comparatif de ''beaucoup''}}
+* {{T|de}} : {{trad+|de|mehr}}
+* {{T|en}} : {{trad+|en|more}}
+* {{T|az}} : {{trad+|az|daha}}
+* {{T|eu}} : {{trad-|eu|gehiago}}
+* {{T|bourbonnais}} : {{trad|bourbonnais|pus}}
+* {{T|bourguignon}} : {{trad|bourguignon|pus}}
+* {{T|ca}} : {{trad+|ca|més}} ; {{trad+|ca|com més}}, {{trad+|ca|quant més}} (6)
+* {{T|da}} : {{trad+|da|mere}}
+* {{T|es}} : {{trad+|es|más}}
+* {{T|eo}} : {{trad+|eo|pli}}
+* {{T|gl}} : {{trad+|gl|máis}}
+* {{T|gallo}} : {{trad|gallo|davantaïj}}, {{trad|gallo|pus}}
+* {{T|gallo-italique de Sicile}} : {{trad|gallo-italique de Sicile|ciù}}
+* {{T|ka}} : {{trad-|ka|მეტი|tr=meti}}
+* {{T|it}} : {{trad+|it|più}}, {{trad+|it|ancora}}
+* {{T|avk}} : {{trad|avk|loon}}
+* {{T|lo}} : {{trad-|lo|ກວ່າ}}
+* {{T|lt}} : {{trad-|lt|daugiau}}
+* {{T|mayennais}} : {{trad|mayennais|pus}}
+* {{T|moh}} : {{trad|moh|sénha}}
+* {{T|nl}} : {{trad+|nl|meer}}
+* {{T|normand}} : {{trad|normand|pus}}
+* {{T|oc}} : {{trad+|oc|pus}}, {{trad-|oc|plus}}, {{trad+|oc|mai}} ; {{trad-|oc|d’ont mai}} (6)
+* {{T|pln}} : {{trad|pln|má}}
+* {{T|pcd}} : {{trad|pcd|pus}}
+* {{T|pt}} : {{trad+|pt|mais}}
+* {{T|ru}} : {{trad+|ru|больше|tr=bolʹše}}
+* {{T|se}} : {{trad|se|badjel}}, {{trad|se|eambbo}}, {{trad|se|eanet}}
+* {{T|sarthois}} : {{trad|sarthois|pus}}
+* {{T|sl}} : {{trad+|sl|bolj}}
+* {{T|solrésol}} : {{trad|solrésol|midodos'ol}}
+* {{T|sv}} : {{trad+|sv|mest}}
+* {{T|cs}} : {{trad+|cs|víc}}, {{trad+|cs|více}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|búrunggal}}
+* {{T|tr}} : {{trad+|tr|daha}}
+* {{T|esu}} : {{trad|esu|cali}}
+{{trad-fin}}
+
+{{trad-début|(Avec ''de'') Comparatif de ''beaucoup de''}}
+* {{T|de}} : {{trad+|de|mehr}}
+* {{T|en}} : {{trad+|en|more}}
+* {{T|ht}} : {{trad|ht|plis}}
+* {{T|da}} : {{trad+|da|flere}}
+* {{T|gallo}} : {{trad|gallo|davantaïj}}
+* {{T|avk}} : {{trad|avk|loon}}
+* {{T|moh}} : {{trad|moh|sénha}}
+* {{T|normand}} : {{trad|normand|pus}}
+* {{T|nb}} : {{trad+|nb|mer}}, {{trad+|nb|flere}}
+* {{T|se}} : {{trad|se|lasi}}, {{trad|se|lagabui}}
+* {{T|solrésol}} : {{trad|solrésol|midodos'ol}}
+* {{T|cs}} : {{trad+|cs|víc}}, {{trad+|cs|více}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|búrunggal}}
+* {{T|tr}} : {{trad+|tr|daha}}
+{{trad-fin}}
+
+{{trad-début|Avec un adjectif ou un adverbe, signifie son comparatif}}
+* {{T|sq}} : {{trad-|sq|më}}
+* {{T|de}} : {{trad+|de|-er}}
+* {{T|en}} : {{trad+|en|-er}}, {{trad+|en|more}}
+* {{T|ca}} : {{trad+|ca|més}}
+* {{T|zh}} : ''n'est pas traduit, sauf lorsqu'il n'y a pas de standard de comparaison, auquel cas'', {{trad+|zh|比较|tr=bǐjiào|tradi=比較}}, {{trad+|zh|较|tr=jiào|tradi=較}}
+* {{T|ko}} : {{trad+|ko|더|tr=deo}}, {{trad+|ko|보다|tr=boda}}
+* {{T|da}} : {{trad+|da|mere}}
+* {{T|es}} : {{trad+|es|más}}
+* {{T|eo}} : {{trad+|eo|pli}}
+* {{T|gl}} : {{trad+|gl|máis}}
+* {{T|ka}} : {{trad-|ka|უფრო|tr=up’ro}}
+* {{T|el}} : {{trad+|el|πιο}}
+* {{T|ia}} : {{trad-|ia|plus}}
+* {{T|it}} : {{trad+|it|più}}
+* {{T|ja}} : {{trad+|ja|もっと|tr=motto}}, {{trad+|ja|より|tr=yori}}
+* {{T|avk}} : {{trad|avk|lo-}}, {{trad|avk|lod-}}
+* {{T|lt}} : {{trad-|lt|-esnis}}, {{trad-|lt|-iau}}
+* {{T|moh}} : {{trad|moh|sénha}}
+* {{T|nap}} : {{trad|nap|cchiù}}
+* {{T|nl}} : {{trad+|nl|-er}}
+* {{T|normand}} : {{trad|normand|pus}}
+* {{T|oc}} : {{trad+|oc|mai}}, {{trad+|oc|pus}}, {{trad+|oc|plus}}
+* {{T|pln}} : {{trad|pln|má}}
+* {{T|pt}} : {{trad+|pt|mais}}
+* {{T|rm}} : {{trad-|rm|pli}}
+* {{T|ru}} : {{trad+|ru|более|tr=bolee}}, {{trad+|ru|-ее|tr=-ee}}, {{trad+|ru|-ей|tr=-ej}}
+* {{T|se}} : {{trad|se|eanet}}
+* {{T|zdj}} : {{trad|zdj|raha}} (postposé à l'adjectif et suivi de "na" = que)
+* {{T|scn}} : {{trad+|scn|cchiù}}, {{trad+|scn|chiù}}, {{trad+|scn|cchiui}}, {{trad+|scn|cchiuni}}, {{trad-|scn|plui}}
+* {{T|sl}} : {{trad-|sl|-ši|m}}, {{trad-|sl|-ša|f}}, {{trad-|sl|-še|n}}
+* {{T|solrésol}} : {{trad|solrésol|midodos'ol}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|búrunggalin}}
+{{trad-fin}}
+
+{{trad-début|(Avec ''le'') Superlatif de ''beaucoup''}}
+* {{T|de}} : {{trad-|de|am meisten}}, {{trad-|de|am liebsten}}
+* {{T|en}} : {{trad+|en|most}}
+* {{T|ca}} : {{trad-|ca|el més}}
+* {{T|ht}} : {{trad|ht|pi}}
+* {{T|da}} : {{trad-|da|allermest}}, {{trad-|da|allerhelst}}
+* {{T|gallo}} : {{trad|gallo|davantaïj}}
+* {{T|avk}} : {{trad|avk|lo-}}, {{trad|avk|lod-}}
+* {{T|nl}} : {{trad+|nl|meest}}
+* {{T|normand}} : {{trad|normand|pus}}
+* {{T|oc}} : {{trad-|oc|lo mai}}, {{trad-|oc|lo pus}}, {{trad-|oc|lo plus}}
+* {{T|pt}} : {{trad-|pt|o mais}}
+* {{T|sl}} : {{trad+|sl|naj-}}
+* {{T|solrésol}} : {{trad|solrésol|midodos'ol}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|búrunggalu}}
+* {{T|tr}} : {{trad-|tr|en çoktan}}
+{{trad-fin}}
+
+{{trad-début|Avec un adjectif ou un adverbe, signifie son superlatif}}
+* {{T|de}} : {{trad-|de|-st}}, {{trad-|de|am -sten}}
+* {{T|en}} : {{trad+|en|-est}}, {{trad+|en|most}}
+* {{T|az}} : {{trad+|az|ən}}
+* {{T|ca}} : {{trad+|ca|més}}
+* {{T|zh}} : {{trad+|zh|最|tr=zuì}}
+* {{T|ko}} : {{trad+|ko|가장|tr=gajang}}, {{trad+|ko|제일|tr=jeil}}
+* {{T|da}} : {{trad+|da|størst}}, {{trad+|da|mest}}
+* {{T|es}} : {{trad+|es|más}}
+* {{T|eo}} : {{trad+|eo|plej}}
+* {{T|gl}} : {{trad+|gl|máis}}
+* {{T|ia}} : {{trad-|ia|plus}}
+* {{T|it}} : {{trad+|it|più}}
+* {{T|ja}} : {{trad+|ja|最も|tr=mottomo}}, {{trad+|ja|一番|tr=ichiban}}
+* {{T|avk}} : {{trad|avk|lo-}}, {{trad|avk|lod-}}
+* {{T|lt}} : {{trad-|lt|-iausias}}
+* {{T|nl}} : {{trad+|nl|-st}}
+* {{T|normand}} : {{trad|normand|pus}}
+* {{T|oc}} : {{trad+|oc|mai}}, {{trad+|oc|pus}}, {{trad+|oc|plus}}
+* {{T|pt}} : {{trad+|pt|mais}}
+* {{T|ru}} : {{trad+|ru|самый|tr=samyi}}
+* {{T|sl}} : {{trad+|sl|naj-}}
+* {{T|solrésol}} : {{trad|solrésol|midodos'ol}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|búrunggalu}}
+{{trad-fin}}
+
+{{trad-début|Employé avec répétition, ou avec ''moins''}}
+* {{T|de}} : {{trad+|de|je}} {{trad+|de|mehr}}, {{trad+|de|desto}} {{trad+|de|mehr}}
+* {{T|en}} : {{trad+|en|the|dif=the … the …}} (ex. ''the more, the merrier'')
+* {{T|ca}} : {{trad-|ca|com més ... més/menys}}
+* {{T|zh}} : {{trad-|zh|越……越……|tr=yuè … yuè …|tradi=越……越……}}
+* {{T|da}} : {{trad-|da|jo mere des mere}}
+* {{T|normand}} : {{trad|normand|pus}}, {{trad|normand|mais}}
+* {{T|oc}} : {{trad-|oc|d'ont mai ... mai/mens}}
+* {{T|zdj}} : {{trad|zdj|zaiɗi}}
+{{trad-fin}}
+
+=== {{S|adverbe|fr|num=2}} ===
+{{fr-inv|ply}}
+'''plus''' {{pron|ply|fr}} {{invariable|fr}} (adverbe de négation)
+# (En corrélation avec [[ne]]&nbsp;: [[ne… plus]]) Avec la négation, il sert à marquer la cessation d’une action ou d’un état, la privation d’un bien. Cela provient de l’expression euphémique ancienne « [[pas plus]] » (l’équivalent du « [[nicht mehr]] » allemand).
+#* {{exemple | lang=fr
+ | La baguette magique agitée opportunément pour chercher à se faire élire ne suffit '''plus''', ne convainc '''plus'''.
+ | source=André Guillemaut, ''Elections présidentielles 2012'', Éditions Publibook, 2011, page 14}}
+#* {{exemple | lang=fr | Je n’y pense '''plus'''. — Il n’a '''plus''' envie d’y retourner.}}
+# {{ellipse|fr}} {{adj-indéf-avec-de}} Il n’y a plus, il ne faut plus.
+#* {{exemple | lang=fr | '''Plus''' de crainte, tout est fini !}}
+# {{vieilli|fr}} Sans négation, dans le [[corps]] de la [[phrase]], il s’emploie dans le sens d’encore, [[davantage]], désormais.
+#* {{exemple | lang=fr | Il leur défendit d’y '''plus''' songer.}}
+
+==== {{S|notes}} ====
+: Dans le français courant, où le négatif ''[[ne#fr-part|ne]]'' n’est pas toujours utilisé, les phrases ci-dessous sont distinguées seulement par les prononciations :
+:* ''Il pleut '''plus'''.'' ({{pron|plys|fr}}) : ''Il pleut davantage.''
+:* ''Il pleut '''plus'''.'' ({{pron|ply|fr}} ou {{pron|py|fr}}) : ''Il ne pleut plus.''
+
+==== {{S|antonymes}} ====
+* [[déjà]] (pour l’affirmatif)
+* [[encore]]
+
+==== {{S|variantes}} ====
+* [[pu]]
+* [[pus]]
+
+==== {{S|dérivés}} ====
+* [[à n’en plus finir]]
+* [[jusqu’à plus soif]]
+* [[plus rien]]
+
+==== {{S|phrases}} ====
+* [[il n’est plus]] ''(il est mort)''
+
+==== {{S|traductions}} ====
+{{trad-début|Avec la négation sert à marquer la cessation d’une action ou d’un état, la privation d’un bien}}
+* {{T|sq}} : {{trad-|sq|më}}
+* {{T|en}} : {{trad+|en|not}} {{trad+|en|anymore}}, {{trad+|en|no longer}}, {{trad+|en|no more}}
+* {{T|ca}} : {{trad-|ca|no ... més}}, {{trad-|ca|no ... pus}}, {{trad-|ca|ja no}}
+* {{T|hr}} : {{trad+|hr|više}}
+* {{T|da}} : {{trad-|da|ej længere}}
+* {{T|es}} : {{trad-|es|ya no}}
+* {{T|eo}} : {{trad+|eo|plu}}
+* {{T|gl}} : {{trad-|gl|xa non}}
+* {{T|ka}} : {{trad-|ka|აღარ|tr=aḡar}}
+* {{T|it}} : {{trad+|it|più}}
+* {{T|ja}} : {{trad+|ja|もはや|tr=mohaya}}, {{trad+|ja|もう|tr=mō}}
+* {{T|avk}} : {{trad-|avk|mea}}
+* {{T|lt}} : {{trad-|lt|nebe-}}
+* {{T|normand}} : {{trad-|normand|pus mais}}, {{trad|normand|mais}}
+* {{T|nb}} : {{trad+|nb|lenger}}
+* {{T|oc}} : {{trad-|oc|pas mai}}, {{trad-|oc|pas pus}}, {{trad-|oc|pas plus}}, {{trad-|oc|non ... mai}}, {{trad-|oc|non ... pus}}, {{trad-|oc|non ... plus}}
+* {{T|se}} : {{trad-|se|šat}}
+* {{T|swb}} : {{trad-|swb|tsena}}
+* {{T|zdj}} : {{trad-|zdj|tsena}}
+* {{T|sl}} : {{trad-|sl|ne več}}
+* {{T|solrésol}} : {{trad|solrésol|misimim'i}}
+* {{T|sv}} : {{trad+|sv|heller}}
+* {{T|tr}} : {{trad+|tr|artık}}
+{{trad-fin}}
+
+=== {{S|conjonction|fr}} ===
+{{fr-inv|plys}}
+'''plus''' {{pron|plys|fr}} {{invariable|fr}}
+# {{lexique|mathématiques|fr}} [[somme|Somme]] des nombres précédent et suivant.
+#* {{exemple | lang=fr | Un '''plus''' un égale deux.}}
+# {{familier|fr}} [[outre|Outre]] cela, [[et#fr-conj|et]] ; c’est [[alors]] une [[sorte]] de [[formule]] dont on se [[servir|sert]] dans les [[inventaire]]s, dans les [[état]]s de [[compte]], de [[recette]].
+#* {{exemple | lang=fr | '''Plus''' un lit en bois.}}
+
+==== {{S|antonymes}} ====
+* [[moins#fr-conj|moins]]
+
+==== {{S|vocabulaire}} ====
+* [[+]]
+
+==== {{S|traductions}} ====
+{{trad-début|Mathématiques}}
+* {{T|en}} : {{trad+|en|plus}}, {{trad+|en|and}}
+* {{T|eu}} : {{trad-|eu|gehi}}
+* {{T|zh}} : {{trad+|zh|加|R=jiā}}
+* {{T|ko}} : {{trad+|ko|더하기|tr=deohagi}}, {{trad+|ko|플러스|tr=peulleoseu}}
+* {{T|da}} : {{trad+|da|plus}}
+* {{T|eo}} : {{trad+|eo|plus}}
+* {{T|ja}} : {{trad+|ja|足す|tr=tasu}}
+* {{T|avk}} : {{trad-|avk|do}}
+* {{T|mg}} : {{trad+|mg|abo}}
+* {{T|solrésol}} : {{trad|solrésol|midodos'ol}}
+* {{T|tr}} : {{trad+|tr|artı}}
+{{trad-fin}}
+
+{{trad-début|Outre cela, et}}
+* {{T|en}} : {{trad+|en|plus}}
+* {{T|da}} : {{trad-|da|ydermere}}
+* {{T|eo}} : {{trad-|eo|plie}}
+* {{T|avk}} : {{trad-|avk|ison}}
+* {{T|normand}} : {{trad-|normand|pus}}, {{trad-|normand|oû surpus de cha}}
+* {{T|tr}} : {{trad-|tr|bundan başka}}
+{{trad-fin}}
+
+=== {{S|nom|fr}} ===
+{{fr-inv|plys|sp=oui}}
+[[Image:PlusCM128.svg|thumb|Un '''plus'''.]]
+'''plus''' {{pron|plys|fr}} {{m|fr}}, {{invariable|fr}}, {{sp|fr}}
+# {{lexique|mathématiques|fr}} [[+]]. [[signe|Signe]] en forme de [[croix]]. [[symbole|Symbole]] de l’[[addition]] et signe [[positif]].
+#* {{exemple | lang=fr | Un '''plus''' et un moins.}}
+# [[avantage|Avantage]].
+#* {{exemple | lang=fr | Ce stage est un '''plus''' pour votre CV.}}
+#* {{exemple | lang=fr
+ | C'est un '''plus'''. On va se servir de cet appareil-là surtout dans les transferts interhospitaliers où les cas de COVID sont confirmés.
+ | source=Agence QMI, « Une entreprise propose des dômes anti-COVID-19 », ''Le journal de Montréal'', 24 octobre 2020}}
+#* {{exemple|lang=fr
+ | Il faut bien avouer que l' ergonomie des commandes est en retrait depuis la généralisation des touches numériques. Les boutons à poussoir présentent l'avantage d'être actionnables en un geste auquel le conducteur se familiarise d'ailleurs rapidement. Un vrai '''plus''' en termes de sécurité routière apprécié par beaucoup d'automobilistes. Leurs homologues tactiles, eux, obligent souvent à quitter la route des yeux, surtout lorsque la fonctionnalité choisie est accessible via des menus, pas toujours intuitifs au demeurant. Or c'est précisément ce que dénonce le dirigeant d'Euro NCAP. Qui explique : « La surutilisation des écrans tactiles est un problème à l'échelle de l'industrie. Presque tous les constructeurs automobiles déplacent les commandes clés sur des écrans tactiles centraux, obligeant les conducteurs à quitter la route des yeux et augmentant le risque d'accidents liés à la distraction. »
+ | source =  Gatien-Hugo Riposseau, ''Sécurité routière. Euro NCAP préconise le retour des boutons dans les voitures dès 2026'', l'Argus, 8 et 12 mars 2024
+}}
+#* {{exemple|Il est écossais. - Tu mettras ses jupes, que du '''plus'''.
+|source=Sous-titres Permis de Vivre, S01E02
+|lang=fr}}
+# La plus grande [[quantité]], le [[maximum]].
+#* {{exemple | lang=fr | C'est le '''plus''' que je puisse faire.}}
+#* {{exemple | lang=fr | Le '''plus''' que vous en pourrez espérer, c'est une réponse évasive.}}
+# {{familier|fr}} Borne positive d'un circuit électrique ou d'une pile.
+#* ''Le vendeur m'a dit de connecter le fil rouge au '''plus''' de la batterie''.
+
+==== {{S|synonymes}} ====
+* [[signe plus]]
+
+==== {{S|traductions}} ====
+{{trad-début}}
+* {{T|en}} : {{trad+|en|plus sign}}
+* {{T|bm}} : {{trad-|bm|+}}
+* {{T|da}} : {{trad-|da|plustegn|n}}, {{trad+|da|plus|n}}, {{trad-|da|det bedste|n}}
+* {{T|eo}} : {{trad-|eo|pluso}}
+* {{T|ja}} : {{trad+|ja|プラス|tr=purasu}}
+* {{T|avk}} : {{trad-|avk|dostaa}} (1 ; 4), {{trad-|avk|gunt}} (2), {{trad-|avk|cugaca}} (3)
+* {{T|nl}} : {{trad+|nl|plusteken}}(1), {{trad-|nl|een plus}}(2), {{trad-|nl|het meeste}}(3), {{trad-|nl|de plus}}(4)
+* {{T|tr}} : {{trad+|tr|artı}}
+{{trad-fin}}
+
+==== {{S|phrases}} ====
+* [[qui peut le plus, peut le moins]]
+
+=== {{S|verbe|fr|flexion}} ===
+{{fr-verbe-flexion|plaire|grp=3|impers=oui|ind.ps.1s=oui|ind.ps.2s=oui}}
+'''plus''' {{pron|ply|fr}}
+# ''Première personne du singulier du passé simple de'' [[plaire]].
+# ''Deuxième personne du singulier du passé simple de'' [[plaire]].
+# ''Première personne du singulier du passé simple de'' [[pleuvoir]].
+# ''Deuxième personne du singulier du passé simple de'' [[pleuvoir]].
+
+=== {{S|prononciation}} ===
+: Un des rares [[:Catégorie:Homographes non homophones en français|exemples de mot français ayant deux prononciations]].
+* ''[[#fr-adv-1|Adverbe 1]]'' : {{pron|ply|plys|fr}}
+* ''[[#fr-adv-2|Adverbe 2]]'' : {{pron|ply|fr}}
+** {{écouter|lang=fr|Québec {{populaire|nocat=1}}|py}}
+* ''[[#fr-conj|Conjonction]], [[#fr-nom|nom]]'' : {{pron|plys|fr}}
+** {{écouter|lang=fr|France <!-- précisez svp la ville ou la région -->|ɑ̃ plys|audio=Fr-plus.ogg|titre=en plus}}
+* ''[[#fr-flex-verb|Forme de verbe]]'' : {{pron|ply|fr}}
+* {{écouter|lang=fr|France (Paris)|plys|audio=LL-Q150 (fra)-GrandCelinien-plus.wav}}
+* {{écouter|lang=fr|France (Vosges)|plys|audio=LL-Q150 (fra)-LoquaxFR-plus.wav}}
+* {{écouter|lang=fr|France (Vosges)|plys|audio=LL-Q150 (fra)-Poslovitch-plus.wav}}
+* {{écouter|lang=fr|Canada (Shawinigan)|ply|audio=LL-Q150 (fra)-DenisdeShawi-plus.wav}}
+* {{écouter|Lima (Pérou)|plys|lang=fr|audio=LL-Q150 (fra)-Rodrigo5260-plus (with pronounced s).wav}}
+* {{écouter|Lyon (France)||lang=fr|audio=LL-Q150 (fra)-WikiLucas00-plus.wav}}
+* {{écouter|canton du Valais (Suisse)||lang=fr|audio=LL-Q150 (fra)-DSwissK-plus.wav}}
+* {{écouter|Saint-Laurent-de-Cerdans (France)||lang=fr|audio=LL-Q150 (fra)-Helenou66-plus.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-plus.wav}}
+
+=== {{S|anagrammes}} ===
+{{voir anagrammes|fr}}
+
+=== {{S|voir aussi}} ===
+* {{Annexe|Grammaire française:Comparatif et superlatif}}
+
+=== {{S|références}} ===
+* {{R:DAF8}}
+

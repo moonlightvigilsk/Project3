@@ -11,7 +11,9 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip --browser firefox",
     "postinstall": "wxt prepare",
-    "test": "vitest run"
+    "test": "vitest run",
+    "e2e": "wxt build && node e2e/run.mjs",
+    "e2e:nobuild": "node e2e/run.mjs"
   },
   "keywords": [
     "chrome-extension",
@@ -29,7 +31,9 @@
     "@vitejs/plugin-react": "^5.1.2",
     "@wxt-dev/module-react": "^1.1.5",
     "autoprefixer": "^10.4.23",
+    "linkedom": "^0.18.12",
     "postcss": "^8.5.6",
+    "puppeteer-core": "^25.16.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "vitest": "^5.1.0",

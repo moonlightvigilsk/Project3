@@ -1,5 +1,8 @@
 name: Release
 
+# Push a tag equal to package.json "version" (1.0.0 or v1.0.0): tests, store zips, GitHub release.
+# Uploading to the Chrome Web Store / Edge Add-ons stays manual (store/listing.md).
+
 on:
   push:
     tags:
@@ -28,79 +31,65 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Chrome extension
-        run: npm run build
-
-      - name: Build Firefox extension
-        run: npm run build:firefox
-
-      - name: Create Chrome zip
+      # The manifest version comes from package.json: a tag that does not match would publish
+      # a zip with another version than the release name.
+      - name: Check tag matches package.json version
         run: |
-          cd .output/chrome-mv3
-          zip -r ../../textchecker-chrome-${{ github.ref_name }}.zip .
-          cd ../..
-
-      - name: Create Firefox zip
-        run: |
-          cd .output/firefox-mv2
-          zip -r ../../textchecker-firefox-${{ github.ref_name }}.zip .
-          cd ../..
-
-      - name: Generate changelog
-        id: changelog
-        run: |
-          # Get the previous tag
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-
-          if [ -z "$PREV_TAG" ]; then
-            # First release - get all commits
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
-          else
-            # Get commits since last tag
-            CHANGELOG=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          TAG="${GITHUB_REF_NAME#v}"
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG" != "$VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $VERSION" >&2
+            exit 1
           fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
-          # Escape for GitHub Actions
-          CHANGELOG="${CHANGELOG//'%'/'%25'}"
-          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
-          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+      - name: Type check
+        run: npx tsc --noEmit
 
-          echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
+      - name: Unit tests
+        run: npm test
+
+      # Builds the Chrome extension, then runs the end-to-end tests on it (US-13).
+      - name: E2E tests
+        run: npm run e2e
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+
+      # wxt zip: .output/textchecker-<version>-chrome.zip (Chrome Web Store and Edge Add-ons),
+      # .output/textchecker-<version>-firefox.zip and the sources zip Firefox Add-ons asks for.
+      - name: Create store zips
+        run: |
+          npm run zip
+          npm run zip:firefox
+          ls -l .output/*.zip
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: TextChecker ${{ github.ref_name }}
+          name: TextChecker ${{ env.VERSION }}
           body: |
-            ## TextChecker ${{ github.ref_name }}
+            ## TextChecker ${{ env.VERSION }}
 
-            A free, open-source alternative to LanguageTool browser extension.
+            Learn French from the pages you read: word lookup (Wiktionary), vocabulary notebook,
+            grammar analysis of a sentence, grammar cards and practice sentences.
+            Grammar features use the project's backend (`backend/`, default http://127.0.0.1:8000).
 
-            ### Installation
+            ### Install from the zip
 
-            **Chrome / Edge / Brave:**
-            1. Download `textchecker-chrome-${{ github.ref_name }}.zip`
-            2. Extract the zip file
-            3. Go to `chrome://extensions/`
-            4. Enable "Developer mode"
-            5. Click "Load unpacked" and select the extracted folder
+            **Chrome / Edge / Brave**
+            1. Download `textchecker-${{ env.VERSION }}-chrome.zip` and extract it.
+            2. Open `chrome://extensions/` (Edge: `edge://extensions/`) and turn on Developer mode.
+            3. Click "Load unpacked" and choose the extracted folder.
 
-            **Firefox:**
-            1. Download `textchecker-firefox-${{ github.ref_name }}.zip`
-            2. Go to `about:debugging#/runtime/this-firefox`
-            3. Click "Load Temporary Add-on"
-            4. Select any file from the extracted folder
+            **Firefox** (temporary install)
+            1. Download `textchecker-${{ env.VERSION }}-firefox.zip`.
+            2. Open `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on" and choose the zip.
 
-            ### Changes
-
-            ${{ steps.changelog.outputs.changelog }}
-
-            ---
-
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.ref_name }}...HEAD
+            Privacy policy: [PRIVACY.md](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/PRIVACY.md)
           files: |
-            textchecker-chrome-${{ github.ref_name }}.zip
-            textchecker-firefox-${{ github.ref_name }}.zip
+            .output/textchecker-${{ env.VERSION }}-chrome.zip
+            .output/textchecker-${{ env.VERSION }}-firefox.zip
+            .output/textchecker-${{ env.VERSION }}-sources.zip
           draft: false
           prerelease: false
           generate_release_notes: true

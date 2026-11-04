@@ -1,0 +1,30 @@
+== {{langue|fr}} ==
+=== {{S|verbe|fr|flexion}} ===
+{{fr-verbe-flexion|grp=3|aller|'=oui|pp=oui}}
+'''allé''' {{pron|a.le|fr}}
+# ''Masculin singulier du participe passé du verbe'' [[aller#fr-verb|aller]].
+#* {{exemple | lang=fr
+ | Silène était '''allé''' rentrer la charrette, désarnacher les mulets et mettre chaque objet à sa place, sous un hangar.
+ | source=Charles Testut, ''Le vieux Salomon'', 1872, page 78}}
+
+=== {{S|prononciation}} ===
+* {{pron-rimes|a.le|fr}}
+** {{écouter|lang=fr|France (Brétigny-sur-Orge)|a.le|audio=LL-Q150 (fra)-Pamputt-allé.wav}}
+** {{écouter|lang=fr||a.le|audio=LL-Q150 (fra)-Lyokoï-allé.wav}}
+** {{écouter|lang=fr|France (Vosges)|a.le|audio=LL-Q150 (fra)-Poslovitch-allé.wav}}
+** {{écouter|lang=fr|France (Cesseras)|a.le|audio=LL-Q150 (fra)-Guilhelma-allé.wav}}
+
+==== {{S|homophones|fr}} ====
+* [[allée]] (nom)
+* [[aller]] (nom)
+
+==== {{S|paronymes}} ====
+* [[haler]]
+* [[hâler]]
+
+=== {{S|anagrammes}} ===
+{{voir anagrammes|fr}}
+
+== {{langue|da}} ==
+=== {{S|nom|xx}} ===
+# Should be ignored.

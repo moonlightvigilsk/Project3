@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Éditeurs</title>
+  <style>
+    body { font: 18px Georgia, serif; padding: 30px; }
+    input, textarea, [contenteditable] { font: inherit; width: 640px; display: block; margin-bottom: 24px; }
+    textarea { height: 90px; }
+    [contenteditable] { border: 1px solid #ccc; min-height: 120px; padding: 8px; }
+    p { margin: 0 0 10px; }
+  </style>
+</head>
+<body>
+  <input id="input" type="text">
+  <textarea id="textarea"></textarea>
+  <!-- Multi-paragraph editor (Gmail/Draft style markup) -->
+  <div id="rich" contenteditable="true">
+    <p>Bonjour à tous.</p>
+    <p>Le matin, nous allons au <b>marché</b>.</p>
+    <p id="last"><br></p>
+  </div>
+</body>
+</html>

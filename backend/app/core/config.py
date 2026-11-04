@@ -39,6 +39,9 @@ class Settings(BaseSettings):
 
     # CORS origins
     cors_origins: Union[List[str], str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    # Browser extension pages (US-17): chrome-extension://<id>, moz-extension://<uuid>.
+    # Empty string disables it.
+    cors_origin_regex: str = r"^(chrome|moz)-extension://[A-Za-z0-9-]+$"
 
     @field_validator("cors_origins", mode="before")
     @classmethod

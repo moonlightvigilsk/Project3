@@ -54,6 +54,11 @@ def load_yaml_rules() -> Dict[str, GrammarRuleMetadata]:
                 keywords=data.get("keywords", []),
                 spacy_pattern=data.get("spacy_pattern"),
                 spacy_observation=data.get("spacy_observation"),
+                links=[
+                    {"title": str(link.get("title", "")), "url": str(link["url"])}
+                    for link in data.get("links", []) or []
+                    if isinstance(link, dict) and link.get("url")
+                ],
             )
             rules[rule_id] = rule_meta
             # Also register alias if applicable

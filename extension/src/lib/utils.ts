@@ -1,3 +1,4 @@
+import { buildTextModel, rangeForModelOffsets, type TextModel } from './editable-text';
 import type { SuggestionType, UILanguage } from '@/types';
 
 export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(
@@ -105,8 +106,8 @@ export function getTextFromElement(element: HTMLElement): string {
     return (element as HTMLInputElement | HTMLTextAreaElement).value;
   }
 
-  // For contenteditable
-  return element.innerText || element.textContent || '';
+  // contenteditable: same text model as the underline positions and Apply (US-11)
+  return getContenteditableWalkerText(element);
 }
 
 export function setTextInElement(element: HTMLElement, text: string): void {
@@ -122,258 +123,226 @@ export function setTextInElement(element: HTMLElement, text: string): void {
   element.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
+/** Range of model offsets [startIndex, endIndex) in a contenteditable (US-11 text model). */
 export function getContenteditableRange(
   element: HTMLElement,
   startIndex: number,
-  endIndex: number
+  endIndex: number,
+  model: TextModel = buildTextModel(element)
 ): Range | null {
-  const walker = document.createTreeWalker(
-    element,
-    NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
-    {
-      acceptNode(node) {
-        if (node.nodeType === Node.TEXT_NODE) {
-          return NodeFilter.FILTER_ACCEPT;
-        }
-        if (node.nodeName === 'BR') {
-          return NodeFilter.FILTER_ACCEPT;
-        }
-        return NodeFilter.FILTER_SKIP;
-      },
-    }
-  );
-
-  let currentIndex = 0;
-  let startNode: Node | null = null;
-  let startOffset = 0;
-  let endNode: Node | null = null;
-  let endOffset = 0;
-
-  let node: Node | null;
-  while ((node = walker.nextNode())) {
-    if (node.nodeName === 'BR') {
-      currentIndex += 1;
-      continue;
-    }
-
-    const textNode = node as Text;
-    const nodeLength = textNode.length;
-
-    if (!startNode && currentIndex + nodeLength > startIndex) {
-      startNode = textNode;
-      startOffset = Math.max(0, startIndex - currentIndex);
-    }
-
-    if (!endNode && currentIndex + nodeLength >= endIndex) {
-      endNode = textNode;
-      endOffset = Math.min(nodeLength, endIndex - currentIndex);
-      break;
-    }
-
-    currentIndex += nodeLength;
-  }
-
-  if (startNode && endNode) {
-    try {
-      const range = document.createRange();
-      range.setStart(startNode, startOffset);
-      range.setEnd(endNode, endOffset);
-      return range;
-    } catch (e) {
-      console.warn('Failed to construct range in contenteditable:', e);
-    }
-  }
-
-  return null;
+  return rangeForModelOffsets(model, startIndex, endIndex, element.ownerDocument);
 }
 
 /**
- * Robustly replace a text range inside both standard inputs/textareas and modern
- * contenteditable rich-text frameworks (React, Draft.js, Lexical, Slate, Zalo Web, Messenger).
+ * Text of a contenteditable in the shared model (src/lib/editable-text.ts): the text
+ * sent to the checker, so its offsets are the ones used for underlines and Apply.
  */
-export function applyReplacementToElement(
-  element: HTMLElement,
+export function getContenteditableWalkerText(element: HTMLElement): string {
+  return buildTextModel(element).text;
+}
+
+function normalizeSpaces(s: string): string {
+  return s.replace(/ /g, ' ');
+}
+
+/** Index of the occurrence of `needle` in `haystack` closest to `hint`, or -1. */
+function findClosestOccurrence(haystack: string, needle: string, hint: number): number {
+  if (!needle) return -1;
+  let best = -1;
+  let bestDiff = Infinity;
+  let idx = haystack.indexOf(needle);
+  while (idx !== -1) {
+    const diff = Math.abs(idx - hint);
+    if (diff < bestDiff) {
+      bestDiff = diff;
+      best = idx;
+    }
+    idx = haystack.indexOf(needle, idx + 1);
+  }
+  return best;
+}
+
+const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/** Polls `done` a few times to give async frameworks (React, Lexical, Draft) time to re-render. */
+async function settle(done: () => boolean): Promise<boolean> {
+  if (done()) return true;
+  for (const ms of [16, 50, 120]) {
+    await wait(ms);
+    if (done()) return true;
+  }
+  return false;
+}
+
+function applyToInput(
+  inputEl: HTMLInputElement | HTMLTextAreaElement,
   startIndex: number,
-  endIndex: number,
   originalText: string,
   replacement: string
 ): boolean {
-  const targetEl = getTargetEditableElement(element) || element;
-  try {
-    targetEl.focus();
-  } catch (e) {}
-
-  const tagName = targetEl.tagName.toLowerCase();
-  const isInputOrTextarea = tagName === 'textarea' || tagName === 'input';
-
-  if (isInputOrTextarea) {
-    const inputEl = targetEl as HTMLInputElement | HTMLTextAreaElement;
-    let actualStart = startIndex;
-    let actualEnd = endIndex;
-    const currentVal = inputEl.value;
-
-    if (currentVal.substring(actualStart, actualEnd) !== originalText) {
-      let bestIdx = -1;
-      let minDiff = Infinity;
-      let idx = currentVal.indexOf(originalText);
-      while (idx !== -1) {
-        const diff = Math.abs(idx - startIndex);
-        if (diff < minDiff) {
-          minDiff = diff;
-          bestIdx = idx;
-        }
-        idx = currentVal.indexOf(originalText, idx + 1);
-      }
-      if (bestIdx !== -1) {
-        actualStart = bestIdx;
-        actualEnd = bestIdx + originalText.length;
-      }
-    }
-
-    inputEl.setSelectionRange(actualStart, actualEnd);
-
-    let applied = false;
-    try {
-      applied = document.execCommand('insertText', false, replacement);
-    } catch (e) {
-      applied = false;
-    }
-
-    if (!applied || inputEl.value === currentVal) {
-      const nextVal =
-        currentVal.substring(0, actualStart) +
-        replacement +
-        currentVal.substring(actualEnd);
-
-      const proto = Object.getPrototypeOf(inputEl);
-      const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set;
-      if (setter) {
-        setter.call(inputEl, nextVal);
-      } else {
-        inputEl.value = nextVal;
-      }
-
-      inputEl.setSelectionRange(
-        actualStart + replacement.length,
-        actualStart + replacement.length
-      );
-
-      inputEl.dispatchEvent(
-        new InputEvent('input', {
-          bubbles: true,
-          cancelable: true,
-          inputType: 'insertReplacementText',
-          data: replacement,
-        })
-      );
-      inputEl.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-    return true;
-  }
-
-  // --- CONTENTEDITABLE SUPPORT (Zalo Web, Messenger, React, etc.) ---
-  const fullText = getTextFromElement(targetEl);
+  const currentVal = inputEl.value;
   let actualStart = startIndex;
-  let actualEnd = endIndex;
-
-  // Normalized search (handles non-breaking spaces   from rich editors)
-  const normFull = fullText.replace(/\u00A0/g, ' ');
-  const normOrig = originalText.replace(/\u00A0/g, ' ');
-
-  if (normFull.substring(actualStart, actualEnd) !== normOrig) {
-    let bestIdx = -1;
-    let minDiff = Infinity;
-    let idx = normFull.indexOf(normOrig);
-    while (idx !== -1) {
-      const diff = Math.abs(idx - startIndex);
-      if (diff < minDiff) {
-        minDiff = diff;
-        bestIdx = idx;
-      }
-      idx = normFull.indexOf(normOrig, idx + 1);
-    }
-    if (bestIdx !== -1) {
-      actualStart = bestIdx;
-      actualEnd = bestIdx + originalText.length;
+  if (currentVal.substring(actualStart, actualStart + originalText.length) !== originalText) {
+    actualStart = findClosestOccurrence(currentVal, originalText, startIndex);
+    if (actualStart === -1) {
+      console.warn('[TextChecker] Original text no longer present, skip apply:', originalText);
+      return false;
     }
   }
+  const actualEnd = actualStart + originalText.length;
+  const expected =
+    currentVal.substring(0, actualStart) + replacement + currentVal.substring(actualEnd);
 
-  const range = getContenteditableRange(targetEl, actualStart, actualEnd);
-  if (range) {
+  inputEl.setSelectionRange(actualStart, actualEnd);
+  try {
+    document.execCommand('insertText', false, replacement);
+  } catch {
+    /* ignore */
+  }
+  if (inputEl.value === expected) return true;
+
+  // Fallback: native value setter so React-controlled inputs pick up the change.
+  const proto = Object.getPrototypeOf(inputEl);
+  const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set;
+  if (setter) setter.call(inputEl, expected);
+  else inputEl.value = expected;
+  const caret = actualStart + replacement.length;
+  inputEl.setSelectionRange(caret, caret);
+  inputEl.dispatchEvent(
+    new InputEvent('input', {
+      bubbles: true,
+      cancelable: true,
+      inputType: 'insertReplacementText',
+      data: replacement,
+    })
+  );
+  inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+  return inputEl.value === expected;
+}
+
+async function applyToContentEditable(
+  targetEl: HTMLElement,
+  startIndex: number,
+  originalText: string,
+  replacement: string
+): Promise<boolean> {
+  const readText = () => normalizeSpaces(getContenteditableWalkerText(targetEl));
+  const before = readText();
+  const orig = normalizeSpaces(originalText);
+
+  // startIndex is an offset in this same model (US-11). The closest occurrence is still
+  // looked up in case the user typed since the check.
+  const pos = findClosestOccurrence(before, orig, startIndex);
+  if (pos === -1) {
+    console.warn('[TextChecker] Original text no longer present, skip apply:', originalText);
+    return false;
+  }
+  const expected = normalizeSpaces(
+    before.substring(0, pos) + replacement + before.substring(pos + orig.length)
+  );
+  const isDone = () => readText() === expected;
+  const hasChanged = () => readText() !== before;
+
+  const selectTarget = (): Range | null => {
+    const range = getContenteditableRange(targetEl, pos, pos + orig.length);
+    const sel = window.getSelection();
+    if (!range || !sel) return null;
+    sel.removeAllRanges();
+    sel.addRange(range);
+    return range;
+  };
+
+  if (!selectTarget()) return false;
+  // Let the editor process `selectionchange` so its internal selection
+  // (Draft.js / Lexical / Slate) matches the DOM selection before inserting.
+  await wait(20);
+  if (!selectTarget()) return false;
+
+  // 1. Native editing command. It fires the real beforeinput/input events the
+  //    editor listens to. Never dispatch a synthetic `beforeinput` as well:
+  //    editors like Lexical handle both and insert the text twice.
+  try {
+    document.execCommand('insertText', false, replacement);
+  } catch {
+    /* ignore */
+  }
+  if (await settle(isDone)) return true;
+  if (hasChanged()) {
+    console.warn('[TextChecker] Editor changed text unexpectedly after insertText');
+    return false;
+  }
+
+  // 2. Simulated paste - most rich editors implement their own paste handler.
+  if (selectTarget()) {
+    try {
+      const dt = new DataTransfer();
+      dt.setData('text/plain', replacement);
+      targetEl.dispatchEvent(
+        new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true })
+      );
+    } catch {
+      /* ignore */
+    }
+    if (await settle(isDone)) return true;
+    if (hasChanged()) return false;
+  }
+
+  // 3. Last resort: direct DOM edit (plain contenteditable without a framework).
+  const range = selectTarget();
+  if (!range) return false;
+  try {
+    range.deleteContents();
+    const textNode = document.createTextNode(replacement);
+    range.insertNode(textNode);
     const sel = window.getSelection();
     if (sel) {
+      const caret = document.createRange();
+      caret.setStartAfter(textNode);
+      caret.collapse(true);
       sel.removeAllRanges();
-      sel.addRange(range);
-
-      // Dispatch standard beforeinput first
-      try {
-        const beforeEvt = new InputEvent('beforeinput', {
-          bubbles: true,
-          cancelable: true,
-          inputType: 'insertText',
-          data: replacement,
-        });
-        targetEl.dispatchEvent(beforeEvt);
-      } catch (e) {}
-
-      let applied = false;
-      try {
-        applied = document.execCommand('insertText', false, replacement);
-      } catch (e) {
-        applied = false;
-      }
-
-      // Check if text actually updated
-      const textAfter = getTextFromElement(targetEl).replace(/\u00A0/g, ' ');
-      if (applied && textAfter.includes(replacement)) {
-        try {
-          targetEl.dispatchEvent(
-            new InputEvent('input', {
-              bubbles: true,
-              cancelable: false,
-              inputType: 'insertText',
-              data: replacement,
-            })
-          );
-        } catch (e) {}
-        return true;
-      }
-
-      // Fallback: DOM Range replacement
-      try {
-        range.deleteContents();
-        const textNode = document.createTextNode(replacement);
-        range.insertNode(textNode);
-        sel.removeAllRanges();
-        const caretRange = document.createRange();
-        caretRange.setStartAfter(textNode);
-        caretRange.collapse(true);
-        sel.addRange(caretRange);
-
-        targetEl.dispatchEvent(
-          new InputEvent('input', {
-            bubbles: true,
-            cancelable: false,
-            inputType: 'insertText',
-            data: replacement,
-          })
-        );
-        targetEl.dispatchEvent(new Event('input', { bubbles: true }));
-        return true;
-      } catch (e) {
-        console.warn('Fallback range replacement failed:', e);
-      }
+      sel.addRange(caret);
     }
+    targetEl.dispatchEvent(
+      new InputEvent('input', { bubbles: true, inputType: 'insertText', data: replacement })
+    );
+  } catch (e) {
+    console.warn('[TextChecker] DOM fallback replacement failed:', e);
+    return false;
+  }
+  // A framework may revert the foreign DOM mutation on its next render.
+  await wait(120);
+  return isDone();
+}
+
+/**
+ * Replace `originalText` (expected near `startIndex`) with `replacement` inside an
+ * input/textarea or a contenteditable rich-text editor (React, Draft.js, Lexical,
+ * Slate, Zalo Web, Messenger...). Resolves to true only if the text really changed.
+ */
+export async function applyReplacementToElement(
+  element: HTMLElement,
+  startIndex: number,
+  _endIndex: number,
+  originalText: string,
+  replacement: string
+): Promise<boolean> {
+  const targetEl = getTargetEditableElement(element) || element;
+  try {
+    targetEl.focus({ preventScroll: true });
+  } catch {
+    /* ignore */
   }
 
-  // Final fallback
-  const currentText = getTextFromElement(targetEl);
-  const nextText =
-    currentText.substring(0, actualStart) +
-    replacement +
-    currentText.substring(actualEnd);
-  setTextInElement(targetEl, nextText);
-  return true;
+  const tagName = targetEl.tagName.toLowerCase();
+  if (tagName === 'textarea' || tagName === 'input') {
+    return applyToInput(
+      targetEl as HTMLInputElement | HTMLTextAreaElement,
+      startIndex,
+      originalText,
+      replacement
+    );
+  }
+  return applyToContentEditable(targetEl, startIndex, originalText, replacement);
 }
 
 export function escapeHtml(text: string): string {

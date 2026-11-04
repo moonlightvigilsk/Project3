@@ -1,5 +1,5 @@
 import type { APIKeys, Settings, CacheEntry } from '@/types';
-import { DEFAULT_SETTINGS } from '@/types';
+import { withDefaultSettings } from '@/types';
 
 // Helper to get from sync storage
 async function getSyncItem<T>(key: string, defaultValue: T): Promise<T> {
@@ -45,7 +45,7 @@ export const apiKeysStorage = {
 // Settings storage
 export const settingsStorage = {
   async getValue(): Promise<Settings> {
-    return getSyncItem<Settings>('settings', DEFAULT_SETTINGS);
+    return withDefaultSettings(await getSyncItem<Partial<Settings> | null>('settings', null));
   },
   async setValue(value: Settings): Promise<void> {
     await setSyncItem('settings', value);
@@ -53,7 +53,7 @@ export const settingsStorage = {
   watch(callback: (value: Settings) => void): () => void {
     const listener = (changes: Record<string, { oldValue?: unknown; newValue?: unknown }>, areaName: string) => {
       if (areaName === 'sync' && changes.settings) {
-        callback((changes.settings.newValue as Settings) ?? DEFAULT_SETTINGS);
+        callback(withDefaultSettings(changes.settings.newValue as Partial<Settings> | undefined));
       }
     };
     browser.storage.onChanged.addListener(listener);
@@ -61,15 +61,9 @@ export const settingsStorage = {
   },
 };
 
-// Dictionary storage
-export const dictionaryStorage = {
-  async getValue(): Promise<string[]> {
-    return getSyncItem<string[]>('dictionary', []);
-  },
-  async setValue(value: string[]): Promise<void> {
-    await setSyncItem('dictionary', value);
-  },
-};
+// The personal dictionary (words ignored by the spell check) is now part of the
+// vocabulary notebook: see src/lib/vocabulary (US-05). Its old storage.sync key
+// "dictionary" is only read once, by the migration.
 
 // Stats storage
 export const statsStorage = {
@@ -123,6 +117,12 @@ export async function setCachedResult(text: string, entry: CacheEntry): Promise<
   const cache = await cacheStorage.getValue();
   const hash = hashText(text);
 
+  // Expired results (1 hour) are removed, so checked text does not stay on disk (US-14 privacy policy).
+  const now = Date.now();
+  for (const [key, value] of Object.entries(cache)) {
+    if (!value || now - value.timestamp >= 3600000) delete cache[key];
+  }
+
   // Limit cache size to 100 entries
   const entries = Object.entries(cache);
   if (entries.length >= 100) {
@@ -134,18 +134,6 @@ export async function setCachedResult(text: string, entry: CacheEntry): Promise<
 
   cache[hash] = entry;
   await cacheStorage.setValue(cache);
-}
-
-export async function addToDictionary(word: string): Promise<void> {
-  const dictionary = await dictionaryStorage.getValue();
-  if (!dictionary.includes(word.toLowerCase())) {
-    await dictionaryStorage.setValue([...dictionary, word.toLowerCase()]);
-  }
-}
-
-export async function isInDictionary(word: string): Promise<boolean> {
-  const dictionary = await dictionaryStorage.getValue();
-  return dictionary.includes(word.toLowerCase());
 }
 
 export async function incrementStats(field: 'checksPerformed' | 'errorsFound' | 'correctionsApplied', amount = 1): Promise<void> {

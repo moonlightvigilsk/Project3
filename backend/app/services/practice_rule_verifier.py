@@ -7,6 +7,8 @@ from app.schemas.llm import RuleCheckResult
 
 logger = logging.getLogger(__name__)
 
+ALLER_RULE_IDS = ("aller_infinitif", "futur_proche")
+
 ALLER_PRES_SUBJECT_MAP = {
     # 1st singular
     ("je", "vais"): True,
@@ -111,6 +113,19 @@ def verify_sentence_by_rules(sentence_text: str, target_rule_id: str) -> RuleChe
 
     # 1. DependencyMatcher check
     pattern_matched, match_res = engine.check_target_rule(sentence_text, target_rule_id)
+
+    # The auxiliary / infinitive checks below are specific to "aller + infinitif". For the
+    # other rules (passé composé, négation...) they do not apply: the matcher decides.
+    if target_rule_id.lower().strip() not in ALLER_RULE_IDS:
+        return RuleCheckResult(
+            target_rule_id=target_rule_id,
+            target_rule_name=rule_name,
+            pattern_matched=pattern_matched,
+            auxiliary_correct=True,
+            main_verb_infinitive=True,
+            matched_span=match_res.matched_text if match_res else None,
+            rule_notes=match_res.notes if match_res else None,
+        )
 
     auxiliary_correct = False
     main_verb_infinitive = False

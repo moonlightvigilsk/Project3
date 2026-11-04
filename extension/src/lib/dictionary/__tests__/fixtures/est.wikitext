@@ -1,0 +1,319 @@
+== {{langue|fr}} ==
+=== {{S|étymologie}} ===
+: {{laé|fr|nom}} {{date|lang=fr}} De l’{{étyl|fro|fr|est}}, du {{étyl|enm|fr|mot=est}} lui-même issu du {{étyl|ang|fr|mot=east|dif=ēast}}, du {{étyl|proto-germanique|fr}} {{recons|lang-mot-vedette=fr|austrą|proto-germanique}}, de l’{{étyl|indo-européen commun|fr}} {{recons|lang-mot-vedette=fr|h₂ews-|indo-européen commun}}.
+: Apparenté à l’ancien haut allemand ''[[ōstar]]'' (« vers l’Est »), au latin ''[[aurora]]'' (« l’aurore, l’orient ») primitivement {{recons|lang-mot-vedette=fr|ausos}}, au grec ancien {{polytonique|[[Ἠώς]]|Êốs|Aurore}} et [[ἠώς]] ''êốs'' (« aurore »), le sanskrit [[उषस्]] ''uṣás'' (« aube »).
+: ''([[#fr-flex-verb|Flexion de verbe]])'' De l’{{étyl|fro|fr|est}} (forme du verbe ''{{lien|estre|fro}}''), lui-même issu du {{étyl|la|fr|est}} (forme du verbe ''{{lien|esse|la}}'').
+
+=== {{S|nom|fr}} ===
+{{fr-inv|ɛst}}
+{{rose des vents/fr}}
+'''est''' {{pron|ɛst|fr}} {{m}} {{invar}}
+# {{points cardinaux|fr}} Celui des [[point cardinal|points cardinaux]] qui indique la [[direction]] du soleil levant, exacte aux [[équinoxe]]s, et correspondant à l’[[azimut]] 90°.
+#* {{exemple | lang=fr | Crécy-la-Chapelle se trouve à l''''est''' de Paris.}}
+#* {{exemple | lang=fr | Un vent d''''est''' s'est levé.}}
+#* {{exemple | lang=fr
+ | Quelques blancheurs commencent à nuancer l’horizon vers l’'''est'''. Les nuages du zénith en reçoivent une première coloration.
+ | source={{Citation/Jules Verne/Claudius Bombarnac/1892|4}}}}
+#* {{exemple | lang=fr
+ | Quelques étoiles à présent perçaient la voûte bleue, et dans l’'''est''' le disque de la lune apparut.
+ | source={{Citation/H. G. Wells/La Guerre dans les airs/1921|97}}}}
+#* {{exemple | lang=fr
+ | Pendant la première semaine, la brise fut très légère et excessivement variable, tournant constamment du Nord au Suroit, en passant par l’'''Est'''.
+ | source={{w|Alain Gerbault}}, ''À la poursuite du soleil'' ; tome 1 : ''De New-York à Tahiti'', 1929}}
+#* {{exemple | lang=fr
+ | Ils auraient alors passé de l’Ouest à l’'''Est''', vers la fin du tertiaire, dans le sens contraire à celui qu'on attribuait à l’émigration humaine.
+ | source={{w|René Thévenin}} & {{w|Paul Coze}}, ''Mœurs et Histoire des Indiens Peaux-Rouges'', Payot, 1929, {{2e|éd.}}, p. 15}}
+# [[région|Région]] d'un pays ou [[partie]] du [[monde]] située à l’est.
+#* {{exemple | lang=fr
+ | Les reflets du couchant, le vent de la mer nous viennent aussi ce soir de chez nos ennemis, de l’'''Est''', du Rhin.
+ | source={{w|Jean Giraudoux}}, ''Retour d’Alsace - Août 1914'', 1916}}
+#* {{exemple | lang=fr | La frontière de l’'''Est'''.}}
+
+==== {{S|notes}} ====
+{{note-fr-points-cardinaux}}
+
+==== {{S|variantes orthographiques}} ====
+* [[Est]]
+
+==== {{S|abréviations}} ====
+* [[E]]
+* [[E.]]
+
+==== {{S|synonymes}} ====
+* [[levant]]
+* [[orient]]
+
+==== {{S|antonymes}} ====
+* [[ouest]]
+
+==== {{S|dérivés}} ====
+{{(}}
+* [[est-demi-nord]]
+* [[est-demi-sud]]
+* [[est-nord-est]]
+* [[est-quart-nord-est]]
+* [[est-quart-sud-est]]
+* [[est-sud-est]]
+* [[nord-est]]
+* [[nord-est-quart-est]]
+* [[nord-est-quart-nord]]
+* [[nord-nord-est]]
+* [[nord-quart-nord-est]]
+* [[nordester]]
+* [[serin est-africain]]
+* [[sud-est]]
+* [[sud-est-quart-est]]
+* [[sud-est-quart-sud]]
+* [[sud-quart-sud-est]]
+* [[sud-sud-est]]
+{{)}}
+
+==== {{S|phrases}} ====
+* [[où est l’est]]
+
+==== {{S|traductions}} ====
+{{trad-début}}
+* {{T|af}} : {{trad-|af|Ooste}}
+* {{T|sq}} : {{trad+|sq|lindje}}
+* {{T|de}} : {{trad+|de|Osten}}
+* {{T|am}} : {{trad-|am|ምሥራቅ}}
+* {{T|angevin}} : {{trad|angevin|à-haut}}
+* {{T|en}} : {{trad+|en|east}}
+* {{T|ar}} : {{trad-|ar|شَرْقٌ|tr=Carqũ}}
+* {{T|ary}} : {{trad|ary|شرق}}
+* {{T|hy}} : {{trad+|hy|արևելք|tr=arewelk̕}}
+* {{T|as}} : {{trad-|as|পূৰ্ব}}
+* {{T|atj}} : {{trad|atj|wapanokw}}
+* {{T|az}} : {{trad+|az|şərq}}
+* {{T|ba}} : {{trad|ba|көнсығыш}}
+* {{T|bm}} : {{trad-|bm|kɔrɔn}}
+* {{T|map-bms}} : {{trad|map-bms|wétan}}
+* {{T|eu}} : {{trad-|eu|ekialde}}
+* {{T|bn}} : {{trad+|bn|পূর্ব}}
+* {{T|be}} : {{trad+|be|усход|tr=ushod}}
+* {{T|bs}} : {{trad-|bs|istok}}
+* {{T|br}} : {{trad+|br|reter}}
+* {{T|bg}} : {{trad+|bg|изток|tr=iztok}}
+* {{T|ca}} : {{trad+|ca|est}}
+* {{T|ceb}} : {{trad|ceb|sidlakang}}
+* {{T|zh}} : {{trad+|zh|东|tradi=東|tr=dōng}}
+* {{T|si}} : {{trad+|si|නැගෙනහිර}}
+* {{T|ko}} : {{trad+|ko|동쪽|tr=dongjjok}}
+* {{T|co}} : {{trad-|co|levente}}, (vent) {{trad-|co|livente}}
+* {{T|kea}} : {{trad|kea|ésti}}
+* {{T|hr}} : {{trad+|hr|istok}}, (vent) {{trad-|hr|levant}}
+* {{T|da}} : {{trad+|da|øst}}
+* {{T|dz}} : {{trad-|dz|ཤར།}}
+* {{T|es}} : {{trad+|es|Este|m}}, {{trad+|es|este}}, {{trad+|es|oriente}}, {{trad+|es|levante}}
+* {{T|eo}} : {{trad-|eo|eosto}}, {{trad-|eo|oriento}}
+* {{T|et}} : {{trad+|et|ida}}
+* {{T|fi}} : {{trad+|fi|itä}}
+* {{T|ksh}} : {{trad|ksh|oste}}
+* {{T|fy}} : {{trad+|fy|easten}}
+* {{T|ga}} : {{trad-|ga|oirthear}}
+* {{T|gl}} : {{trad+|gl|leste}}
+* {{T|cy}} : {{trad+|cy|dwyrain}}
+* {{T|ka}} : {{trad-|ka|აღმოსავლეთი|tr=aḡmosavlet̕i}}
+* {{T|el}} : {{trad+|el|ανατολή}} (anatolí) {{f}}
+* {{T|gu}} : {{trad-|gu|પૂર્વ}}
+* {{T|haw}} : {{trad|haw|hikina}}
+* {{T|he}} : {{trad-|he|מִזְרָח|dif=מזרח|m}}
+* {{T|hbo}} : {{trad|hbo|קדם|dif=קֶדֶם|m}}
+* {{T|hi}} : {{trad+|hi|पूर्व}}
+* {{T|hu}} : {{trad+|hu|kelet}}
+* {{T|sah}} : {{trad|sah|илин}}
+* {{T|io}} : {{trad+|io|esto}}
+* {{T|ilo}} : {{trad|ilo|daya}}
+* {{T|id}} : {{trad+|id|timur}}
+* {{T|ia}} : {{trad-|ia|est}}
+* {{T|ie}} : {{trad-|ie|ost}}
+* {{T|is}} : {{trad+|is|austur}}
+* {{T|it}} : {{trad+|it|est|m}}, (vent) {{trad+|it|levante}}
+* {{T|ja}} : {{trad+|ja|東|tr=higashi}}
+* {{T|jv}} : {{trad-|jv|wétan}}
+* {{T|kn}} : {{trad+|kn|ಪೂರ್ವ}}
+* {{T|kk}} : {{trad-|kk|шығыс|tr=şığıs}}
+* {{T|kjh}} : {{trad|kjh|iскер}}
+* {{T|kg}} : {{trad|kg|este}}, {{trad|kg|lunene}}
+* {{T|ky}} : {{trad+|ky|чыгыш|tr=čygyš}}
+* {{T|avk}} : {{trad|avk|roneka}}
+* {{T|kum}} : {{trad|kum|гюнтувуш}}
+* {{T|ku}} : {{trad+|ku|rojhilat}}
+* {{T|la}} : {{trad+|la|oriens}}
+* {{T|lep}} : {{trad|lep|ᰗᰪᰭᰜᰦᰳ}}
+* {{T|lv}} : {{trad-|lv|austrumi}}
+* {{T|lt}} : {{trad+|lt|rytai}}
+* {{T|lmo}} : {{trad+|lmo|est}}
+* {{T|mk}} : {{trad-|mk|исток|tr=istok}}
+* {{T|ms}} : {{trad+|ms|timur}}
+* {{T|ml}} : {{trad+|ml|കിഴക്ക്}}
+* {{T|mt}} : {{trad-|mt|Lvant}}, {{littéraire|nocat=1}} {{trad-|mt|Xerq}}
+* {{T|mr}} : {{trad+|mr|पूर्व}}
+* {{T|yua}} : {{trad|yua|lak’in}}
+* {{T|crg}} : {{trad|crg|est}}
+* {{T|mn}} : {{trad+|mn|зүүн}}
+* {{T|nl}} : {{trad+|nl|oosten|n}}, {{trad+|nl|oost}}
+* {{T|ne}} : {{trad+|ne|पूर्व}}
+* {{T|niv}} : {{trad|niv|к’еӈ мырф эр̌ӄ}}
+* {{T|nog}} : {{trad|nog|куьнтувар}}
+* {{T|non}} : {{trad|non|austr}}
+* {{T|no}} : {{trad+|no|øst}}
+* {{T|nov}} : {{trad|nov|este}}
+* {{T|oc}} : {{trad-|oc|Èst}}, (vent) {{trad+|oc|Levant}}
+* {{T|ryu}} : {{trad|ryu|東}}, {{trad|ryu|上り}}, {{trad|ryu|あがり|tr=agari}}, {{trad|ryu|卯}}, {{trad|ryu|うー|tr=uu}}
+* {{T|pap}} : {{trad|pap|oost}}, {{trad|pap|pariba}}
+* {{T|pa}} : {{trad-|pa|ਪੂਰਬ}}
+* {{T|fa}} : {{trad+|fa|شرق|R=shargh}}
+* {{T|pl}} : {{trad+|pl|wschód}}
+* {{T|pt}} : {{trad+|pt|leste}}, {{trad+|pt|este}}, {{trad+|pt|oriente}}
+* {{T|qu}} : {{trad-|qu|anti}}
+* {{T|ro}} : {{trad+|ro|est}}, {{trad+|ro|răsărit}}, {{trad-|ro|orientul}}, (vent) : {{trad+|ro|austrul}}
+* {{T|ru}} : {{trad+|ru|восток|tr=vostok}}
+* {{T|se}} : {{trad|se|nuorta}}, {{trad|se|nuorti}}
+* {{T|sr}} : {{trad+|sr|исток}}
+* {{T|sh}} : {{trad+|sh|istok}}
+* {{T|sk}} : {{trad-|sk|východ}}
+* {{T|sl}} : {{trad+|sl|vzhod}}
+* {{T|solrésol}} : {{trad|solrésol|fasilare}}, {{trad|solrésol|f'asilare}}
+* {{T|so}} : {{trad+|so|bari}}
+* {{T|ses}} : {{trad|ses|waynahunay}}, {{trad|ses|alkaaba}}
+* {{T|srn}} : {{trad|srn|sonopo}}
+* {{T|sv}} : {{trad-|sv|orient}}, {{trad+|sv|öst}}, {{trad+|sv|östan}}, {{trad+|sv|öster}}
+* {{T|sw}} : {{trad+|sw|mashariki}}
+* {{T|tl}} : {{trad-|tl|silángan}}, {{trad-|tl|silangang}}
+* {{T|ty}} : {{trad|ty|nīʻa}}
+* {{T|ta}} : {{trad+|ta|கிழக்கு|R=kiḻakku}}
+* {{T|crh}} : {{trad|crh|şarq}}, {{trad|crh|kündoğuş}}, {{trad|crh|meşriq}}
+* {{T|tt}} : {{trad-|tt|шәрыкъ}}, {{trad+|tt|көнчыгыш}}
+* {{T|cs}} : {{trad+|cs|východ}}
+* {{T|cv}} : {{trad|cv|тухăç}}
+* {{T|te}} : {{trad+|te|తూర్పు}}
+* {{T|th}} : {{trad+|th|ตะวันออก}}
+* {{T|kim}} : {{trad|kim|буруӈғаары}}
+* {{T|tpi}} : {{trad-|tpi|is}}
+* {{T|tsolyáni}} : {{trad|tsolyáni|mashíqikh}}
+* {{T|tr}} : {{trad+|tr|doğu}}, (vent) {{trad+|tr|gündoğusu}}
+* {{T|tk}} : {{trad-|tk|gündogar}}
+* {{T|uk}} : {{trad+|uk|схід}}
+* {{T|vi}} : {{trad+|vi|đông}}
+* {{T|vo}} : {{trad-|vo|lofüda}}
+* {{T|wa}} : {{trad+|wa|Ess}}, {{trad+|wa|Levant}}, {{trad-|wa|Lûvant}}
+* {{T|xh}} : {{trad-|xh|iMpuma}}
+* {{T|rys}} : {{trad|rys|東}}, {{trad|rys|上りぅ}}, {{trad|rys|上りぃ}}, {{trad|rys|上るぃ}}, {{trad|rys|あーりぅ|tr=aarï}}, {{trad|rys|あーりぃ|tr=aarï}}, {{trad|rys|あーるぃ|tr=aarï}}
+* {{T|yoi}} : {{trad|yoi|東}}, {{trad|yoi|上い}}, {{trad|yoi|あがい}}, {{trad|yoi|あんがい}}, {{trad|yoi|あか゚い}}
+{{trad-fin}}
+
+{{trad-début|Partie du monde ou d’un pays qui est du côté de l’Est.|2}}
+* {{T|de}} : {{trad+|de|Osten|m}}
+* {{T|ar}} : {{trad+|ar|شرق|m}}
+* {{T|avk}} : {{trad|avk|anek}}
+* {{T|zdj}} : {{trad|zdj|mashiriki}}
+* {{T|solrésol}} : {{trad|solrésol|fasilare}}, {{trad|solrésol|f'asilare}}
+{{trad-fin}}
+
+=== {{S|adjectif|fr}} ===
+{{fr-inv|ɛst}}
+'''est''' {{pron|ɛst|fr}} {{invar}}
+# Dans la [[direction]] de l’est.
+#* {{exemple | lang=fr | La côte '''est'''.}}
+#* ''Degrés de longitude '''est'''.'' : Ceux qui vont du méridien de Greenwich vers l’est.
+
+==== {{S|synonymes}} ====
+* [[levantin]]
+* [[oriental]]
+
+==== {{S|dérivés}} ====
+* [[côte Est]]
+* [[hémisphère est]]
+* [[est-allemand]]
+* [[est-asiatique]]
+* [[est-européen]]
+* [[est-québécois]]
+* [[est-timorais]]
+
+=== {{S|verbe|fr|flexion}} ===
+{{fr-verbe-flexion|grp=3|'=oui|ind.p.3s=oui|être}}
+'''est''' {{pron|ɛ|e|fr}}
+# ''Troisième personne du singulier de l’indicatif présent de'' [[être]].
+#* {{exemple | lang=fr | Il '''est''' là.}}
+
+==== {{S|variantes}} ====
+* {{lien|é’t|fr}}
+* {{lien|é|fr}}
+
+==== {{S|dérivés}} ====
+{{(}}
+* [[faire le loup plus grand qu’il n’est]]
+{{)}}
+
+==== {{S|phrases}} ====
+* [[ce qui est bon pour pitou est bon pour minou]] {{Québec|nocat=1}}
+* [[chacun est bossu quand il se baisse]]
+* [[chacun est l’artisan de sa fortune]]
+* [[demain est un autre jour]]
+* [[l’amour est aveugle]]
+* [[l’argent est le nerf de la guerre]]
+* [[l’enfer est pavé de bonnes intentions]]
+* [[l’incident est clos]]
+* [[l’oisiveté est la mère de tous les vices]]
+* [[la carte n’est pas le territoire]]
+* [[la terre est basse]]
+* [[la vengeance est un plat qui se mange froid]]
+* [[la vie n’est pas un long fleuve tranquille]]
+* [[le client est roi]]
+* [[le mieux est l’ennemi du bien]]
+* [[le monde est petit]]
+* [[nul n’est méchant volontairement]]
+* [[nul n’est prophète en son pays]]
+* [[on est chez les fous]]
+* [[on est pas chez mémé]]
+* [[tout est bien qui finit bien]]
+* [[tout est bon dans le cochon]]
+* [[tout est relatif]]
+* [[tout n’est pas rose]]
+* [[tout n’est pas rose dans la vie]]
+* [[un sou est un sou]]
+
+=== {{S|prononciation}} ===
+*[[#fr-nom|Nom]] :
+** {{pron|ɛst|fr}}
+*** {{écouter|lang=fr|France <!-- précisez svp la ville ou la région -->|a l̪‿ɛst̪|titre=à l’est|audio=Fr-est.ogg}}
+*** {{écouter|lang=fr|France (Toulouse)|ɛst̪|audio=LL-Q150 (fra)-Lepticed7-est.wav}}
+*** {{écouter|lang=fr|France (Lyon)|ɛst̪|audio=LL-Q150 (fra)-WikiLucas00-est.wav}}
+*** {{écouter|lang=fr|Suisse (Lausanne)|ɛst̪|audio=LL-Q150 (fra)-Eihel-est.wav}}
+** Les marins prononcent {{pron|ɛ|fr}}.
+* [[#fr-flex-verb|Forme de verbe]] :
+** {{pron|ɛ|e|fr}}
+*** {{term|Sud de la France}} {{pron|e|fr}}
+*** {{écouter|lang=fr|France (Brétigny-sur-Orge)|e|audio=LL-Q150 (fra)-Pamputt-est.wav}}
+*** {{écouter|lang=fr|France (Vosges)|ɛ|audio=LL-Q150 (fra)-Poslovitch-est.wav}}
+*** {{écouter|lang=fr|France (Cesseras)|ɛ|audio=LL-Q150 (fra)-Guilhelma-est.wav}}
+*** {{écouter|lang=fr|France|e|audio=LL-Q150 (fra)-Mecanautes-est.wav}}
+*** {{écouter||e|lang=fr|audio=LL-Q150 (fra)-Lyokoï-est.wav}}
+*** {{écouter|Vosges (France)|ɛ|lang=fr|audio=LL-Q150 (fra)-LoquaxFR-est.wav}}
+* {{écouter|Paris (France)||lang=fr|audio=LL-Q150 (fra)-Titoufred-est.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-est.wav}}
+
+==== {{S|homophones|fr}} ====
+''[[#fr-flex-verb|Forme de verbe]]'' :
+* [[aie]], [[aient]], [[aies]], [[ait]] {{cf|lang=fr|avoir}}
+* [[ais]]
+* [[es]] {{cf|lang=fr|être}}
+
+==== {{S|paronymes}} ====
+''[[#fr-flex-verb|Forme de verbe]]'' :
+* [[haie]], [[haies]]
+* [[hais]], [[hait]] {{cf|lang=fr|haïr}}
+
+=== {{S|anagrammes}} ===
+{{voir anagrammes|fr}}
+
+=== {{S|références}} ===
+* {{Import:DAF8}}
+* {{RÉF}} : Jean-Pierre Lacroux, [http://www.orthotypographie.fr/volume-II/point_cardinal-proverbe.html ''Orthotypographie : De ''Point cardinal'' à ''Proverbe]. Aussi [http://listetypo.free.fr/JPL/Orthotypo-Lacroux.pdf ''Orthotypo : Orthographe & typographie françaises : Dictionnaire raisonné''], 2007.
+
+[[Catégorie:Homographes non homophones en français]]
+[[Catégorie:Noms communs invariables en français]]
+[[Catégorie:Adjectifs invariables en français]]
+[[Catégorie:Mots autologiques en français]]
+

@@ -169,3 +169,23 @@ describe('resolveSuggestions', () => {
     expect(resolveSuggestions('Quelque chose', [])).toEqual([]);
   });
 });
+
+describe('whitespace-only corrections (found in US-11)', () => {
+  it('keeps " ," -> "," and double spaces, drops identical replacements', () => {
+    const text = 'D accord , nous  allons.';
+    const s = (original: string, replacement: string, startIndex: number) => ({
+      id: original,
+      original,
+      replacement,
+      explanation: '',
+      type: 'punctuation' as const,
+      startIndex,
+      endIndex: startIndex + original.length,
+    });
+    const out = resolveSuggestions(text, [s(' ,', ',', 8), s('  ', ' ', 15), s('nous', 'nous', 11)]);
+    expect(out.map((x) => [x.original, x.startIndex])).toEqual([
+      [' ,', 8],
+      ['  ', 15],
+    ]);
+  });
+});
