@@ -63,3 +63,5 @@ Thumbs.db
 .output/
 .wxt/
 *.zip
+
+docs/*.pdf

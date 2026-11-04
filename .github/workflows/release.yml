@@ -15,6 +15,9 @@ permissions:
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: extension
 
     steps:
       - name: Checkout code
@@ -27,6 +30,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: extension/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -85,11 +89,11 @@ jobs:
             1. Download `textchecker-${{ env.VERSION }}-firefox.zip`.
             2. Open `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on" and choose the zip.
 
-            Privacy policy: [PRIVACY.md](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/PRIVACY.md)
+            Privacy policy: [PRIVACY.md](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/extension/PRIVACY.md)
           files: |
-            .output/textchecker-${{ env.VERSION }}-chrome.zip
-            .output/textchecker-${{ env.VERSION }}-firefox.zip
-            .output/textchecker-${{ env.VERSION }}-sources.zip
+            extension/.output/textchecker-${{ env.VERSION }}-chrome.zip
+            extension/.output/textchecker-${{ env.VERSION }}-firefox.zip
+            extension/.output/textchecker-${{ env.VERSION }}-sources.zip
           draft: false
           prerelease: false
           generate_release_notes: true
