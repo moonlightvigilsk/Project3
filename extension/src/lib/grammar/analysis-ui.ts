@@ -9,12 +9,12 @@ import { BACKEND_START_COMMAND, type AnalyzeGrammarReply, type DetectedStructure
  */
 export const ANALYSIS_STYLES = `
   .tc-analysis-card { width: 360px; }
-  .tc-analysis-title { font-size: 17px; font-weight: 700; line-height: 1.25; color: var(--tc-text); }
+  .tc-analysis-title { font-size: 20px; font-weight: 700; line-height: 1.3; color: var(--tc-text); }
   .tc-analysis-sentence {
     margin-top: 10px;
     padding: 8px 10px;
-    font-size: 13.5px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.5;
     background: var(--tc-surface-2);
     border-radius: 10px;
     color: var(--tc-text);

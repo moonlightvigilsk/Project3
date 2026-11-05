@@ -1,6 +1,7 @@
 import type { Translations } from '@/lib/i18n';
 import type { DictionaryEntry, Gender, LookupResponse, LookupResult } from '@/lib/dictionary/types';
 import type { SourceLink } from '@/lib/dictionary/sources';
+import { reloadHostPage } from '@/lib/extension-context';
 import type { SelectionInfo } from './selection-info';
 
 /**
@@ -33,21 +34,22 @@ export const SELECTION_STYLES = `
 
   .tc-lookup-card {
     position: fixed;
-    width: 340px;
+    width: 377px;
     max-width: calc(100vw - 20px);
-    max-height: min(72vh, 520px);
+    max-height: min(82vh, 640px);
     display: flex;
     flex-direction: column;
     background: var(--tc-surface);
     border: 1px solid var(--tc-border);
     border-radius: 16px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
-    padding: 10px 12px 16px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.8), 0 18px 54px rgba(0, 0, 0, 0.3);
+    padding: 0;
     pointer-events: auto;
     z-index: 2147483647;
     animation: tc-fadeIn 0.15s ease-out;
     color: var(--tc-text);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
     /* Pages that disable selection must not stop users copying a definition. */
     -webkit-user-select: text;
     user-select: text;
@@ -56,20 +58,21 @@ export const SELECTION_STYLES = `
   .tc-lookup-card:focus-visible { outline: 2px solid var(--tc-accent); outline-offset: 2px; }
   .tc-card-bar, .tc-lookup-retry { -webkit-user-select: none; user-select: none; }
 
-  /* Top bar: [☆  source/word  ×] */
+  /* Top bar: [☆  source/word  ×] — the grey 28px pill of the Figma cards. */
   .tc-card-bar {
     display: flex;
     align-items: center;
     gap: 4px;
-    height: 30px;
-    padding: 0 4px;
+    height: 28px;
+    margin: 14px 16px 0;
+    padding: 0 10px;
     background: var(--tc-surface-2);
-    border-radius: 999px;
+    border-radius: 20px;
     flex-shrink: 0;
   }
   .tc-card-iconbtn {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -83,17 +86,17 @@ export const SELECTION_STYLES = `
   }
   .tc-card-iconbtn:hover { background: var(--tc-border); color: var(--tc-text); }
   .tc-card-iconbtn:focus-visible { outline: 2px solid var(--tc-accent); outline-offset: 1px; }
-  .tc-card-iconbtn svg { width: 14px; height: 14px; }
+  .tc-card-iconbtn svg { width: 16px; height: 16px; }
   .tc-card-iconbtn[aria-pressed="true"] { color: var(--tc-star); }
   .tc-card-iconbtn[aria-pressed="true"] svg { fill: currentColor; }
-  .tc-card-star[aria-pressed="true"] { width: auto; gap: 4px; padding: 0 8px 0 6px; }
+  .tc-card-star[aria-pressed="true"] { width: auto; gap: 4px; padding: 0 6px 0 4px; }
   .tc-star-label { font-size: 11.5px; font-weight: 600; }
   .tc-star-label[hidden] { display: none; }
 
   /* Saved word: context sentence + note editor (US-06) */
   .tc-vocab-panel {
     flex-shrink: 0;
-    margin: 10px 6px 0;
+    margin: 10px 16px 0;
     padding: 8px 10px 10px;
     background: var(--tc-note-bg);
     border: 1px solid var(--tc-note-border);
@@ -135,8 +138,9 @@ export const SELECTION_STYLES = `
     flex: 1;
     min-width: 0;
     text-align: center;
-    font-size: 12px;
-    color: var(--tc-text-2);
+    font-size: 12.82px;
+    line-height: 1.4;
+    color: var(--tc-text);
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
@@ -144,7 +148,7 @@ export const SELECTION_STYLES = `
   }
   a.tc-card-source:hover { color: var(--tc-text); text-decoration: underline; }
 
-  .tc-lookup-head { padding: 18px 6px 0; flex-shrink: 0; }
+  .tc-lookup-head { padding: 16px 16px 0; flex-shrink: 0; }
   .tc-lookup-wordrow { display: flex; align-items: center; gap: 6px; }
   .tc-lookup-speak { width: 28px; height: 28px; color: var(--tc-text-2); }
   .tc-lookup-speak svg { width: 17px; height: 17px; }
@@ -152,57 +156,61 @@ export const SELECTION_STYLES = `
   .tc-lookup-speak.tc-playing { color: var(--tc-accent); background: var(--tc-accent-soft); }
   .tc-lookup-speak.tc-failed { color: var(--tc-danger); }
   .tc-lookup-word {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 29px;
     color: var(--tc-text);
     word-break: break-word;
   }
   .tc-lookup-meta {
-    margin-top: 3px;
-    font-size: 12px;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 17px;
     color: var(--tc-muted);
   }
   .tc-lookup-meta .tc-ipa { font-family: 'Charis SIL', 'Doulos SIL', 'Gentium Plus', 'Inter', sans-serif; }
 
   .tc-lookup-body {
-    margin-top: 4px;
-    padding: 0 6px;
-    font-size: 12.5px;
-    line-height: 1.45;
+    margin-top: 12px;
+    padding: 0 16px 16px;
+    font-size: 14px;
+    line-height: 1.4;
     color: var(--tc-text);
     overflow-y: auto;
     overscroll-behavior: contain;
   }
   .tc-section-title {
     margin-top: 12px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
+    line-height: 15px;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
     color: var(--tc-muted);
   }
-  .tc-section-text { margin-top: 2px; }
-  .tc-section-muted { margin-top: 2px; color: var(--tc-muted); }
-  .tc-senses { margin: 2px 0 0; padding-left: 16px; }
+  .tc-lookup-body > .tc-section-title:first-child,
+  .tc-lookup-footer .tc-section-title:first-child { margin-top: 0; }
+  .tc-section-text { margin-top: 4px; }
+  .tc-section-muted { margin-top: 4px; font-size: 12px; line-height: 1.4; color: var(--tc-muted); }
+  .tc-senses { margin: 4px 0 0; padding-left: 16px; }
   .tc-senses li { margin: 2px 0; }
   .tc-senses.tc-single { list-style: none; padding-left: 0; }
-  .tc-entry-pos { margin-top: 8px; font-size: 11px; color: var(--tc-muted); font-style: italic; }
+  .tc-entry-pos { margin-top: 8px; font-size: 13px; color: var(--tc-muted); font-style: italic; }
   .tc-lookup-formof {
     margin-top: 12px;
-    padding: 6px 8px;
+    padding: 8px 10px;
     background: var(--tc-surface-2);
     border-radius: 8px;
     color: var(--tc-text-2);
   }
   .tc-lookup-formof b { color: var(--tc-text); }
-  .tc-lookup-formof .tc-section-muted { font-size: 11.5px; }
+  .tc-lookup-formof .tc-section-muted { font-size: 12px; }
 
   .tc-lookup-status {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 14px 0 2px;
+    font-size: 13px;
     color: var(--tc-muted);
   }
   .tc-lookup-status .tc-spinner {
@@ -225,27 +233,40 @@ export const SELECTION_STYLES = `
     cursor: pointer;
   }
   .tc-lookup-retry:hover { background: var(--tc-surface-3); }
-
-  /* Always visible under the scrollable body, so the buttons are never scrolled away. */
-  .tc-lookup-footer { flex-shrink: 0; padding: 0 6px; }
-  .tc-lookup-footer:empty { display: none; }
-  .tc-lookup-footer .tc-section-title { margin-top: 10px; }
-  .tc-lookup-sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-  .tc-source-link {
-    padding: 3px 10px;
-    font-size: 11.5px;
-    line-height: 1.4;
+  .tc-reload-notice { align-items: flex-start; flex-direction: column; gap: 10px; line-height: 1.45; }
+  .tc-reload-page {
+    padding: 4px 12px;
+    font: inherit;
+    font-size: 12px;
     border-radius: 999px;
     border: 1px solid var(--tc-border);
     background: var(--tc-surface-2);
     color: var(--tc-text-2);
+    cursor: pointer;
+  }
+  .tc-reload-page:hover { background: var(--tc-surface-3); color: var(--tc-text); }
+  .tc-reload-page:focus-visible { outline: 2px solid var(--tc-accent); outline-offset: 1px; }
+
+  /* Always visible under the scrollable body, so the actions are never scrolled away. */
+  .tc-lookup-footer { flex-shrink: 0; padding: 0 16px 16px; }
+  .tc-lookup-footer:empty { display: none; }
+  .tc-lookup-footer .tc-section-title { margin-top: 8px; }
+  .tc-lookup-sources { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; }
+  .tc-source-link {
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    border: none;
+    border-radius: 0;
+    background: none;
+    color: var(--tc-muted);
     text-decoration: none;
     white-space: nowrap;
     -webkit-user-select: none;
     user-select: none;
   }
-  .tc-source-link:hover { background: var(--tc-surface-3); color: var(--tc-text); }
-  .tc-source-link:focus-visible { outline: 2px solid var(--tc-accent); outline-offset: 1px; }
+  .tc-source-link:hover { color: var(--tc-text); text-decoration: underline; }
+  .tc-source-link:focus-visible { outline: 2px solid var(--tc-accent); outline-offset: 2px; }
 
   @keyframes tc-fadeIn {
     from { opacity: 0; transform: translateY(-4px); }
@@ -574,6 +595,31 @@ export function renderLookupMessage(card: HTMLElement, message: string) {
   setFooter(card, []);
 }
 
+/**
+ * The content script outlived an extension update/reload: no message can reach the new
+ * background any more. Offer the only real fix, reloading the page.
+ */
+export function extensionInvalidatedNotice(t: Translations): HTMLElement {
+  const status = el('div', 'tc-lookup-status tc-reload-notice');
+  status.append(el('span', undefined, t.extensionInvalidated));
+  const reload = el('button', 'tc-reload-page', t.reloadPage);
+  reload.type = 'button';
+  reload.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    reloadHostPage();
+  });
+  status.append(reload);
+  return status;
+}
+
+export function renderExtensionInvalidated(card: HTMLElement, t: Translations) {
+  cardBody(card).replaceChildren(extensionInvalidatedNotice(t));
+  setFooter(card, []);
+  const star = card.querySelector<HTMLElement>('.tc-card-star');
+  if (star) star.hidden = true;
+}
+
 export function renderLookupLoading(card: HTMLElement, t: Translations) {
   const status = el('div', 'tc-lookup-status');
   status.append(el('div', 'tc-spinner'), el('span', undefined, t.lookupLoading));
@@ -721,7 +767,7 @@ export function renderLookupResponse(
 
 /** Places the card below the selection, or above it when it would overflow the viewport. */
 export function positionLookupCard(card: HTMLElement, anchor: DOMRect) {
-  const width = card.offsetWidth || 340;
+  const width = card.offsetWidth || 377;
   const height = card.offsetHeight || 140;
   const left = clamp(anchor.left, EDGE, window.innerWidth - width - EDGE);
   let top = anchor.bottom + GAP;

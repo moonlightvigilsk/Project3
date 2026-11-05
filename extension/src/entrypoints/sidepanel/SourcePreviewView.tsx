@@ -17,11 +17,11 @@ function Block({ block }: { block: PreviewBlock }) {
   const content = block.spans.map((s, i) => (s.strong ? <strong key={i}>{s.text}</strong> : <span key={i}>{s.text}</span>));
   switch (block.kind) {
     case 'h1':
-      return <h1 className="mt-3 text-[17px] font-bold leading-tight text-ink-900">{content}</h1>;
+      return <h1 className="mt-3 text-2xl font-bold leading-[29px] text-ink-900">{content}</h1>;
     case 'h2':
-      return <h2 className="mt-3 text-[14.5px] font-bold leading-snug text-ink-900">{content}</h2>;
+      return <h2 className="mt-3 text-lg font-bold leading-snug text-ink-900">{content}</h2>;
     case 'h3':
-      return <h3 className="mt-2.5 text-[13px] font-semibold leading-snug text-ink-900">{content}</h3>;
+      return <h3 className="mt-2.5 text-[15px] font-semibold leading-snug text-ink-900">{content}</h3>;
     case 'li':
       return (
         <p className="mt-0.5 pl-3.5 -indent-2.5">
@@ -62,7 +62,7 @@ export function SourcePreviewView({ url, t, saved, onToggleSave, onClose }: Prop
   return (
     <section
       aria-label={t.sourcePreviewTitle}
-      className="rounded-2xl border border-stone-border bg-white p-3 pb-4 shadow-sm"
+      className="rounded-2xl border border-stone-border bg-white px-4 pt-[14px] pb-4 shadow-sm"
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
           e.stopPropagation();
@@ -70,7 +70,7 @@ export function SourcePreviewView({ url, t, saved, onToggleSave, onClose }: Prop
         }
       }}
     >
-      <div className="flex h-[30px] items-center gap-1 rounded-full bg-parchment-200 px-1">
+      <div className="flex h-7 items-center gap-1 rounded-full bg-popup-bar px-3">
         <button
           type="button"
           onClick={onToggleSave}
@@ -81,14 +81,14 @@ export function SourcePreviewView({ url, t, saved, onToggleSave, onClose }: Prop
             saved ? 'text-star' : 'text-ink-500 hover:text-ink-900'
           }`}
         >
-          <Star className="h-3.5 w-3.5" fill={saved ? 'currentColor' : 'none'} />
+          <Star className="h-4 w-4" fill={saved ? 'currentColor' : 'none'} />
         </button>
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
           title={t.openSource}
-          className="min-w-0 flex-1 truncate text-center text-xs text-ink-700 hover:text-ink-900 hover:underline"
+          className="min-w-0 flex-1 truncate text-center text-[12.8px] leading-[18px] text-ink-900 hover:text-ink-900 hover:underline"
         >
           {shortUrl}
         </a>
@@ -103,7 +103,7 @@ export function SourcePreviewView({ url, t, saved, onToggleSave, onClose }: Prop
         </button>
       </div>
 
-      <div className="max-h-[420px] overflow-y-auto overscroll-contain px-1.5 pt-1 text-[12.5px] leading-relaxed text-ink-800">
+      <div className="max-h-[420px] overflow-y-auto overscroll-contain pt-1 text-sm leading-[1.5] text-ink-800">
         {state.status === 'loading' && <p className="py-4 text-ink-500">{t.sourcePreviewLoading}</p>}
         {state.status === 'error' && (
           <p className="py-4 text-ink-500">

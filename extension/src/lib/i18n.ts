@@ -208,6 +208,8 @@ export interface Translations {
   analysisOpenSettings: string;
   analysisTimeout: string;
   analysisBackendError: (status: number | null, message: string) => string;
+  extensionInvalidated: string;
+  reloadPage: string;
   backendTitle: string;
   backendDesc: string;
   backendTest: string;
@@ -484,6 +486,8 @@ export const TRANSLATIONS: Record<UILanguage, Translations> = {
     analysisOpenSettings: 'Đổi địa chỉ backend',
     analysisTimeout: 'Backend không trả lời kịp. Thử lại sau giây lát.',
     analysisBackendError: (status: number | null, m: string) => `Backend báo lỗi${status ? ` (${status})` : ''}: ${m}`,
+    extensionInvalidated: 'Tiện ích vừa được cập nhật hoặc tải lại. Hãy tải lại trang này để tiếp tục sử dụng TextChecker.',
+    reloadPage: 'Tải lại trang',
     backendTitle: 'Backend ngữ pháp',
     backendDesc: 'Máy chủ phân tích ngữ pháp (spaCy) trong thư mục backend/ của dự án. Chỉ câu bạn yêu cầu phân tích mới được gửi tới địa chỉ này.',
     backendTest: 'Kiểm tra kết nối',
@@ -762,6 +766,8 @@ export const TRANSLATIONS: Record<UILanguage, Translations> = {
     analysisOpenSettings: 'Change backend address',
     analysisTimeout: 'The backend did not answer in time. Try again in a moment.',
     analysisBackendError: (status: number | null, m: string) => `The backend returned an error${status ? ` (${status})` : ''}: ${m}`,
+    extensionInvalidated: 'The extension was just updated or reloaded. Reload this page to keep using TextChecker.',
+    reloadPage: 'Reload page',
     backendTitle: 'Grammar backend',
     backendDesc: 'Grammar analysis server (spaCy) in the project’s backend/ folder. Only sentences you ask to analyze are sent to this address.',
     backendTest: 'Test connection',
@@ -1041,6 +1047,8 @@ export const TRANSLATIONS: Record<UILanguage, Translations> = {
     analysisOpenSettings: 'Changer l’adresse du serveur',
     analysisTimeout: 'Le serveur n’a pas répondu à temps. Réessayez dans un instant.',
     analysisBackendError: (status: number | null, m: string) => `Le serveur a renvoyé une erreur${status ? ` (${status})` : ''} : ${m}`,
+    extensionInvalidated: 'L’extension vient d’être mise à jour ou rechargée. Rechargez cette page pour continuer à utiliser TextChecker.',
+    reloadPage: 'Recharger la page',
     backendTitle: 'Serveur de grammaire',
     backendDesc: 'Serveur d’analyse grammaticale (spaCy) du dossier backend/ du projet. Seules les phrases que vous demandez d’analyser sont envoyées à cette adresse.',
     backendTest: 'Tester la connexion',
