@@ -28,34 +28,10 @@
 
 ---
 
-##  Kiến trúc Công nghệ (Stack)
-
-* **Frontend**:
-  * React 19, TypeScript (strict mode)
-  * Vite 8
-  * Tailwind CSS v4 (cấu hình `@theme` biến màu parchment & ink typography)
-  * Lucide React Icons
-  * Vitest + Testing Library
-* **Extension (TextChecker Companion)**:
-  * WXT (Next-gen Web Extension Framework) + React 19 + TypeScript
-  * Multi-provider AI (Google Gemini, OpenAI GPT, Anthropic Claude)
-  * Design đồng bộ hệ thống Typography-first (Parchment & Deep Ink)
-  * Inline real-time grammar checking & shortcut on-demand checking (Ctrl+Shift+G)
-* **Backend**:
-  * Python 3.11+
-  * FastAPI (RESTful API, Lifespan management)
-  * spaCy 3.8+ với mô hình `fr_core_news_md`
-  * SQLAlchemy 2.0 + SQLite (chạy hoàn toàn local)
-  * PyPDF, BeautifulSoup4, Zipfile (xử lý PDF, EPUB, TXT)
-  * Pytest + Httpx
-* **LLM Provider Abstraction**:
-  * Lớp trừu tượng độc lập hỗ trợ: **Mock Provider** (chạy offline không tốn API key), **OpenAI**, **Gemini**, **Ollama** (chạy LLM local).
-* **Language Plugin Architecture**:
-  * Thiết kế theo `BaseLanguageEngine` và `LanguageRegistry`, sẵn sàng mở rộng sang ngôn ngữ thứ hai (Tây Ban Nha, Đức, Nhật...) mà không sửa đổi core.
 
 ---
 
-## 🚀 Hướng dẫn Cài đặt & Chạy ứng dụng
+## Hướng dẫn Cài đặt & Chạy ứng dụng
 
 ### 1. Yêu cầu hệ thống
 * Python 3.11 trở lên
@@ -71,37 +47,22 @@
    cd backend
    ```
 
-2. Tạo và kích hoạt môi trường ảo Python:
-   * **Windows (PowerShell)**:
-     ```powershell
-     python -m venv .venv
-     .venv\Scripts\Activate.ps1
-     ```
-   * **Linux / macOS**:
-     ```bash
-     python3 -m venv .venv
-     source .venv/bin/activate
-     ```
-
-3. Cài đặt các gói phụ thuộc:
+2. Cài đặt môi trường ảo và toàn bộ gói phụ thuộc bằng `uv`:
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
+   *`uv` tự tạo `.venv` trong `backend/.venv` và cài đúng phiên bản đã khoá trong `uv.lock`, bao gồm cả mô hình spaCy `fr_core_news_md`.*
+   *Nếu chưa có `uv`, cài theo hướng dẫn: https://docs.astral.sh/uv/getting-started/installation/*
 
-4. Tải mô hình ngôn ngữ spaCy tiếng Pháp:
-   ```bash
-   python -m spacy download fr_core_news_md
-   ```
-
-5. Thiết lập file cấu hình môi trường `.env`:
+3. Thiết lập file cấu hình môi trường `.env`:
    ```bash
    cp .env.example .env
    ```
    *Mặc định hệ thống dùng `LLM_PROVIDER=mock` để chạy offline không cần API key. Nếu muốn dùng mô hình thật, mở `.env` và chọn `openai`, `gemini`, hoặc `ollama`.*
 
-6. Khởi động Backend server:
+4. Khởi động Backend server:
    ```bash
-   uvicorn app.main:app --reload --port 8000
+   uv run uvicorn app.main:app --reload --port 8000
    ```
    *Backend API docs sẽ khả dụng tại: `http://localhost:8000/docs`*
 
@@ -158,9 +119,9 @@ Hệ thống hỗ trợ 4 chế độ LLM thông qua biến môi trường `LLM_
 Dự án tuân thủ nghiêm ngặt quy tắc kiểm thử tự động trên cả 2 tầng:
 
 ### Kiểm thử Backend (Pytest)
-```powershell
+```bash
 cd backend
-$env:PYTHONPATH="."; .venv\Scripts\pytest.exe -v
+uv run pytest -v
 ```
 * **Kết quả**: 41/41 tests pass (Bao gồm test cấu hình, LLM provider, spaCy matchers, parser PDF/EPUB/TXT, REST endpoints, practice evaluation, và language plugin architecture).*
 
