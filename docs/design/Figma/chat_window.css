@@ -1,0 +1,530 @@
+/* Group 1 */
+
+position: absolute;
+width: 412px;
+height: 933px;
+left: 0px;
+top: 11px;
+
+
+
+/* BG */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 412px;
+height: 933px;
+left: 0px;
+top: 11px;
+
+opacity: 0.9;
+border-width: 0px 1px 1px 0px;
+border-style: solid;
+border-color: #5F6368;
+backdrop-filter: blur(40px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 0px 0px 30px 0px;
+
+
+/* Luminosity */
+
+position: absolute;
+left: 0px;
+right: 0px;
+top: 0px;
+bottom: 0px;
+
+background: #DAE6F2;
+mix-blend-mode: luminosity;
+opacity: 0.92;
+backdrop-filter: blur(60px);
+/* Note: backdrop-filter has minimal browser support */
+
+
+/* Saturation */
+
+position: absolute;
+left: 0px;
+right: 0px;
+top: 0px;
+bottom: 0px;
+
+background: rgba(0, 0, 0, 0.1);
+opacity: 0.85;
+
+
+/* AI Chat Box */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-start;
+padding: 16px;
+
+position: absolute;
+width: 368px;
+min-width: 240px;
+height: 80px;
+min-height: 80px;
+left: 22px;
+top: 839px;
+
+background: #FFFFFF;
+border-width: 0px 1px 1px 0px;
+border-style: solid;
+border-color: #5F6368;
+border-radius: 16px;
+
+
+/* What would you like to know? */
+
+margin: 0 auto;
+width: 336px;
+height: 22px;
+
+/* Body Base */
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 140%;
+/* or 22px */
+
+color: #B3B3B3;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* block */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+
+margin: 0 auto;
+width: 336px;
+height: 54px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Block */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+margin: 0 auto;
+width: 124px;
+height: 36px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon Button
+
+Keywords: action
+*/
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px;
+
+margin: 0 auto;
+width: 36px;
+height: 36px;
+
+background: #D9D9D9;
+border: 1px solid #B3B3B3;
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Arrow up */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+position: absolute;
+left: 20.83%;
+right: 20.83%;
+top: 20.83%;
+bottom: 20.83%;
+
+border: 2px solid #B3B3B3;
+
+
+/* AI Chat -> User message */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 6px 8px;
+
+position: absolute;
+width: 368px;
+height: 62px;
+left: 22px;
+top: 156px;
+
+background: #F5F5F5;
+border-width: 0px 1px 1px 0px;
+border-style: solid;
+border-color: #5F6368;
+border-radius: 8px;
+
+
+/* Hey Flippy! Write me a script for building an Analag Clock. */
+
+width: 352px;
+height: 44px;
+
+/* Body Base */
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 140%;
+/* or 22px */
+
+color: #1E1E1E;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* AI Chat -> User message */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 6px 8px;
+
+position: absolute;
+width: 368px;
+height: 55px;
+left: calc(50% - 368px/2 - 512.5px);
+top: 81px;
+
+background: #F5F5F5;
+border-width: 0px 1px 1px 0px;
+border-style: solid;
+border-color: #5F6368;
+border-radius: 8px;
+
+
+/* Hey Flippy! Write me a script for building an Analag Clock. */
+
+width: 352px;
+height: 22px;
+
+/* Body Base */
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 140%;
+/* or 22px */
+display: flex;
+align-items: center;
+
+color: #1E1E1E;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* AI Chat -> User message */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 6px 8px;
+
+position: absolute;
+width: 368px;
+height: 62px;
+left: 22px;
+top: 231px;
+
+background: #F5F5F5;
+border-width: 0px 1px 1px 0px;
+border-style: solid;
+border-color: #5F6368;
+border-radius: 8px;
+
+
+/* Hey Flippy! Write me a script for building an Analag Clock. */
+
+width: 352px;
+height: 44px;
+
+/* Body Base */
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 140%;
+/* or 22px */
+
+color: #1E1E1E;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* AI Chat Box */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-start;
+padding: 16px;
+
+position: absolute;
+width: 368px;
+min-width: 240px;
+height: 80px;
+min-height: 80px;
+left: 22px;
+top: 839px;
+
+background: #FFFFFF;
+border-width: 0px 1px 1px 0px;
+border-style: solid;
+border-color: #5F6368;
+border-radius: 16px;
+
+
+/* What would you like to know? */
+
+margin: 0 auto;
+width: 336px;
+height: 22px;
+
+/* Body Base */
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 140%;
+/* or 22px */
+
+color: #B3B3B3;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* block */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+
+margin: 0 auto;
+width: 336px;
+height: 54px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Block */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+margin: 0 auto;
+width: 124px;
+height: 36px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon Button
+
+Keywords: action
+*/
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px;
+
+margin: 0 auto;
+width: 36px;
+height: 36px;
+
+background: #D9D9D9;
+border: 1px solid #B3B3B3;
+border-radius: 32px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Arrow up */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+position: absolute;
+left: 20.83%;
+right: 20.83%;
+top: 20.83%;
+bottom: 20.83%;
+
+border: 2px solid #B3B3B3;
+
+
+/* AI Chat Box */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-start;
+padding: 16px;
+
+position: absolute;
+width: 266px;
+min-width: 240px;
+height: 80px;
+min-height: 80px;
+left: 22px;
+top: 698px;
+
+background: #FFFFFF;
+border-width: 0px 1px 1px 0px;
+border-style: solid;
+border-color: #5F6368;
+border-radius: 16px 16px 16px 0px;
+
+
+/* Pick one of the actions above to start chatting with me! */
+
+margin: 0 auto;
+width: 226px;
+height: 51px;
+
+/* Body Base */
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 140%;
+/* or 22px */
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
