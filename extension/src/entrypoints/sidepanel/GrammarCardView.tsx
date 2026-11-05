@@ -17,8 +17,8 @@ interface Props {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-3">
-      <h4 className="text-[10px] font-semibold uppercase tracking-wider text-ink-500">{title}</h4>
-      <div className="mt-0.5 text-[13px] leading-snug text-ink-900">{children}</div>
+      <h4 className="text-xs font-semibold leading-[15px] uppercase text-ink-500">{title}</h4>
+      <div className="mt-1 text-[13px] leading-[18px] text-ink-900">{children}</div>
     </section>
   );
 }
@@ -36,7 +36,7 @@ function StarButton({ pressed, onClick, t }: { pressed: boolean; onClick: () => 
         pressed ? 'text-star' : 'text-ink-500 hover:text-ink-900'
       }`}
     >
-      <Star className="h-3.5 w-3.5" fill={pressed ? 'currentColor' : 'none'} />
+      <Star className="h-4 w-4" fill={pressed ? 'currentColor' : 'none'} />
     </button>
   );
 }
@@ -48,16 +48,16 @@ export function GrammarCardView({ card, t, saved, sourceSaved, onToggleSave, onT
   const previewLabel = previewOpen ? t.sourcePreviewHide : t.sourcePreviewShow;
   return (
     <div className="flex flex-col gap-2">
-      <article className="rounded-2xl border border-stone-border bg-white p-3 pb-4 shadow-sm">
-        <div className="flex h-[30px] items-center gap-1 rounded-full bg-parchment-200 px-1">
+      <article className="rounded-2xl border border-stone-border bg-white px-4 pt-[14px] pb-4 shadow-sm">
+        <div className="flex h-7 items-center gap-1 rounded-full bg-popup-bar px-3">
           <StarButton pressed={saved} onClick={onToggleSave} t={t} />
-          <span className="min-w-0 flex-1 truncate pr-7 text-center text-xs text-ink-700">grammar/{card.id}</span>
+          <span className="min-w-0 flex-1 truncate pr-6 text-center text-[12.8px] leading-[18px] text-ink-900">grammar/{card.id}</span>
         </div>
   
-        <div className="px-1.5">
-          <h3 className="mt-4 text-xl font-bold leading-tight text-ink-900">{card.title}</h3>
+        <div>
+          <h3 className="mt-2 text-2xl font-bold leading-[29px] text-ink-900">{card.title}</h3>
           {card.form && (
-            <p className="mt-0.5 text-[13px] text-ink-500">
+            <p className="mt-1 text-sm leading-[17px] text-ink-500">
               {t.cardForm}: {card.form}
             </p>
           )}
@@ -96,7 +96,7 @@ export function GrammarCardView({ card, t, saved, sourceSaved, onToggleSave, onT
                   target="_blank"
                   rel="noopener noreferrer"
                   title={t.openSource}
-                  className="min-w-0 flex-1 truncate text-xs text-ink-500 hover:text-ink-900 hover:underline"
+                  className="min-w-0 flex-1 truncate text-[11px] leading-[15px] text-ink-500 hover:text-ink-900 hover:underline"
                 >
                   {card.source.url.replace(/^https?:\/\/(www\.)?/, '')}
                 </a>

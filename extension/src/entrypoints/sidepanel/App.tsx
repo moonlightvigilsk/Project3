@@ -317,13 +317,13 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-panel text-ink-900">
+    <div className="mx-auto flex h-screen w-full max-w-[412px] flex-col bg-chat-bg text-ink-900">
       <header className="relative flex h-12 shrink-0 items-center justify-center px-3">
         {view !== 'chat' && (
           <button
             type="button"
             onClick={() => setView('chat')}
-            className="absolute left-2 flex h-8 w-8 items-center justify-center rounded-lg text-ink-600 hover:bg-parchment-300 hover:text-ink-900"
+            className="absolute left-2 flex h-8 w-8 items-center justify-center rounded-lg text-ink-600 hover:bg-white/60 hover:text-ink-900"
             aria-label={t.chatTitle}
             title={t.chatTitle}
           >
@@ -337,7 +337,7 @@ export default function App() {
           aria-haspopup="menu"
           aria-expanded={menuOpen}
           title={t.chatMenu}
-          className="flex items-center gap-1 rounded-lg px-2 py-1 text-[15px] font-semibold text-ink-800 hover:bg-parchment-300 focus-visible:outline-2 focus-visible:outline-accent"
+          className="flex items-center gap-1 rounded-lg px-2 py-1 text-base font-semibold text-ink-900 hover:bg-white/60 focus-visible:outline-2 focus-visible:outline-accent"
         >
           {viewTitle[view]}
           <ChevronDown className={`h-4 w-4 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
@@ -425,15 +425,15 @@ function Menu({
   const isMac = isMacPlatform();
   const groups: { id: MenuItem; label: string; icon: React.ReactNode }[][] = [
     [
-      { id: 'bookmarks', label: t.menuBookmarks, icon: <BookmarkIcon className="h-4 w-4" /> },
-      { id: 'history', label: t.menuChatHistory, icon: <History className="h-4 w-4" /> },
+      { id: 'bookmarks', label: t.menuBookmarks, icon: <BookmarkIcon className="h-5 w-5" /> },
+      { id: 'history', label: t.menuChatHistory, icon: <History className="h-5 w-5" /> },
     ],
     [
-      { id: 'vocab', label: t.menuSavedVocab, icon: <BookOpen className="h-4 w-4" /> },
-      { id: 'resources', label: t.menuSavedResources, icon: <Library className="h-4 w-4" /> },
+      { id: 'vocab', label: t.menuSavedVocab, icon: <BookOpen className="h-5 w-5" /> },
+      { id: 'resources', label: t.menuSavedResources, icon: <Library className="h-5 w-5" /> },
     ],
-    [{ id: 'new', label: t.menuNewChat, icon: <MessageSquarePlus className="h-4 w-4" /> }],
-    [{ id: 'settings', label: t.menuSettings, icon: <SettingsIcon className="h-4 w-4" /> }],
+    [{ id: 'new', label: t.menuNewChat, icon: <MessageSquarePlus className="h-5 w-5" /> }],
+    [{ id: 'settings', label: t.menuSettings, icon: <SettingsIcon className="h-5 w-5" /> }],
   ];
 
   useEffect(() => {
@@ -472,10 +472,10 @@ function Menu({
       ref={ref}
       role="menu"
       onKeyDown={onKeyDown}
-      className="absolute left-1/2 top-11 z-20 w-60 -translate-x-1/2 rounded-xl border border-white/60 bg-parchment-100/95 p-1.5 shadow-xl backdrop-blur"
+      className="absolute left-1/2 top-3 z-20 max-h-[calc(100vh-24px)] w-[calc(100%-2rem)] max-w-[370px] -translate-x-1/2 overflow-y-auto overscroll-contain rounded-[22px] border border-white/50 bg-parchment-100/80 p-[9px] shadow-[0_0_3px_rgba(0,0,0,0.10),0_0_43px_rgba(0,0,0,0.16)] backdrop-blur-2xl"
     >
       {groups.map((group, gi) => (
-        <div key={gi} className={gi > 0 ? 'mt-1 border-t border-parchment-300 pt-1' : ''}>
+        <div key={gi} className={gi > 0 ? 'mt-[14px] border-t border-stone-border/70 pt-[14px]' : ''}>
           {group.map((item) => (
             <button
               key={item.id}
@@ -483,13 +483,13 @@ function Menu({
               role="menuitem"
               onClick={() => onSelect(item.id)}
               aria-keyshortcuts={`Alt+${panelKeyLabel(item.id, false).slice(4)}`}
-              className={`group flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left text-[13px] outline-none hover:bg-accent hover:text-white focus:bg-accent focus:text-white ${
-                current === item.id ? 'font-semibold' : ''
+              className={`group flex h-[41px] w-full items-center gap-[14px] rounded-[14px] px-[10px] text-left text-[22px] font-medium leading-[27px] outline-none transition-colors hover:bg-chat-selected hover:text-white focus:bg-chat-selected focus:text-white ${
+                current === item.id ? 'bg-chat-selected text-white' : 'text-ink-900'
               }`}
             >
               {item.icon}
-              <span className="flex-1">{item.label}</span>
-              <kbd className="font-sans text-[11px] font-normal text-ink-400 group-hover:text-white/80 group-focus:text-white/80">
+              <span className="min-w-0 flex-1 truncate">{item.label}</span>
+              <kbd className="shrink-0 font-sans text-[22px] font-medium leading-[27px] text-ink-400 group-hover:text-white/80 group-focus:text-white/80">
                 {panelKeyLabel(item.id, isMac)}
               </kbd>
             </button>
@@ -547,9 +547,9 @@ function ChatView({
 
   return (
     <>
-      <div className="flex-1 overflow-y-auto px-3.5 pb-3">
+      <div className="flex-1 overflow-y-auto px-[22px] pb-3">
         {session.context && (
-          <div className="mb-3 flex items-start gap-2 rounded-xl bg-white/70 px-3 py-2 text-[13px]">
+          <div className="mb-3 flex items-start gap-2 rounded-xl bg-white/70 px-3 py-2 text-sm">
             <div className="min-w-0 flex-1">
               <div className="text-[10px] font-semibold uppercase tracking-wider text-ink-500">{t.chatContextLabel}</div>
               <p className="mt-0.5 border-l-2 border-context pl-2 leading-snug text-ink-800">{session.context.sentence}</p>
@@ -560,7 +560,7 @@ function ChatView({
             <button
               type="button"
               onClick={onClearContext}
-              className="rounded-md p-1 text-ink-400 hover:bg-parchment-200 hover:text-ink-900"
+              className="rounded-md p-1 text-ink-400 hover:bg-white/60 hover:text-ink-900"
               aria-label={t.chatClearContext}
               title={t.chatClearContext}
             >
@@ -578,7 +578,7 @@ function ChatView({
               title={`Alt+${actions.indexOf(a) + 1}`}
               disabled={!canAct}
               onClick={() => onAction(a.id)}
-              className="rounded-lg border border-stone-border bg-white px-3 py-2.5 text-left text-[13px] leading-snug text-ink-800 shadow-sm transition hover:border-ink-400 hover:shadow focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:shadow-sm"
+              className="rounded-lg border border-white/60 bg-white px-4 py-3 text-left text-base leading-[1.4] text-ink-900 shadow-sm transition hover:border-white hover:shadow focus-visible:outline-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:shadow-sm"
             >
               {a.label}
             </button>
@@ -616,13 +616,13 @@ function ChatView({
       </div>
 
       <form
-        className="shrink-0 px-3.5 pb-3.5"
+        className="shrink-0 px-[22px] pb-[22px]"
         onSubmit={(e) => {
           e.preventDefault();
           onSend();
         }}
       >
-        <div className="flex items-end gap-2 rounded-2xl border border-stone-border bg-white p-2.5 shadow-sm focus-within:border-ink-400">
+        <div className="flex min-h-20 items-end gap-2 rounded-2xl border border-chat-line/40 bg-white p-4 shadow-sm focus-within:border-ink-400">
           <textarea
             ref={inputRef}
             value={input}
@@ -636,16 +636,20 @@ function ChatView({
             rows={2}
             placeholder={t.chatPlaceholder}
             aria-label={t.chatPlaceholder}
-            className="max-h-32 min-h-10 flex-1 resize-none bg-transparent text-[13px] leading-snug text-ink-900 outline-none placeholder:text-ink-400"
+            className="max-h-32 min-h-[22px] flex-1 resize-none bg-transparent text-base leading-[1.4] text-ink-900 outline-none placeholder:text-chat-placeholder"
           />
           <button
             type="submit"
             disabled={!input.trim() || pending}
             aria-label={t.chatSend}
             title={t.chatSend}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink-900 text-white transition disabled:bg-parchment-300 disabled:text-ink-400"
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition ${
+              input.trim() && !pending
+                ? 'border-ink-900 bg-ink-900 text-white'
+                : 'border-chat-button bg-chat-button text-chat-placeholder'
+            }`}
           >
-            <ArrowUp className="h-4 w-4" />
+            <ArrowUp className="h-5 w-5" />
           </button>
         </div>
       </form>
@@ -664,14 +668,14 @@ function Bubble({
 }) {
   if (role === 'user') {
     return (
-      <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-ink-800 px-3 py-2 text-[13px] leading-snug text-white">
+      <div className="ml-auto max-w-full rounded-lg border-r border-b border-chat-line/40 bg-parchment-100 px-2 py-1.5 text-base leading-[1.4] text-ink-900">
         {children}
       </div>
     );
   }
   return (
     <div
-      className={`mr-auto max-w-[90%] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-[13px] leading-snug shadow-sm ${
+      className={`mr-auto max-w-[90%] rounded-[16px] rounded-bl-none bg-white px-4 py-4 text-base leading-[1.4] shadow-sm ${
         notice ? 'text-ink-500' : 'text-ink-900'
       }`}
     >

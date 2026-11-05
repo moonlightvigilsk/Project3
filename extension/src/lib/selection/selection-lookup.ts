@@ -33,6 +33,7 @@ import type { DetectedStructure } from '@/lib/grammar/types';
 import { ruleToGrammarCard, type GrammarRuleDetail, type GrammarRuleReply } from '@/lib/grammar/rule';
 import { createRuleCard, ensureRuleStyles, renderRuleLoading, renderRuleReply, setRuleStar } from '@/lib/grammar/rule-ui';
 import { bookmarkId, isBookmarked, toggleBookmark } from '@/lib/bookmarks';
+import { isExtensionContextInvalidated } from '@/lib/extension-context';
 import { ENABLE_AI } from '@/lib/config';
 import type { PracticeReply, PracticeRequest } from '@/lib/grammar/practice';
 import { ensurePracticeStyles, showPractice } from '@/lib/grammar/practice-ui';
@@ -42,6 +43,7 @@ import {
   createLookupCard,
   ensureSelectionStyles,
   positionLookupCard,
+  renderExtensionInvalidated,
   renderLookupLoading,
   renderLookupMessage,
   renderLookupResponse,
@@ -337,6 +339,10 @@ export class SelectionLookupController {
     try {
       reply = await this.opts.ruleDetail(structure.ruleId);
     } catch (error) {
+      if (this.card === card && isExtensionContextInvalidated(error)) {
+        renderExtensionInvalidated(card, this.t());
+        return;
+      }
       reply = { status: 'error', backendUrl: '', httpStatus: null, message: error instanceof Error ? error.message : String(error) };
     }
     if (this.card !== card) return;
@@ -445,6 +451,10 @@ export class SelectionLookupController {
     try {
       reply = await this.opts.analyze(target.text);
     } catch (error) {
+      if (this.card === card && isExtensionContextInvalidated(error)) {
+        renderExtensionInvalidated(card, this.t());
+        return;
+      }
       reply = {
         status: 'error',
         backendUrl: '',
@@ -562,6 +572,10 @@ export class SelectionLookupController {
     try {
       response = await this.opts.lookup(info.text);
     } catch (error) {
+      if (this.card === card && isExtensionContextInvalidated(error)) {
+        renderExtensionInvalidated(card, this.t());
+        return;
+      }
       response = {
         status: 'error',
         word: info.text,

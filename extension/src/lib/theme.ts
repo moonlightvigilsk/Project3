@@ -45,14 +45,14 @@ export function applyCachedPageTheme(): void {
 
 const LIGHT_VARS = `
   --tc-surface: #FFFFFF;
-  --tc-surface-2: #F5F5F7;
+  --tc-surface-2: #F1F3F4;
   --tc-surface-3: #ECECEF;
   --tc-border: #E5E5EA;
   --tc-border-strong: #E0E0E5;
-  --tc-text: #1D1D1F;
+  --tc-text: #1E1E1E;
   --tc-text-2: #3A3A3C;
   --tc-text-3: #545458;
-  --tc-muted: #6E6E73;
+  --tc-muted: #6B6C6E;
   --tc-faint: #A1A1A6;
   --tc-accent: #3460C8;
   --tc-accent-soft: #EEF2FC;

@@ -11,8 +11,10 @@ import { catalogExamples, EXAMPLES_PER_PAGE, explanationFor, type GrammarRuleRep
  * ANALYSIS_STYLES (analysis-ui.ts) and SELECTION_STYLES (lookup-ui.ts).
  */
 export const RULE_STYLES = `
-  .tc-rule-card { max-height: min(80vh, 600px); }
+  .tc-rule-card { width: 360px; max-height: min(82vh, 640px); }
   .tc-rule-card .tc-lookup-head { padding-top: 8px; }
+  .tc-rule-card .tc-lookup-body { margin-top: 10px; font-size: 13px; line-height: 18px; }
+  .tc-rule-card .tc-lookup-footer { font-size: 11px; }
   .tc-rule-back {
     display: inline-flex;
     align-items: center;
@@ -29,21 +31,22 @@ export const RULE_STYLES = `
   }
   .tc-rule-back:hover { color: var(--tc-text); background: var(--tc-surface-2); }
   .tc-rule-back:focus-visible { outline: 2px solid var(--tc-accent); outline-offset: 1px; }
-  .tc-rule-name { font-size: 18px; font-weight: 700; line-height: 1.25; color: var(--tc-text); }
+  .tc-rule-name { font-size: 24px; font-weight: 700; line-height: 29px; color: var(--tc-text); }
   .tc-rule-form {
-    margin-top: 8px;
-    padding: 6px 10px;
-    font-size: 12.5px;
-    background: var(--tc-surface-2);
-    border-radius: 8px;
-    color: var(--tc-text);
+    margin-top: 4px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 17px;
+    background: none;
+    border-radius: 0;
+    color: var(--tc-muted);
   }
-  .tc-rule-form b { font-weight: 600; color: var(--tc-text-2); }
-  .tc-rule-list { margin: 2px 0 0; padding-left: 16px; }
-  .tc-rule-list li { margin: 2px 0; }
-  .tc-rule-patterns { list-style: none; padding-left: 0; font-size: 12px; color: var(--tc-text-2); }
-  .tc-rule-examples { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
-  .tc-rule-example-note { display: block; font-size: 11px; color: var(--tc-muted); }
+  .tc-rule-form b { font-weight: 400; color: var(--tc-muted); }
+  .tc-rule-list { margin: 4px 0 0; padding-left: 18px; font-size: 13px; line-height: 18px; }
+  .tc-rule-list li { margin: 1px 0; }
+  .tc-rule-patterns { list-style: none; padding-left: 0; font-size: 13px; line-height: 18px; color: var(--tc-text); }
+  .tc-rule-examples { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 18px; }
+  .tc-rule-example-note { display: block; font-size: 11px; line-height: 15px; color: var(--tc-muted); }
   .tc-rule-context {
     padding: 6px 8px;
     border-left: 3px solid var(--tc-accent);
@@ -54,6 +57,7 @@ export const RULE_STYLES = `
   .tc-rule-context mark { background: transparent; color: inherit; font-weight: 600; text-decoration: underline; text-decoration-color: var(--tc-accent); text-underline-offset: 3px; }
   .tc-rule-lang { margin-left: 4px; font-size: 10px; color: var(--tc-faint); text-transform: none; letter-spacing: 0; font-weight: 500; }
   .tc-rule-more { margin-top: 6px; }
+  .tc-rule-card .tc-rule-link { font-size: 11px; line-height: 15px; }
 `;
 
 export function ensureRuleStyles(shadow: ShadowRoot) {

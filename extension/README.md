@@ -43,6 +43,9 @@ npm run zip            # store package: .output/textchecker-<version>-chrome.zip
 npm run zip:firefox    # Firefox package and sources zip
 ```
 
+`npm run dev` opens Chrome, Chromium, Brave or Edge, whichever it finds in the usual
+install locations. To use a specific binary, set `CHROME_PATH=/path/to/browser`.
+
 ## Release
 
 1. Set the version in `package.json` (the manifest takes it from there).

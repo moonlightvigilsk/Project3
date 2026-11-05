@@ -1,6 +1,8 @@
 import type { Translations } from '@/lib/i18n';
 import type { UILanguage } from '@/types';
 import { getSuggestionColor } from '@/lib/utils';
+import { isExtensionContextInvalidated } from '@/lib/extension-context';
+import { extensionInvalidatedNotice } from '@/lib/selection/lookup-ui';
 import { BACKEND_START_COMMAND } from './types';
 import { errorSegments, errorSuggestionType, MAX_PRACTICE_CHARS, type PracticeError, type PracticeReply, type PracticeResult } from './practice';
 
@@ -211,15 +213,22 @@ export function showPractice(card: HTMLElement, ctx: PracticeContext): HTMLTextA
     const status = el('div', 'tc-lookup-status');
     status.append(el('div', 'tc-spinner'), el('span', undefined, t.practiceChecking));
     result.replaceChildren(status);
-    let reply: PracticeReply;
+    let reply: PracticeReply | null = null;
+    let invalidated = false;
     try {
       reply = await ctx.submit(sentence);
     } catch (error) {
-      reply = { status: 'error', backendUrl: '', httpStatus: null, message: error instanceof Error ? error.message : String(error) };
+      if (isExtensionContextInvalidated(error)) invalidated = true;
+      else reply = { status: 'error', backendUrl: '', httpStatus: null, message: error instanceof Error ? error.message : String(error) };
     }
     busy = false;
     send.disabled = false;
     if (!card.isConnected) return;
+    if (invalidated) {
+      result.replaceChildren(extensionInvalidatedNotice(t));
+      return;
+    }
+    if (!reply) return;
     const again = button('tc-analysis-btn tc-practice-retry', t.practiceRetry, retry);
     if (reply.status === 'ok') {
       const done = button('tc-analysis-btn tc-practice-done', t.practiceDone, ctx.onDone);

@@ -29,6 +29,14 @@
   --color-panel: #ECECEF;
   --color-highlight: #CFE8C6;
 
+  /* Chat window + overlay cards (docs/design/Figma/*.css) */
+  --color-popup-bar: #F1F3F4;
+  --color-chat-bg: #DAE6F2;
+  --color-chat-line: #5F6368;
+  --color-chat-selected: #0088FF;
+  --color-chat-placeholder: #B3B3B3;
+  --color-chat-button: #D9D9D9;
+
   /* Semantic tints (status chips, banners, review buttons) */
   --color-info: #EEF3FC;
   --color-info-line: #C9D7F2;
@@ -92,6 +100,12 @@ body {
   --color-panel: #141416;
   --color-highlight: #2E4A2A;
   --color-white: #1F1F22;
+  --color-popup-bar: #2A2A2E;
+  --color-chat-bg: #18222E;
+  --color-chat-line: #3A3A3F;
+  --color-chat-selected: #2F7FE8;
+  --color-chat-placeholder: #6E6E75;
+  --color-chat-button: #2A2A2E;
   --color-info: #26324D;
   --color-info-line: #3B4F7A;
   --color-note: #2B2820;
@@ -133,6 +147,12 @@ body {
     --color-panel: #141416;
     --color-highlight: #2E4A2A;
     --color-white: #1F1F22;
+    --color-popup-bar: #2A2A2E;
+    --color-chat-bg: #18222E;
+    --color-chat-line: #3A3A3F;
+    --color-chat-selected: #2F7FE8;
+    --color-chat-placeholder: #6E6E75;
+    --color-chat-button: #2A2A2E;
     --color-info: #26324D;
     --color-info-line: #3B4F7A;
     --color-note: #2B2820;
